@@ -1,0 +1,106 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { DOMAIN_META, DOMAIN_ORDER, catalogue, stats } from "@/lib/site";
+
+const title = "The full index";
+const description =
+  `Every entry in the ohaio field guide: ${stats.concepts} engineering concepts across ${stats.domains} domains, ordered by the layer they belong to.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-head">
+    <div class="wrap page-head-grid">
+      <div>
+        <nav class="breadcrumbs" aria-label="Breadcrumbs">
+          <a href="/">ohaio</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Index</span>
+        </nav>
+        <span class="kicker"><span class="jp">索引</span>The whole catalogue</span>
+        <h1 class="page-title page-title--display">The full index.</h1>
+        <p class="page-lede">
+          {stats.concepts} entries across {stats.layers} layers. Each layer is a small
+          neighbourhood of ideas; the order follows the domain, not an alphabet. Hover any
+          entry for a working summary.
+        </p>
+      </div>
+      <aside class="page-aside">
+        <div class="meta-strip">
+          <span><strong>{stats.concepts}</strong> entries</span>
+          <span><strong>{stats.domains}</strong> domains</span>
+          <span><strong>{stats.fieldNotes}</strong> field notes</span>
+        </div>
+        <p class="page-aside-copy">
+          Every domain also has a standalone page with the same entries and a little more
+          space to breathe.
+        </p>
+        <button class="button button-quiet button-small" type="button" data-search-open>
+          Search the index
+        </button>
+      </aside>
+    </div>
+  </header>
+
+  <div class="wrap index-layout">
+    <nav class="index-rail" aria-label="Jump to a domain">
+      <p class="index-rail-title">Domains</p>
+      {DOMAIN_ORDER.map((id) => {
+        const domain = catalogue.domains.find((item) => item.id === id);
+        if (!domain) return null;
+        return (
+          <a href={`#${id}`} style={`--dc: ${DOMAIN_META[id].color}`}>
+            <span>{domain.name}</span>
+            <span class="jp" aria-hidden="true">{DOMAIN_META[id].jp}</span>
+          </a>
+        );
+      })}
+    </nav>
+
+    <div>
+      {DOMAIN_ORDER.map((id) => {
+        const domain = catalogue.domains.find((item) => item.id === id);
+        if (!domain) return null;
+        const meta = DOMAIN_META[id];
+        return (
+          <section class="index-domain" id={id} style={`--dc: ${meta.color}`}>
+            <div class="index-domain-head">
+              <h2 class="index-domain-title">
+                {domain.name}
+                <span class="jp" aria-hidden="true">{meta.jp}</span>
+              </h2>
+              <span class="index-domain-count">
+                {domain.conceptCount} entries / {domain.layerCount} layers
+              </span>
+            </div>
+
+            {domain.layers.map((layer) => (
+              <div class="layer-block">
+                <h3 class="layer-name">
+                  <span class="layer-number" aria-hidden="true">{layer.number}</span>
+                  {layer.name}
+                </h3>
+                <div class="concept-rows">
+                  {layer.concepts.map((card) => (
+                    <div class="concept-row" data-concept={card.slug}>
+                      <span class="concept-title-cell">
+                        <a class="concept-link" href={card.url}>{card.title}</a>
+                        {card.status === "published" ? (
+                          <span class="status-tag status-tag--published">Field note</span>
+                        ) : null}
+                      </span>
+                      <span class="concept-row-copy">{card.summary}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <a class="index-domain-more text-link" href={`/domains/${id}`}>
+              Open {domain.name} <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </section>
+        );
+      })}
+    </div>
+  </div>
+</BaseLayout>

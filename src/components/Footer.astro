@@ -1,0 +1,54 @@
+---
+import LogoMark from "./LogoMark.astro";
+import { catalogue } from "@/lib/site";
+import { paths } from "@/data/paths";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand-col">
+        <a class="footer-brand" href="/" aria-label="ohaio — home">
+          <LogoMark class="brand-mark" />
+          <span>ohaio</span>
+        </a>
+        <p class="footer-blurb">
+          A morning field guide to the concepts that surface when software meets
+          production. Read one entry, follow the connections, keep the map.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h2 class="footer-col-title">Domains</h2>
+        {catalogue.domains.map((domain) => (
+          <a href={`/domains/${domain.id}`}>{domain.name}</a>
+        ))}
+      </div>
+
+      <div class="footer-col">
+        <h2 class="footer-col-title">Paths</h2>
+        {paths.map((path) => (
+          <a href={`/roadmaps/${path.slug}`}>{path.title}</a>
+        ))}
+      </div>
+
+      <div class="footer-col">
+        <h2 class="footer-col-title">The guide</h2>
+        <a href="/atlas">Atlas</a>
+        <a href="/concepts">Full index</a>
+        <a href="/search">Search</a>
+        <a href="/roadmaps">All paths</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>
+        Progress is stored in this browser only. No accounts, no analytics, no
+        tracking.
+      </p>
+      <p>ohaio · {year}</p>
+    </div>
+  </div>
+</footer>

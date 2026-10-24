@@ -1,0 +1,25 @@
+---
+title: "Focus management"
+slug: "focus-management"
+domain: "frontend"
+layer: "accessibility-as-engineering-constraints"
+layerName: "Accessibility as engineering constraints"
+summary: "Focus management belongs to Accessibility as engineering constraints in frontend. A catalogue entry for the vocabulary tutorials skip."
+difficulty: 3
+status: "stub"
+resources: []
+---
+
+## What it is
+
+**Focus management** is a catalogue entry in the **Accessibility as engineering constraints** layer of frontend engineering.
+
+## Why it matters
+
+The interesting failures usually live at the boundary between this concept and the rest of the system: under load, during partial failure, or when state drifts from the happy path.
+
+## Active recall
+
+- Where have you seen **Focus management** show up?
+- What breaks if you ignore it?
+- What would you measure to detect it in production?

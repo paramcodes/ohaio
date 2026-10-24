@@ -1,0 +1,46 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SearchPage from "@/components/SearchPage";
+import { DOMAIN_META, DOMAIN_ORDER, stats } from "@/lib/site";
+
+const title = "Search";
+const description = `Search ${stats.concepts} engineering concepts by name, layer, domain, or summary.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-head">
+    <div class="wrap page-head-grid">
+      <div>
+        <nav class="breadcrumbs" aria-label="Breadcrumbs">
+          <a href="/">ohaio</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Search</span>
+        </nav>
+        <span class="kicker"><span class="jp">探す</span>Find an entry</span>
+        <h1 class="page-title page-title--display">Search the guide.</h1>
+        <p class="page-lede">
+          Search {stats.concepts} entries by name, layer, domain, or the words in a summary.
+          When the query is empty, the published field notes are listed first.
+        </p>
+      </div>
+      <aside class="page-aside">
+        <p>
+          The search runs entirely in your browser. No request leaves the page, and nothing
+          you type is stored.
+        </p>
+        <div class="meta-strip">
+          {DOMAIN_ORDER.map((id) => (
+            <span class="domain-chip" style={`--dc: ${DOMAIN_META[id].color}`}>
+              <i class="domain-dot" />
+              {DOMAIN_META[id].name}
+            </span>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <SearchPage client:load />
+  </div>
+</BaseLayout>

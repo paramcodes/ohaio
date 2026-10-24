@@ -1,0 +1,339 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import LogoMark from "@/components/LogoMark.astro";
+import ReadingProgress from "@/components/ReadingProgress";
+import graphData from "@/data/graph.json";
+import {
+  DOMAIN_META,
+  DOMAIN_ORDER,
+  catalogue,
+  cards,
+  difficultyLabel,
+  featured,
+  publishedCards,
+  stats,
+} from "@/lib/site";
+
+const title = "ohaio";
+const description =
+  "A morning field guide to the working concepts behind backend, frontend, interface, game development, and security engineering. Read one entry, follow the connections, keep the map.";
+
+const notes = publishedCards.slice(0, 6);
+
+const nodes = graphData.nodes;
+const minX = Math.min(...nodes.map((node) => node.x));
+const maxX = Math.max(...nodes.map((node) => node.x));
+const minY = Math.min(...nodes.map((node) => node.y));
+const maxY = Math.max(...nodes.map((node) => node.y));
+const span = Math.max(maxX - minX, maxY - minY);
+const pad = 44;
+const viewW = 1000;
+const viewH = 640;
+const scale = (viewH - pad * 2) / span;
+const offsetX = (viewW - span * scale) / 2;
+
+const project = (x: number, y: number) => ({
+  x: offsetX + (x - minX) * scale,
+  y: pad + (y - minY) * scale,
+});
+
+const nodeById = new Map(nodes.map((node) => [node.id, node]));
+
+const edgesByDomain = new Map<string, string[]>();
+for (const edge of graphData.edges) {
+  const source = nodeById.get(edge.source);
+  const target = nodeById.get(edge.target);
+  if (!source || !target) continue;
+  const from = project(source.x, source.y);
+  const to = project(target.x, target.y);
+  const list = edgesByDomain.get(source.domain) ?? [];
+  list.push(`M${from.x.toFixed(1)} ${from.y.toFixed(1)}L${to.x.toFixed(1)} ${to.y.toFixed(1)}`);
+  edgesByDomain.set(source.domain, list);
+}
+
+const edgePaths = [...edgesByDomain].map(([domain, segments]) => ({
+  domain,
+  d: segments.join(""),
+  color: DOMAIN_META[domain as keyof typeof DOMAIN_META]?.atlas ?? "#8b8fa3",
+}));
+
+const drawnNodes = nodes.map((node, index) => {
+  const point = project(node.x, node.y);
+  return {
+    ...node,
+    px: point.x,
+    py: point.y,
+    radius: node.type === "domain" ? 5.5 : node.type === "layer" ? 2.1 : 1.15,
+    delay: `${(index % 48) * 10}ms`,
+    color: DOMAIN_META[node.domain as keyof typeof DOMAIN_META]?.atlas ?? node.color,
+  };
+});
+
+const domainLabels = drawnNodes.filter((node) => node.type === "domain");
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="hero-kicker">
+          <span class="jp">おはよう</span>
+          <span>A morning field guide for working engineers</span>
+        </p>
+        <h1 class="hero-title">
+          The vocabulary<br />production teaches<br />the hard way.
+        </h1>
+        <p class="hero-lede">
+          {stats.concepts} working concepts across backend, frontend, interface, game
+          development, and security. Each one gets a plain definition, a place in the map,
+          and a way to go deeper.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href={featured.url}>
+            Start with a field note
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="button button-quiet" href="/atlas">Open the atlas</a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <span class="stat-value">{stats.concepts}</span>
+            <span class="stat-label">entries</span>
+          </div>
+          <div>
+            <span class="stat-value">{stats.domains}</span>
+            <span class="stat-label">domains</span>
+          </div>
+          <div>
+            <span class="stat-value">{stats.layers}</span>
+            <span class="stat-label">layers</span>
+          </div>
+          <div>
+            <span class="stat-value">{stats.fieldNotes}</span>
+            <span class="stat-label">field notes</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-plate" aria-label="First field note">
+        <div class="plate-top">
+          <LogoMark class="plate-mark" />
+          <span class="plate-jp jp" aria-hidden="true">朝の記録</span>
+        </div>
+        <div class="plate-entry">
+          <div class="plate-entry-label">
+            <span>Field note 01</span>
+            <span>{featured.domainName}</span>
+          </div>
+          <a class="plate-entry-title" href={featured.url} data-concept={featured.slug}>
+            {featured.title}
+          </a>
+          <p>{featured.summary}</p>
+          <a class="plate-entry-link" href={featured.url}>
+            Read the note <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="atlas-band">
+    <div class="wrap atlas-band-inner">
+      <div class="section-head">
+        <div>
+          <span class="kicker"><span class="jp">地図</span>The whole territory</span>
+          <h2 class="section-title">{stats.concepts} entries, one connected map.</h2>
+        </div>
+        <p class="section-note">
+          Every entry hangs from a layer, and every layer from a domain. The atlas is
+          generated from the same index as the pages, so nothing is decorative.
+        </p>
+      </div>
+
+      <div class="atlas-plate">
+        <div class="atlas-plate-meta">
+          <i aria-hidden="true"></i>
+          404 points plotted
+        </div>
+        <svg
+          class="constellation-plate"
+          viewBox={`0 0 ${viewW} ${viewH}`}
+          role="img"
+          aria-label="Constellation map of the five ohaio domains, their layers and concepts."
+        >
+          <g aria-hidden="true">
+            {edgePaths.map((path) => (
+              <path
+                class="constellation-edge"
+                d={path.d}
+                style={`stroke: ${path.color}`}
+              />
+            ))}
+          </g>
+          {drawnNodes.map((node) => (
+            <circle
+              class="constellation-node"
+              cx={node.px}
+              cy={node.py}
+              r={node.radius}
+              fill={node.color}
+              style={`animation-delay: ${node.delay}`}
+            />
+          ))}
+          {domainLabels.map((node) => (
+            <text
+              class="constellation-domain-label"
+              x={node.px}
+              y={node.py - 16}
+              text-anchor="middle"
+            >
+              {node.label}
+            </text>
+          ))}
+        </svg>
+        <div class="plate-caption">
+          <span>Domain → layer → concept</span>
+          <a class="text-link" href="/atlas">
+            Explore the live atlas <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker"><span class="jp">領域</span>Five domains</span>
+          <h2 class="section-title">One working vocabulary, split by where it hurts.</h2>
+        </div>
+        <p class="section-note">
+          Pick the territory closest to your next incident, review, or side project. Each
+          domain page lists its layers in reading order.
+        </p>
+      </div>
+
+      <div class="domain-list">
+        {DOMAIN_ORDER.map((id) => {
+          const domain = catalogue.domains.find((item) => item.id === id);
+          if (!domain) return null;
+          const meta = DOMAIN_META[id];
+          return (
+            <a
+              class="domain-row"
+              href={`/domains/${id}`}
+              style={`--dc: ${meta.color}`}
+            >
+              <span class="domain-glyph jp" aria-hidden="true">{meta.jp}</span>
+              <span class="domain-name">
+                {domain.name}
+                <small>{meta.tagline}</small>
+              </span>
+              <span class="domain-blurb">{domain.description}</span>
+              <span class="domain-tail">
+                <span class="domain-count">
+                  {domain.conceptCount} entries / {domain.layerCount} layers
+                </span>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker"><span class="jp">記録</span>Field notes</span>
+          <h2 class="section-title">Written to be read, not skimmed.</h2>
+        </div>
+        <a class="text-link" href="/concepts">
+          All {stats.concepts} entries <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="note-list">
+        {notes.map((note, index) => {
+          const meta = DOMAIN_META[note.domain];
+          return (
+            <a
+              class="note-row"
+              href={note.url}
+              data-concept={note.slug}
+              style={`--dc: ${meta.color}`}
+            >
+              <span class="note-number">{String(index + 1).padStart(2, "0")}</span>
+              <span>
+                <span class="note-title">{note.title}</span>
+                <span class="note-copy">{note.summary}</span>
+                <span class="note-meta">
+                  <span class="domain-chip" style={`--dc: ${meta.color}`}>
+                    <i class="domain-dot" />
+                    {note.domainName}
+                  </span>
+                  <span>{note.layerName}</span>
+                  <span>{difficultyLabel(note.difficulty)}</span>
+                </span>
+              </span>
+              <span class="note-tail arrow" aria-hidden="true">→</span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="kicker"><span class="jp">方法</span>How the guide works</span>
+          <h2 class="section-title">Read one thing. Keep the thread.</h2>
+        </div>
+        <p class="section-note">
+          No streaks, no accounts. Progress lives in this browser and nowhere else.
+        </p>
+      </div>
+
+      <div class="method-list">
+        <div class="method-step">
+          <span class="method-index">Step 1</span>
+          <h3 class="method-title">Start from the failure</h3>
+          <p class="method-copy">
+            Every entry begins with the moment the concept becomes visible: the lost write,
+            the stalled queue, the frame that arrived late. The definition follows the
+            symptom, not the other way around.
+          </p>
+        </div>
+        <div class="method-step">
+          <span class="method-index">Step 2</span>
+          <h3 class="method-title">Follow a path</h3>
+          <p class="method-copy">
+            Paths order entries into a sequence that builds. Use one when you want a route
+            through a domain, or read the index as a field catalogue and wander.
+          </p>
+        </div>
+        <div class="method-step">
+          <span class="method-index">Step 3</span>
+          <h3 class="method-title">Keep your own map</h3>
+          <p class="method-copy">
+            Mark an entry as read and it stays marked in this browser. Your progress shows
+            up on paths, in the index, and in the atlas.
+          </p>
+        </div>
+      </div>
+
+      <div class="progress-strip">
+        <p class="progress-strip-label">
+          <span class="jp" aria-hidden="true">進捗</span>
+          Your map so far
+        </p>
+        <ReadingProgress total={cards.length} client:idle />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

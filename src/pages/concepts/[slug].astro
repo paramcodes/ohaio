@@ -1,0 +1,178 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import LearnButton from "@/components/LearnButton";
+import {
+  DOMAIN_META,
+  cardBySlug,
+  difficultyLabel,
+  neighbours,
+  relatedTo,
+  statusLabel,
+} from "@/lib/site";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("concepts");
+  return entries.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const card = cardBySlug.get(entry.data.slug);
+
+if (!card) {
+  throw new Error(`No catalogue card for concept "${entry.data.slug}"`);
+}
+
+const meta = DOMAIN_META[card.domain];
+const { previous, next } = neighbours(card.slug);
+const related = relatedTo(card, 4);
+const resources = entry.data.resources;
+const toc = headings.filter((heading) => heading.depth === 2 || heading.depth === 3).slice(0, 16);
+const readingMinutes = Math.max(
+  1,
+  Math.round((entry.body?.trim().split(/\s+/).length ?? 0) / 220),
+);
+
+const title = card.title;
+const description = card.summary;
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="concept-head">
+    <div class="wrap">
+      <nav class="breadcrumbs" aria-label="Breadcrumbs">
+        <a href="/">ohaio</a>
+        <span aria-hidden="true">/</span>
+        <a href={`/domains/${card.domain}`}>{card.domainName}</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{card.title}</span>
+      </nav>
+
+      <div class="concept-head-grid">
+        <div>
+          <span class="kicker">
+            <span class="jp" aria-hidden="true">{meta.jp}</span>
+            {statusLabel(card.status)} · {card.layerName}
+          </span>
+          <h1 class="concept-title">{card.title}</h1>
+          <p class="concept-summary">{card.summary}</p>
+          <div class="meta-strip">
+            <span class="domain-chip" style={`--dc: ${meta.color}`}>
+              <i class="domain-dot" />
+              {card.domainName}
+            </span>
+            <span>{card.layerName}</span>
+            <span>{difficultyLabel(card.difficulty)}</span>
+            <span>{readingMinutes} min read</span>
+          </div>
+        </div>
+        <div class="concept-head-actions">
+          <LearnButton slug={card.slug} title={card.title} client:load />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap concept-layout">
+    <article class="concept-main" data-concept={card.slug}>
+      {card.status === "stub" ? (
+        <div class="stub-note">
+          <span aria-hidden="true">◇</span>
+          <span>
+            <strong>This entry is filed, not finished.</strong> The page gives you the working
+            definition and its neighbours; a full field note will replace it. Mark it read if
+            you already know it, or follow the layer to the entries around it.
+          </span>
+        </div>
+      ) : null}
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <nav class="pager" aria-label="Previous and next entries">
+        {previous ? (
+          <a class="pager-link" href={previous.url} data-concept={previous.slug}>
+            <span class="pager-label">Previous</span>
+            <span class="pager-title">{previous.title}</span>
+          </a>
+        ) : (
+          <span class="pager-link pager-link--empty" aria-hidden="true" />
+        )}
+        {next ? (
+          <a class="pager-link pager-link--next" href={next.url} data-concept={next.slug}>
+            <span class="pager-label">Next</span>
+            <span class="pager-title">{next.title}</span>
+          </a>
+        ) : (
+          <span class="pager-link pager-link--empty" aria-hidden="true" />
+        )}
+      </nav>
+    </article>
+
+    <aside class="concept-aside">
+      {toc.length > 0 ? (
+        <nav class="aside-block" aria-label="On this page">
+          <h2 class="aside-title">On this page</h2>
+          <div class="toc">
+            {toc.map((heading) => (
+              <a
+                class={heading.depth === 3 ? "toc-h3" : undefined}
+                href={`#${heading.slug}`}
+              >
+                {heading.text}
+              </a>
+            ))}
+          </div>
+        </nav>
+      ) : null}
+
+      {resources.length > 0 ? (
+        <div class="aside-block">
+          <h2 class="aside-title">Go deeper</h2>
+          <div class="resource-list">
+            {resources.map((resource) => (
+              <a
+                class="resource-link"
+                href={resource.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span class="resource-title">{resource.title}</span>
+                <span class="resource-type">
+                  {resource.type} · {resource.free ? "free" : "paid"}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      <div class="aside-block">
+        <h2 class="aside-title">In the atlas</h2>
+        <div class="related-list">
+          <a href={`/domains/${card.domain}#${card.layer}`}>{card.layerName}</a>
+          {related.map((item) => (
+            <a href={item.url} data-concept={item.slug}>
+              {item.title}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {related.length === 0 ? (
+        <div class="aside-block">
+          <h2 class="aside-title">Keep reading</h2>
+          <div class="related-list">
+            <a href={`/domains/${card.domain}`}>Browse {card.domainName}</a>
+            <a href="/concepts">Full index</a>
+          </div>
+        </div>
+      ) : null}
+    </aside>
+  </div>
+</BaseLayout>

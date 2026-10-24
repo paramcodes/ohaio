@@ -1,0 +1,75 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ProgressInline from "@/components/ProgressInline";
+import { paths } from "@/data/paths";
+import { DOMAIN_META, cardBySlug } from "@/lib/site";
+
+const title = "Reading paths";
+const description =
+  "Five ordered routes through the ohaio field guide, one per domain, each with a reason for every step.";
+
+const pathCards = paths.map((path, index) => ({
+  path,
+  meta: DOMAIN_META[path.domain],
+  number: String(index + 1).padStart(2, "0"),
+  steps: path.steps
+    .map((step) => ({ ...step, card: cardBySlug.get(step.slug) }))
+    .filter((step) => step.card),
+}));
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-head">
+    <div class="wrap page-head-grid">
+      <div>
+        <nav class="breadcrumbs" aria-label="Breadcrumbs">
+          <a href="/">ohaio</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Paths</span>
+        </nav>
+        <span class="kicker"><span class="jp">道</span>Ordered routes</span>
+        <h1 class="page-title page-title--display">Reading paths.</h1>
+        <p class="page-lede">
+          The index is a catalogue; a path is an argument. Each route picks a handful of
+          entries and puts them in an order that builds, with a reason for every stop.
+        </p>
+      </div>
+      <aside class="page-aside">
+        <p>
+          Paths share the same entries as the index, so you can leave a route at any point and
+          wander. Progress is kept per entry, not per path.
+        </p>
+      </aside>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="path-grid">
+        {pathCards.map(({ path, meta, number, steps }) => (
+          <a
+            class="path-card"
+            href={`/roadmaps/${path.slug}`}
+            style={`--dc: ${meta.color}`}
+          >
+            <span class="path-kicker">
+              <span>Path {number}</span>
+              <span>{meta.name}</span>
+            </span>
+            <span class="path-title">{path.title}</span>
+            <span class="path-copy">{path.summary}</span>
+            <span class="path-steps">
+              {steps.map((step) => (
+                <span class="path-step-chip">{step.card?.title}</span>
+              ))}
+            </span>
+            <span class="path-card-foot">
+              <span class="path-card-count">{steps.length} steps</span>
+              <ProgressInline slugs={path.steps.map((step) => step.slug)} client:visible />
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

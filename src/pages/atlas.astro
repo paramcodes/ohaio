@@ -1,0 +1,72 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Atlas from "@/components/Atlas";
+import { DOMAIN_META, DOMAIN_ORDER, catalogue, stats } from "@/lib/site";
+
+const title = "The atlas";
+const description =
+  `A live constellation of ${stats.concepts} engineering concepts across ${stats.domains} domains and ${stats.layers} layers. Hover a node for context, filter by domain, and click through to the entry.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="atlas-page">
+    <div class="wrap atlas-page-head">
+      <nav class="breadcrumbs" aria-label="Breadcrumbs">
+        <a href="/">ohaio</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Atlas</span>
+      </nav>
+      <span class="kicker"><span class="jp">地図</span>Every entry, plotted</span>
+      <h1 class="atlas-page-title">The constellation.</h1>
+      <p class="atlas-page-lede">
+        {stats.concepts} concepts, {stats.layers} layers, {stats.domains} domains. The map is
+        drawn from the catalogue itself. Filter a domain to see its shape, hover a point for
+        context, then open the page.
+      </p>
+    </div>
+
+  <Atlas client:load />
+
+  <div class="wrap atlas-afterword">
+    <div class="atlas-afterword-grid">
+      <div>
+        <h2 class="atlas-afterword-title">How to read a point</h2>
+        <p>
+          Large points are domains, medium points are layers, and small points are the
+          concepts filed under them. Lines run from a domain to its layers, and from a layer
+          to each entry.
+        </p>
+      </div>
+      <div>
+        <h2 class="atlas-afterword-title">Why a map</h2>
+        <p>
+          An index tells you what exists. A map tells you what sits next to what. Seeing a
+          concept as one point in a layer makes the missing neighbours easier to notice.
+        </p>
+      </div>
+      <div>
+        <h2 class="atlas-afterword-title">Prefer a list?</h2>
+        <p>
+          Every domain has a plain page with its layers in order. The atlas and the index are
+          built from the same catalogue, so nothing is lost by choosing the quiet route.
+        </p>
+        <a class="text-link" href="/concepts">Open the full index <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <div class="atlas-domain-links">
+      {DOMAIN_ORDER.map((id) => {
+        const domain = catalogue.domains.find((item) => item.id === id);
+        if (!domain) return null;
+        return (
+          <a href={`/domains/${id}`} style={`--dc: ${DOMAIN_META[id].atlas}`}>
+            <span class="jp" aria-hidden="true">{DOMAIN_META[id].jp}</span>
+            {domain.name}
+            <small>{domain.conceptCount} entries</small>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import LogoMark from "@/components/LogoMark.astro";
+
+const title = "Not filed";
+const description = "This page is not in the ohaio field guide.";
+---
+
+<BaseLayout title={title} description={description} noindex>
+  <header class="page-head not-found">
+    <div class="wrap">
+      <LogoMark class="not-found-mark" />
+      <span class="kicker"><span class="jp">空白</span>Not in the catalogue</span>
+      <h1 class="page-title page-title--display">This page is not filed.</h1>
+      <p class="page-lede">
+        The address does not match an entry in the guide. The map is still intact, though.
+        Start from the index, the atlas, or one of the reading paths.
+      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/concepts">Open the index</a>
+        <a class="button button-quiet" href="/atlas">Open the atlas</a>
+        <a class="button button-quiet" href="/roadmaps">Follow a path</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap not-found-note">
+      <p class="kicker">If you followed a link</p>
+      <p>
+        The entry may still be filed under a different slug. Search for the term and the page
+        will take you to the closest match.
+      </p>
+      <button class="text-link" type="button" data-search-open>
+        Search the guide <span class="arrow" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,110 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { DOMAIN_META, DOMAIN_ORDER, catalogue } from "@/lib/site";
+import { paths } from "@/data/paths";
+
+export function getStaticPaths() {
+  return catalogue.domains.map((domain) => ({
+    params: { domain: domain.id },
+    props: { domain },
+  }));
+}
+
+const { domain } = Astro.props;
+const meta = DOMAIN_META[domain.id];
+const index = DOMAIN_ORDER.indexOf(domain.id);
+const previous = index > 0 ? catalogue.domains.find((item) => item.id === DOMAIN_ORDER[index - 1]) : undefined;
+const next = index < DOMAIN_ORDER.length - 1 ? catalogue.domains.find((item) => item.id === DOMAIN_ORDER[index + 1]) : undefined;
+const path = paths.find((item) => item.domain === domain.id);
+
+const title = domain.name;
+const description = `${domain.name} concepts in the ohaio field guide: ${domain.conceptCount} entries across ${domain.layerCount} layers. ${domain.tagline}`;
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-head domain-head" data-glyph={meta.jp} style={`--dc: ${meta.color}`}>
+    <div class="wrap page-head-grid domain-head-inner">
+      <div>
+        <nav class="breadcrumbs" aria-label="Breadcrumbs">
+          <a href="/">ohaio</a>
+          <span aria-hidden="true">/</span>
+          <a href="/concepts">Index</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{domain.name}</span>
+        </nav>
+        <span class="kicker"><span class="jp">{meta.jp}</span>{domain.tagline}</span>
+        <div class="domain-title-row">
+          <h1 class="page-title page-title--display">{domain.name}</h1>
+          <span class="jp" aria-hidden="true">{meta.jp}</span>
+        </div>
+        <p class="page-lede">{domain.description}</p>
+        <div class="meta-strip">
+          <span>{domain.conceptCount} entries</span>
+          <span>{domain.layerCount} layers</span>
+          <span>{domain.publishedCount} field notes</span>
+        </div>
+      </div>
+      <aside class="page-aside">
+        {path ? (
+          <>
+            <p>
+              Want an order to read these in? <strong>{path.title}</strong> picks a route
+              through the domain instead of the full catalogue.
+            </p>
+            <a class="text-link" href={`/roadmaps/${path.slug}`}>
+              Follow the path <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </>
+        ) : (
+          <p>
+            Read top to bottom for the domain's own sequence, or use the atlas to move by
+            proximity instead.
+          </p>
+        )}
+        <a class="text-link domain-aside-link" href="/atlas">
+          See it in the atlas <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </aside>
+    </div>
+  </header>
+
+  <div class="wrap domain-page-body">
+    {domain.layers.map((layer) => (
+      <section class="domain-layer" id={layer.id}>
+        <div class="domain-layer-head">
+          <h2 class="domain-layer-title">
+            <span class="layer-number" aria-hidden="true">{layer.number}</span>
+            {layer.name}
+          </h2>
+          <p class="domain-layer-count">{layer.concepts.length} entries</p>
+        </div>
+        <div class="domain-concept-list">
+          {layer.concepts.map((card) => (
+            <div class="domain-concept" data-concept={card.slug}>
+              <a class="domain-concept-title" href={card.url}>{card.title}</a>
+              {card.status === "published" ? (
+                <span class="status-tag status-tag--published">Field note</span>
+              ) : null}
+              <span class="domain-concept-copy">{card.summary}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <nav class="domain-switcher" aria-label="Other domains">
+      {previous ? (
+        <a class="pager-link" href={`/domains/${previous.id}`}>
+          <span class="pager-label">Previous domain</span>
+          <span class="pager-title">{previous.name}</span>
+        </a>
+      ) : <span class="pager-link pager-link--empty" aria-hidden="true" />}
+      {next ? (
+        <a class="pager-link pager-link--next" href={`/domains/${next.id}`}>
+          <span class="pager-label">Next domain</span>
+          <span class="pager-title">{next.name}</span>
+        </a>
+      ) : <span class="pager-link pager-link--empty" aria-hidden="true" />}
+    </nav>
+  </div>
+</BaseLayout>

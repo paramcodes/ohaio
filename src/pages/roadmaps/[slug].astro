@@ -1,0 +1,94 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ProgressInline from "@/components/ProgressInline";
+import { paths } from "@/data/paths";
+import { DOMAIN_META, cardBySlug, difficultyLabel } from "@/lib/site";
+
+export function getStaticPaths() {
+  return paths.map((path) => ({
+    params: { slug: path.slug },
+    props: { path },
+  }));
+}
+
+const { path } = Astro.props;
+const meta = DOMAIN_META[path.domain];
+const index = paths.findIndex((item) => item.slug === path.slug);
+const previous = index > 0 ? paths[index - 1] : undefined;
+const next = index < paths.length - 1 ? paths[index + 1] : undefined;
+
+const steps = path.steps.map((step, stepIndex) => {
+  const card = cardBySlug.get(step.slug);
+  if (!card) {
+    throw new Error(`Path "${path.slug}" references missing concept "${step.slug}"`);
+  }
+  return { ...step, card, number: String(stepIndex + 1).padStart(2, "0") };
+});
+
+const title = path.title;
+const description = path.summary;
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-head path-detail-head" style={`--dc: ${meta.color}`}>
+    <div class="wrap">
+      <nav class="breadcrumbs" aria-label="Breadcrumbs">
+        <a href="/">ohaio</a>
+        <span aria-hidden="true">/</span>
+        <a href="/roadmaps">Paths</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{path.title}</span>
+      </nav>
+      <span class="kicker"><span class="jp">{meta.jp}</span>{meta.name} / {steps.length} steps</span>
+      <h1 class="page-title page-title--display">{path.title}</h1>
+      <p class="page-lede">{path.description}</p>
+      <div class="path-progress">
+        <ProgressInline slugs={path.steps.map((step) => step.slug)} client:load />
+        <a class="text-link" href={`/domains/${path.domain}`}>
+          Browse {meta.name} <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <ol class="path-steps-list">
+      {steps.map((step) => (
+        <li class="path-step-item" data-concept={step.card.slug}>
+          <span class="path-step-index">{step.number}</span>
+          <div>
+            <a class="path-step-title" href={step.card.url}>{step.card.title}</a>
+            <p class="path-step-why">{step.why}</p>
+            <div class="path-step-meta">
+              <span>{step.card.layerName}</span>
+              <span>{difficultyLabel(step.card.difficulty)}</span>
+              {step.card.status === "published" ? (
+                <span class="status-tag status-tag--published">Field note</span>
+              ) : null}
+            </div>
+          </div>
+          <span class="path-step-status">
+            <a class="path-step-open text-link" href={step.card.url}>
+              Read <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </span>
+        </li>
+      ))}
+    </ol>
+
+    <nav class="pager path-pager" aria-label="Other paths">
+      {previous ? (
+        <a class="pager-link" href={`/roadmaps/${previous.slug}`}>
+          <span class="pager-label">Previous path</span>
+          <span class="pager-title">{previous.title}</span>
+        </a>
+      ) : <span class="pager-link pager-link--empty" aria-hidden="true" />}
+      {next ? (
+        <a class="pager-link pager-link--next" href={`/roadmaps/${next.slug}`}>
+          <span class="pager-label">Next path</span>
+          <span class="pager-title">{next.title}</span>
+        </a>
+      ) : <span class="pager-link pager-link--empty" aria-hidden="true" />}
+    </nav>
+  </div>
+</BaseLayout>

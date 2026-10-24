@@ -1,0 +1,1878 @@
+[
+  {
+    "title": "Partial failure",
+    "summary": "Partial failure belongs to Production failure / overload in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/partial-failure",
+    "status": "stub"
+  },
+  {
+    "title": "Cache stampede",
+    "summary": "One expired key sends every request to the database at the same moment.",
+    "domain": "Backend",
+    "url": "/concepts/cache-stampede",
+    "status": "published"
+  },
+  {
+    "title": "Retry storm",
+    "summary": "Retries multiply load while a dependency is already failing.",
+    "domain": "Backend",
+    "url": "/concepts/retry-storm",
+    "status": "published"
+  },
+  {
+    "title": "Circuit breaker",
+    "summary": "Stop calling a failing dependency before it takes the whole system down.",
+    "domain": "Backend",
+    "url": "/concepts/circuit-breaker",
+    "status": "published"
+  },
+  {
+    "title": "Bulkhead pattern",
+    "summary": "Isolate resources so one slow dependency cannot sink every request.",
+    "domain": "Backend",
+    "url": "/concepts/bulkhead-pattern",
+    "status": "published"
+  },
+  {
+    "title": "Backpressure",
+    "summary": "Let a slow consumer tell a fast producer to slow down before the queue explodes.",
+    "domain": "Backend",
+    "url": "/concepts/backpressure",
+    "status": "published"
+  },
+  {
+    "title": "Tail latency",
+    "summary": "Tail latency belongs to Latency — where backend engineering gets serious in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/tail-latency",
+    "status": "stub"
+  },
+  {
+    "title": "Latency distribution",
+    "summary": "Latency distribution belongs to Latency — where backend engineering gets serious in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/latency-distribution",
+    "status": "stub"
+  },
+  {
+    "title": "TIME_WAIT",
+    "summary": "TIME_WAIT belongs to Networking / TCP / HTTP internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/time-wait",
+    "status": "stub"
+  },
+  {
+    "title": "CLOSE_WAIT",
+    "summary": "CLOSE_WAIT belongs to Networking / TCP / HTTP internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/close-wait",
+    "status": "stub"
+  },
+  {
+    "title": "Connection pool exhaustion",
+    "summary": "Connection pool exhaustion belongs to Connection pools in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/connection-pool-exhaustion",
+    "status": "stub"
+  },
+  {
+    "title": "Pool starvation",
+    "summary": "Pool starvation belongs to Connection pools in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/pool-starvation",
+    "status": "stub"
+  },
+  {
+    "title": "Write skew",
+    "summary": "Every transaction is individually valid, yet together they violate a business rule.",
+    "domain": "Backend",
+    "url": "/concepts/write-skew",
+    "status": "published"
+  },
+  {
+    "title": "MVCC",
+    "summary": "MVCC belongs to Database concurrency in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/mvcc",
+    "status": "stub"
+  },
+  {
+    "title": "Lost update",
+    "summary": "Two transactions read the same value, both write, and one update silently disappears.",
+    "domain": "Backend",
+    "url": "/concepts/lost-update",
+    "status": "published"
+  },
+  {
+    "title": "WAL",
+    "summary": "WAL belongs to PostgreSQL internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/wal",
+    "status": "stub"
+  },
+  {
+    "title": "LSN",
+    "summary": "LSN belongs to PostgreSQL internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/lsn",
+    "status": "stub"
+  },
+  {
+    "title": "N+1 query problem",
+    "summary": "N+1 query problem belongs to Query-performance things people discover the hard way in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/n1-query-problem",
+    "status": "stub"
+  },
+  {
+    "title": "Write amplification",
+    "summary": "Write amplification belongs to Query-performance things people discover the hard way in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/write-amplification",
+    "status": "stub"
+  },
+  {
+    "title": "Compaction",
+    "summary": "Compaction belongs to Storage engines / LSM / RocksDB in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/compaction",
+    "status": "stub"
+  },
+  {
+    "title": "LSM tree",
+    "summary": "LSM tree belongs to Storage engines / LSM / RocksDB in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/lsm-tree",
+    "status": "stub"
+  },
+  {
+    "title": "Split brain",
+    "summary": "Split brain belongs to Distributed systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/split-brain",
+    "status": "stub"
+  },
+  {
+    "title": "Clock skew",
+    "summary": "Clock skew belongs to Distributed systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/clock-skew",
+    "status": "stub"
+  },
+  {
+    "title": "Fencing tokens",
+    "summary": "A distributed lock is not enough when a stale owner can still write.",
+    "domain": "Backend",
+    "url": "/concepts/fencing-tokens",
+    "status": "published"
+  },
+  {
+    "title": "Transactional outbox",
+    "summary": "Commit the database write and the event to publish in one atomic step.",
+    "domain": "Backend",
+    "url": "/concepts/transactional-outbox",
+    "status": "published"
+  },
+  {
+    "title": "At-most-once delivery",
+    "summary": "At-most-once delivery belongs to Messaging / queues / Kafka in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/at-most-once-delivery",
+    "status": "stub"
+  },
+  {
+    "title": "Idempotency",
+    "summary": "Retrying a request without accidentally repeating its side effects.",
+    "domain": "Backend",
+    "url": "/concepts/idempotency",
+    "status": "published"
+  },
+  {
+    "title": "Idempotency key",
+    "summary": "Idempotency key belongs to API correctness in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/idempotency-key",
+    "status": "stub"
+  },
+  {
+    "title": "Stale-while-revalidate",
+    "summary": "Stale-while-revalidate belongs to Caching — far deeper than “use Redis” in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/stale-while-revalidate",
+    "status": "stub"
+  },
+  {
+    "title": "Cache invalidation race",
+    "summary": "Cache invalidation race belongs to Caching — far deeper than “use Redis” in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/cache-invalidation-race",
+    "status": "stub"
+  },
+  {
+    "title": "False sharing",
+    "summary": "False sharing belongs to Concurrency in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/false-sharing",
+    "status": "stub"
+  },
+  {
+    "title": "Race condition",
+    "summary": "Race condition belongs to Concurrency in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/race-condition",
+    "status": "stub"
+  },
+  {
+    "title": "Goroutine leak",
+    "summary": "Goroutine leak belongs to Runtime / garbage collection in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/goroutine-leak",
+    "status": "stub"
+  },
+  {
+    "title": "Stop-the-world GC",
+    "summary": "Stop-the-world GC belongs to Runtime / garbage collection in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/stop-the-world-gc",
+    "status": "stub"
+  },
+  {
+    "title": "OOM killer",
+    "summary": "OOM killer belongs to Linux / OS internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/oom-killer",
+    "status": "stub"
+  },
+  {
+    "title": "File descriptor exhaustion",
+    "summary": "File descriptor exhaustion belongs to Linux / OS internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/file-descriptor-exhaustion",
+    "status": "stub"
+  },
+  {
+    "title": "CrashLoopBackOff",
+    "summary": "CrashLoopBackOff belongs to Kubernetes / containers in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/crashloopbackoff",
+    "status": "stub"
+  },
+  {
+    "title": "OOMKilled",
+    "summary": "OOMKilled belongs to Kubernetes / containers in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/oomkilled",
+    "status": "stub"
+  },
+  {
+    "title": "Tail sampling",
+    "summary": "Tail sampling belongs to Observability in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/tail-sampling",
+    "status": "stub"
+  },
+  {
+    "title": "RED method",
+    "summary": "RED method belongs to Observability in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/red-method",
+    "status": "stub"
+  },
+  {
+    "title": "Error budget",
+    "summary": "Error budget belongs to SRE / incident response jargon in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/error-budget",
+    "status": "stub"
+  },
+  {
+    "title": "Rollback",
+    "summary": "Rollback belongs to SRE / incident response jargon in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/rollback",
+    "status": "stub"
+  },
+  {
+    "title": "Trace-context propagation",
+    "summary": "Trace-context propagation belongs to Distributed observability — much deeper in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/trace-context-propagation",
+    "status": "stub"
+  },
+  {
+    "title": "Cross-service correlation",
+    "summary": "Cross-service correlation belongs to Distributed observability — much deeper in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/cross-service-correlation",
+    "status": "stub"
+  },
+  {
+    "title": "Canary deployment",
+    "summary": "Canary deployment belongs to Deployment / release engineering in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/canary-deployment",
+    "status": "stub"
+  },
+  {
+    "title": "Canary release",
+    "summary": "Canary release belongs to Deployment / release engineering in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/canary-release",
+    "status": "stub"
+  },
+  {
+    "title": "Expand-and-contract migration",
+    "summary": "Expand-and-contract migration belongs to Database migrations in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/expand-and-contract-migration",
+    "status": "stub"
+  },
+  {
+    "title": "Online migration",
+    "summary": "Online migration belongs to Database migrations in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/online-migration",
+    "status": "stub"
+  },
+  {
+    "title": "Saga",
+    "summary": "Saga belongs to Distributed transactions in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/saga",
+    "status": "stub"
+  },
+  {
+    "title": "2PC",
+    "summary": "2PC belongs to Distributed transactions in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/2pc",
+    "status": "stub"
+  },
+  {
+    "title": "Saga pattern",
+    "summary": "Coordinate a multi-service transaction with compensations instead of one global lock.",
+    "domain": "Backend",
+    "url": "/concepts/saga-pattern",
+    "status": "published"
+  },
+  {
+    "title": "SSRF",
+    "summary": "SSRF belongs to Security things backend engineers eventually encounter in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/ssrf",
+    "status": "stub"
+  },
+  {
+    "title": "Hermetic build",
+    "summary": "Hermetic build belongs to Security things backend engineers eventually encounter in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/hermetic-build",
+    "status": "stub"
+  },
+  {
+    "title": "Property-based testing",
+    "summary": "Property-based testing belongs to Software testing beyond unit/integration tests in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/property-based-testing",
+    "status": "stub"
+  },
+  {
+    "title": "Fuzz testing",
+    "summary": "Fuzz testing belongs to Software testing beyond unit/integration tests in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/fuzz-testing",
+    "status": "stub"
+  },
+  {
+    "title": "Heisenbug",
+    "summary": "Heisenbug belongs to Weird debugging phenomena in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/heisenbug",
+    "status": "stub"
+  },
+  {
+    "title": "Bohrbug",
+    "summary": "Bohrbug belongs to Weird debugging phenomena in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/bohrbug",
+    "status": "stub"
+  },
+  {
+    "title": "Event sourcing",
+    "summary": "Event sourcing belongs to Data correctness / event-driven systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/event-sourcing",
+    "status": "stub"
+  },
+  {
+    "title": "Eventual consistency",
+    "summary": "Eventual consistency belongs to Data correctness / event-driven systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/eventual-consistency",
+    "status": "stub"
+  },
+  {
+    "title": "Strangler fig pattern",
+    "summary": "Strangler fig pattern belongs to Architecture concepts that become important at scale in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/strangler-fig-pattern",
+    "status": "stub"
+  },
+  {
+    "title": "Bounded context",
+    "summary": "Bounded context belongs to Architecture concepts that become important at scale in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/bounded-context",
+    "status": "stub"
+  },
+  {
+    "title": "Cache consistency gap",
+    "summary": "Cache consistency gap belongs to Cache / database / distributed-system intersection in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/cache-consistency-gap",
+    "status": "stub"
+  },
+  {
+    "title": "Stale replica + stale cache",
+    "summary": "Stale replica + stale cache belongs to Cache / database / distributed-system intersection in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/stale-replica-stale-cache",
+    "status": "stub"
+  },
+  {
+    "title": "Silent data corruption",
+    "summary": "Silent data corruption belongs to Storage / hardware performance in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/silent-data-corruption",
+    "status": "stub"
+  },
+  {
+    "title": "IOPS",
+    "summary": "IOPS belongs to Storage / hardware performance in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/iops",
+    "status": "stub"
+  },
+  {
+    "title": "PagedAttention",
+    "summary": "PagedAttention belongs to Modern AI-serving/backend infrastructure in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/pagedattention",
+    "status": "stub"
+  },
+  {
+    "title": "Continuous batching",
+    "summary": "Continuous batching belongs to Modern AI-serving/backend infrastructure in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/continuous-batching",
+    "status": "stub"
+  },
+  {
+    "title": "Reproducible build",
+    "summary": "Reproducible build belongs to Build systems / CI/CD internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/reproducible-build",
+    "status": "stub"
+  },
+  {
+    "title": "Deterministic build",
+    "summary": "Deterministic build belongs to Build systems / CI/CD internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/deterministic-build",
+    "status": "stub"
+  },
+  {
+    "title": "Fan-out explosion",
+    "summary": "Fan-out explosion belongs to API gateway / microservice-specific problems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/fan-out-explosion",
+    "status": "stub"
+  },
+  {
+    "title": "N+1 service calls",
+    "summary": "N+1 service calls belongs to API gateway / microservice-specific problems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/n1-service-calls",
+    "status": "stub"
+  },
+  {
+    "title": "Noisy neighbor",
+    "summary": "Noisy neighbor belongs to Multi-tenant systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/noisy-neighbor",
+    "status": "stub"
+  },
+  {
+    "title": "Tenant isolation",
+    "summary": "Tenant isolation belongs to Multi-tenant systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/tenant-isolation",
+    "status": "stub"
+  },
+  {
+    "title": "Token bucket",
+    "summary": "Token bucket belongs to Rate limiting deeper than “100 requests/minute” in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/token-bucket",
+    "status": "stub"
+  },
+  {
+    "title": "Fixed-window rate limit",
+    "summary": "Fixed-window rate limit belongs to Rate limiting deeper than “100 requests/minute” in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/fixed-window-rate-limit",
+    "status": "stub"
+  },
+  {
+    "title": "Clock drift",
+    "summary": "Clock drift belongs to Clock/time problems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/clock-drift",
+    "status": "stub"
+  },
+  {
+    "title": "Clock step",
+    "summary": "Clock step belongs to Clock/time problems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/clock-step",
+    "status": "stub"
+  },
+  {
+    "title": "Consumer lag",
+    "summary": "Consumer lag belongs to Production data pipeline problems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/consumer-lag",
+    "status": "stub"
+  },
+  {
+    "title": "strace",
+    "summary": "strace belongs to Debugging tools / techniques people eventually learn in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/strace",
+    "status": "stub"
+  },
+  {
+    "title": "ltrace",
+    "summary": "ltrace belongs to Debugging tools / techniques people eventually learn in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/ltrace",
+    "status": "stub"
+  },
+  {
+    "title": "Gray failure",
+    "summary": "Gray failure belongs to Particularly nasty “production-only” phenomena in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/gray-failure",
+    "status": "stub"
+  },
+  {
+    "title": "Fail-slow",
+    "summary": "Fail-slow belongs to Particularly nasty “production-only” phenomena in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Backend",
+    "url": "/concepts/fail-slow",
+    "status": "stub"
+  },
+  {
+    "title": "Query cache",
+    "summary": "Query cache belongs to Client/server-state caching in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/query-cache",
+    "status": "stub"
+  },
+  {
+    "title": "Optimistic update",
+    "summary": "Optimistic update belongs to Client/server-state caching in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/optimistic-update",
+    "status": "stub"
+  },
+  {
+    "title": "RSC payload",
+    "summary": "RSC payload belongs to Next.js / modern routing internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/rsc-payload",
+    "status": "stub"
+  },
+  {
+    "title": "Hydration",
+    "summary": "Hydration belongs to Next.js / modern routing internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/hydration",
+    "status": "stub"
+  },
+  {
+    "title": "Concurrent rendering",
+    "summary": "Concurrent rendering belongs to React rendering internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/concurrent-rendering",
+    "status": "stub"
+  },
+  {
+    "title": "View Transition",
+    "summary": "View Transition belongs to React rendering internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/view-transition",
+    "status": "stub"
+  },
+  {
+    "title": "Automatic memoization",
+    "summary": "Automatic memoization belongs to React Compiler / memoization in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/automatic-memoization",
+    "status": "stub"
+  },
+  {
+    "title": "React Compiler",
+    "summary": "React Compiler belongs to React Compiler / memoization in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/react-compiler",
+    "status": "stub"
+  },
+  {
+    "title": "Layout thrashing",
+    "summary": "Layout thrashing belongs to Browser rendering pipeline in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/layout-thrashing",
+    "status": "stub"
+  },
+  {
+    "title": "Style recalculation",
+    "summary": "Style recalculation belongs to Browser rendering pipeline in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/style-recalculation",
+    "status": "stub"
+  },
+  {
+    "title": "Long task",
+    "summary": "Long task belongs to Main-thread performance in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/long-task",
+    "status": "stub"
+  },
+  {
+    "title": "Main-thread blocking",
+    "summary": "Main-thread blocking belongs to Main-thread performance in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/main-thread-blocking",
+    "status": "stub"
+  },
+  {
+    "title": "Request waterfall",
+    "summary": "Request waterfall belongs to Network performance in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/request-waterfall",
+    "status": "stub"
+  },
+  {
+    "title": "AbortController",
+    "summary": "AbortController belongs to Network performance in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/abortcontroller",
+    "status": "stub"
+  },
+  {
+    "title": "Optimistic mutation",
+    "summary": "Optimistic mutation belongs to Data fetching architecture in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/optimistic-mutation",
+    "status": "stub"
+  },
+  {
+    "title": "Fetch waterfall",
+    "summary": "Fetch waterfall belongs to Data fetching architecture in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/fetch-waterfall",
+    "status": "stub"
+  },
+  {
+    "title": "Store tearing",
+    "summary": "Store tearing belongs to State management — much deeper than Redux in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/store-tearing",
+    "status": "stub"
+  },
+  {
+    "title": "Client state",
+    "summary": "Client state belongs to State management — much deeper than Redux in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/client-state",
+    "status": "stub"
+  },
+  {
+    "title": "Detached DOM tree",
+    "summary": "Detached DOM tree belongs to Memory and browser runtime in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/detached-dom-tree",
+    "status": "stub"
+  },
+  {
+    "title": "Memory leak",
+    "summary": "Memory leak belongs to Memory and browser runtime in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/memory-leak",
+    "status": "stub"
+  },
+  {
+    "title": "IndexedDB",
+    "summary": "IndexedDB belongs to Web storage in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/indexeddb",
+    "status": "stub"
+  },
+  {
+    "title": "localStorage",
+    "summary": "localStorage belongs to Web storage in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/localstorage",
+    "status": "stub"
+  },
+  {
+    "title": "Service Worker",
+    "summary": "Service Worker belongs to Service workers / offline-first in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/service-worker",
+    "status": "stub"
+  },
+  {
+    "title": "Service-worker lifecycle",
+    "summary": "Service-worker lifecycle belongs to Service workers / offline-first in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/service-worker-lifecycle",
+    "status": "stub"
+  },
+  {
+    "title": "bfcache",
+    "summary": "bfcache belongs to bfcache / navigation internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/bfcache",
+    "status": "stub"
+  },
+  {
+    "title": "Page snapshot",
+    "summary": "Page snapshot belongs to bfcache / navigation internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/page-snapshot",
+    "status": "stub"
+  },
+  {
+    "title": "Island architecture",
+    "summary": "Island architecture belongs to Rendering architecture in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/island-architecture",
+    "status": "stub"
+  },
+  {
+    "title": "CSR",
+    "summary": "CSR belongs to Rendering architecture in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/csr",
+    "status": "stub"
+  },
+  {
+    "title": "Tree shaking",
+    "summary": "Tree shaking belongs to Code delivery in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/tree-shaking",
+    "status": "stub"
+  },
+  {
+    "title": "Code splitting",
+    "summary": "Code splitting belongs to Code delivery in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/code-splitting",
+    "status": "stub"
+  },
+  {
+    "title": "srcset",
+    "summary": "srcset belongs to Images / media in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/srcset",
+    "status": "stub"
+  },
+  {
+    "title": "Image decoding",
+    "summary": "Image decoding belongs to Images / media in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/image-decoding",
+    "status": "stub"
+  },
+  {
+    "title": "Cascade layers",
+    "summary": "Cascade layers belongs to CSS engineering in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/cascade-layers",
+    "status": "stub"
+  },
+  {
+    "title": "Specificity",
+    "summary": "Specificity belongs to CSS engineering in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/specificity",
+    "status": "stub"
+  },
+  {
+    "title": "Focus management",
+    "summary": "Focus management belongs to Accessibility as engineering constraints in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/focus-management",
+    "status": "stub"
+  },
+  {
+    "title": "Focus trap",
+    "summary": "Focus trap belongs to Accessibility as engineering constraints in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/focus-trap",
+    "status": "stub"
+  },
+  {
+    "title": "Virtual scrolling",
+    "summary": "Virtual scrolling belongs to Virtualization in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/virtual-scrolling",
+    "status": "stub"
+  },
+  {
+    "title": "Windowing",
+    "summary": "Windowing belongs to Virtualization in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/windowing",
+    "status": "stub"
+  },
+  {
+    "title": "Stale closure",
+    "summary": "Stale closure belongs to Race conditions in frontend state in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/stale-closure",
+    "status": "stub"
+  },
+  {
+    "title": "Stale state",
+    "summary": "Stale state belongs to Race conditions in frontend state in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/stale-state",
+    "status": "stub"
+  },
+  {
+    "title": "Speculative UI",
+    "summary": "Speculative UI belongs to Optimistic UI in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/speculative-ui",
+    "status": "stub"
+  },
+  {
+    "title": "Temporary state",
+    "summary": "Temporary state belongs to Optimistic UI in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/temporary-state",
+    "status": "stub"
+  },
+  {
+    "title": "XSS",
+    "summary": "XSS belongs to Security in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/xss",
+    "status": "stub"
+  },
+  {
+    "title": "DOM XSS",
+    "summary": "DOM XSS belongs to Security in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/dom-xss",
+    "status": "stub"
+  },
+  {
+    "title": "Core Web Vitals",
+    "summary": "Core Web Vitals belongs to Frontend observability in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/core-web-vitals",
+    "status": "stub"
+  },
+  {
+    "title": "Real User Monitoring (RUM)",
+    "summary": "Real User Monitoring (RUM) belongs to Frontend observability in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/real-user-monitoring-rum",
+    "status": "stub"
+  },
+  {
+    "title": "Hydration-only bug",
+    "summary": "Hydration-only bug belongs to Frontend debugging phenomena in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/hydration-only-bug",
+    "status": "stub"
+  },
+  {
+    "title": "Flaky UI test",
+    "summary": "Flaky UI test belongs to Frontend debugging phenomena in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/flaky-ui-test",
+    "status": "stub"
+  },
+  {
+    "title": "Background tab throttling",
+    "summary": "Background tab throttling belongs to Browser throttling in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/background-tab-throttling",
+    "status": "stub"
+  },
+  {
+    "title": "Timer throttling",
+    "summary": "Timer throttling belongs to Browser throttling in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Frontend",
+    "url": "/concepts/timer-throttling",
+    "status": "stub"
+  },
+  {
+    "title": "Easing",
+    "summary": "Easing belongs to Motion in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/easing",
+    "status": "stub"
+  },
+  {
+    "title": "Spring",
+    "summary": "Spring belongs to Motion in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/spring",
+    "status": "stub"
+  },
+  {
+    "title": "Scroll snap",
+    "summary": "Scroll snap belongs to Scroll in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/scroll-snap",
+    "status": "stub"
+  },
+  {
+    "title": "Scroll-linked animation",
+    "summary": "Scroll-linked animation belongs to Scroll in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/scroll-linked-animation",
+    "status": "stub"
+  },
+  {
+    "title": "Popover",
+    "summary": "Popover belongs to Components in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/popover",
+    "status": "stub"
+  },
+  {
+    "title": "Command palette",
+    "summary": "Command palette belongs to Components in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/command-palette",
+    "status": "stub"
+  },
+  {
+    "title": "Hover",
+    "summary": "Hover belongs to Interaction in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/hover",
+    "status": "stub"
+  },
+  {
+    "title": "Focus",
+    "summary": "Focus belongs to Interaction in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/focus",
+    "status": "stub"
+  },
+  {
+    "title": "Progressive disclosure",
+    "summary": "Progressive disclosure belongs to Feedback in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/progressive-disclosure",
+    "status": "stub"
+  },
+  {
+    "title": "Hover feedback",
+    "summary": "Hover feedback belongs to Feedback in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/hover-feedback",
+    "status": "stub"
+  },
+  {
+    "title": "Shared-element transition",
+    "summary": "Shared-element transition belongs to Navigation in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/shared-element-transition",
+    "status": "stub"
+  },
+  {
+    "title": "Breadcrumbs",
+    "summary": "Breadcrumbs belongs to Navigation in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/breadcrumbs",
+    "status": "stub"
+  },
+  {
+    "title": "Container query",
+    "summary": "Container query belongs to Layout in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/container-query",
+    "status": "stub"
+  },
+  {
+    "title": "Visual hierarchy",
+    "summary": "Visual hierarchy belongs to Layout in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/visual-hierarchy",
+    "status": "stub"
+  },
+  {
+    "title": "Primary action",
+    "summary": "Primary action belongs to Visual hierarchy in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/primary-action",
+    "status": "stub"
+  },
+  {
+    "title": "Secondary action",
+    "summary": "Secondary action belongs to Visual hierarchy in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/secondary-action",
+    "status": "stub"
+  },
+  {
+    "title": "Skeleton",
+    "summary": "Skeleton belongs to Loading in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/skeleton",
+    "status": "stub"
+  },
+  {
+    "title": "Shimmer",
+    "summary": "Shimmer belongs to Loading in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/shimmer",
+    "status": "stub"
+  },
+  {
+    "title": "Server Component",
+    "summary": "Server Component belongs to React UI in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/server-component",
+    "status": "stub"
+  },
+  {
+    "title": "Client Component",
+    "summary": "Client Component belongs to React UI in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/client-component",
+    "status": "stub"
+  },
+  {
+    "title": "Focus restoration",
+    "summary": "Focus restoration belongs to Accessibility in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/focus-restoration",
+    "status": "stub"
+  },
+  {
+    "title": "Keyboard navigation",
+    "summary": "Keyboard navigation belongs to Accessibility in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/keyboard-navigation",
+    "status": "stub"
+  },
+  {
+    "title": "shadcn/ui",
+    "summary": "shadcn/ui belongs to Ecosystem in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/shadcnui",
+    "status": "stub"
+  },
+  {
+    "title": "Radix",
+    "summary": "Radix belongs to Ecosystem in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/radix",
+    "status": "stub"
+  },
+  {
+    "title": "Anchored popover",
+    "summary": "Anchored popover belongs to Prompting in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/anchored-popover",
+    "status": "stub"
+  },
+  {
+    "title": "Minimal editorial layout",
+    "summary": "Minimal editorial layout belongs to Prompting in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/minimal-editorial-layout",
+    "status": "stub"
+  },
+  {
+    "title": "State transitions",
+    "summary": "State transitions belongs to Principle in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/state-transitions",
+    "status": "stub"
+  },
+  {
+    "title": "Interaction feedback",
+    "summary": "Interaction feedback belongs to Principle in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/interaction-feedback",
+    "status": "stub"
+  },
+  {
+    "title": "Microinteraction",
+    "summary": "Microinteraction belongs to Learn first in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/microinteraction",
+    "status": "stub"
+  },
+  {
+    "title": "Whitespace",
+    "summary": "Whitespace belongs to Learn first in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Interface",
+    "url": "/concepts/whitespace",
+    "status": "stub"
+  },
+  {
+    "title": "Game world",
+    "summary": "Game world belongs to The foundational game-dev vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/game-world",
+    "status": "stub"
+  },
+  {
+    "title": "World coordinates",
+    "summary": "World coordinates belongs to The foundational game-dev vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/world-coordinates",
+    "status": "stub"
+  },
+  {
+    "title": "Scene graph",
+    "summary": "Scene graph belongs to Scene graph in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/scene-graph",
+    "status": "stub"
+  },
+  {
+    "title": "Scene",
+    "summary": "Scene belongs to Scene graph in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/scene",
+    "status": "stub"
+  },
+  {
+    "title": "Mesh",
+    "summary": "Mesh belongs to Mesh / geometry / material in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/mesh",
+    "status": "stub"
+  },
+  {
+    "title": "Geometry",
+    "summary": "Geometry belongs to Mesh / geometry / material in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/geometry",
+    "status": "stub"
+  },
+  {
+    "title": "PBR",
+    "summary": "PBR belongs to PBR in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/pbr",
+    "status": "stub"
+  },
+  {
+    "title": "Metalness",
+    "summary": "Metalness belongs to PBR in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/metalness",
+    "status": "stub"
+  },
+  {
+    "title": "Directional light",
+    "summary": "Directional light belongs to Lighting in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/directional-light",
+    "status": "stub"
+  },
+  {
+    "title": "Point light",
+    "summary": "Point light belongs to Lighting in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/point-light",
+    "status": "stub"
+  },
+  {
+    "title": "Vertex shader",
+    "summary": "Vertex shader belongs to Shaders in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/vertex-shader",
+    "status": "stub"
+  },
+  {
+    "title": "Fragment shader",
+    "summary": "Fragment shader belongs to Shaders in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/fragment-shader",
+    "status": "stub"
+  },
+  {
+    "title": "Game loop",
+    "summary": "Game loop belongs to The game loop in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/game-loop",
+    "status": "stub"
+  },
+  {
+    "title": "Fixed timestep",
+    "summary": "Fixed timestep belongs to The game loop in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/fixed-timestep",
+    "status": "stub"
+  },
+  {
+    "title": "Determinism",
+    "summary": "Determinism belongs to Determinism in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/determinism",
+    "status": "stub"
+  },
+  {
+    "title": "Deterministic simulation",
+    "summary": "Deterministic simulation belongs to Determinism in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/deterministic-simulation",
+    "status": "stub"
+  },
+  {
+    "title": "Rigid body",
+    "summary": "Rigid body belongs to Physics in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/rigid-body",
+    "status": "stub"
+  },
+  {
+    "title": "Collider",
+    "summary": "Collider belongs to Physics in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/collider",
+    "status": "stub"
+  },
+  {
+    "title": "AABB",
+    "summary": "AABB belongs to Collision detection in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/aabb",
+    "status": "stub"
+  },
+  {
+    "title": "Broad phase",
+    "summary": "Broad phase belongs to Collision detection in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/broad-phase",
+    "status": "stub"
+  },
+  {
+    "title": "Skeletal animation",
+    "summary": "Skeletal animation belongs to Animation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/skeletal-animation",
+    "status": "stub"
+  },
+  {
+    "title": "Animation clip",
+    "summary": "Animation clip belongs to Animation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/animation-clip",
+    "status": "stub"
+  },
+  {
+    "title": "Character controller",
+    "summary": "Character controller belongs to Character controller in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/character-controller",
+    "status": "stub"
+  },
+  {
+    "title": "Acceleration",
+    "summary": "Acceleration belongs to Character controller in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/acceleration",
+    "status": "stub"
+  },
+  {
+    "title": "Camera smoothing",
+    "summary": "Camera smoothing belongs to Camera systems in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/camera-smoothing",
+    "status": "stub"
+  },
+  {
+    "title": "Perspective camera",
+    "summary": "Perspective camera belongs to Camera systems in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/perspective-camera",
+    "status": "stub"
+  },
+  {
+    "title": "Gamepad",
+    "summary": "Gamepad belongs to Input in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/gamepad",
+    "status": "stub"
+  },
+  {
+    "title": "Input mapping",
+    "summary": "Input mapping belongs to Input in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/input-mapping",
+    "status": "stub"
+  },
+  {
+    "title": "Behavior tree",
+    "summary": "Behavior tree belongs to AI / NPC behavior in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/behavior-tree",
+    "status": "stub"
+  },
+  {
+    "title": "FSM",
+    "summary": "FSM belongs to AI / NPC behavior in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/fsm",
+    "status": "stub"
+  },
+  {
+    "title": "NavMesh",
+    "summary": "NavMesh belongs to Navigation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/navmesh",
+    "status": "stub"
+  },
+  {
+    "title": "Navigation mesh",
+    "summary": "Navigation mesh belongs to Navigation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/navigation-mesh",
+    "status": "stub"
+  },
+  {
+    "title": "Level",
+    "summary": "Level belongs to Level design vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/level",
+    "status": "stub"
+  },
+  {
+    "title": "Map",
+    "summary": "Map belongs to Level design vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/map",
+    "status": "stub"
+  },
+  {
+    "title": "World streaming",
+    "summary": "World streaming belongs to Open-world vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/world-streaming",
+    "status": "stub"
+  },
+  {
+    "title": "LOD",
+    "summary": "LOD belongs to Open-world vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/lod",
+    "status": "stub"
+  },
+  {
+    "title": "Level of Detail",
+    "summary": "Level of Detail belongs to LOD in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/level-of-detail",
+    "status": "stub"
+  },
+  {
+    "title": "LOD bias",
+    "summary": "LOD bias belongs to LOD in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/lod-bias",
+    "status": "stub"
+  },
+  {
+    "title": "Frustum culling",
+    "summary": "Frustum culling belongs to Culling in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/frustum-culling",
+    "status": "stub"
+  },
+  {
+    "title": "Occlusion culling",
+    "summary": "Occlusion culling belongs to Culling in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/occlusion-culling",
+    "status": "stub"
+  },
+  {
+    "title": "InstancedMesh",
+    "summary": "InstancedMesh belongs to Instancing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/instancedmesh",
+    "status": "stub"
+  },
+  {
+    "title": "Instancing",
+    "summary": "Instancing belongs to Instancing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/instancing",
+    "status": "stub"
+  },
+  {
+    "title": "Batching",
+    "summary": "Batching belongs to Batching in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/batching",
+    "status": "stub"
+  },
+  {
+    "title": "Draw call",
+    "summary": "Draw call belongs to Batching in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/draw-call",
+    "status": "stub"
+  },
+  {
+    "title": "State change",
+    "summary": "State change belongs to Draw calls in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/state-change",
+    "status": "stub"
+  },
+  {
+    "title": "Material switch",
+    "summary": "Material switch belongs to Draw calls in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/material-switch",
+    "status": "stub"
+  },
+  {
+    "title": "Overdraw",
+    "summary": "Overdraw belongs to Overdraw in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/overdraw",
+    "status": "stub"
+  },
+  {
+    "title": "Fill rate",
+    "summary": "Fill rate belongs to Overdraw in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/fill-rate",
+    "status": "stub"
+  },
+  {
+    "title": "Bloom",
+    "summary": "Bloom belongs to Post-processing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/bloom",
+    "status": "stub"
+  },
+  {
+    "title": "Depth of field",
+    "summary": "Depth of field belongs to Post-processing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/depth-of-field",
+    "status": "stub"
+  },
+  {
+    "title": "Particle system",
+    "summary": "Particle system belongs to Particles / VFX in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/particle-system",
+    "status": "stub"
+  },
+  {
+    "title": "Particle emitter",
+    "summary": "Particle emitter belongs to Particles / VFX in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/particle-emitter",
+    "status": "stub"
+  },
+  {
+    "title": "Spatial audio",
+    "summary": "Spatial audio belongs to Audio in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/spatial-audio",
+    "status": "stub"
+  },
+  {
+    "title": "Sound effect",
+    "summary": "Sound effect belongs to Audio in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/sound-effect",
+    "status": "stub"
+  },
+  {
+    "title": "glTF",
+    "summary": "glTF belongs to Asset pipeline in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/gltf",
+    "status": "stub"
+  },
+  {
+    "title": "Texture atlas",
+    "summary": "Texture atlas belongs to Asset pipeline in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/texture-atlas",
+    "status": "stub"
+  },
+  {
+    "title": "UV packing",
+    "summary": "UV packing belongs to Texture atlasing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/uv-packing",
+    "status": "stub"
+  },
+  {
+    "title": "Atlas coordinates",
+    "summary": "Atlas coordinates belongs to Texture atlasing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/atlas-coordinates",
+    "status": "stub"
+  },
+  {
+    "title": "WebGPU",
+    "summary": "WebGPU belongs to Web-specific game technology in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/webgpu",
+    "status": "stub"
+  },
+  {
+    "title": "OffscreenCanvas",
+    "summary": "OffscreenCanvas belongs to Web-specific game technology in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/offscreencanvas",
+    "status": "stub"
+  },
+  {
+    "title": "WASM",
+    "summary": "WASM belongs to WebAssembly in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/wasm",
+    "status": "stub"
+  },
+  {
+    "title": "Emscripten",
+    "summary": "Emscripten belongs to WebAssembly in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/emscripten",
+    "status": "stub"
+  },
+  {
+    "title": "Web Worker",
+    "summary": "Web Worker belongs to Web Workers in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/web-worker",
+    "status": "stub"
+  },
+  {
+    "title": "SharedArrayBuffer",
+    "summary": "SharedArrayBuffer belongs to Web Workers in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/sharedarraybuffer",
+    "status": "stub"
+  },
+  {
+    "title": "Entity",
+    "summary": "Entity belongs to ECS in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/entity",
+    "status": "stub"
+  },
+  {
+    "title": "Component",
+    "summary": "Component belongs to ECS in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/component",
+    "status": "stub"
+  },
+  {
+    "title": "Client prediction",
+    "summary": "Client prediction belongs to Multiplayer networking in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/client-prediction",
+    "status": "stub"
+  },
+  {
+    "title": "Interest management",
+    "summary": "Interest management belongs to Multiplayer networking in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/interest-management",
+    "status": "stub"
+  },
+  {
+    "title": "Server reconciliation",
+    "summary": "Server reconciliation belongs to Client prediction in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/server-reconciliation",
+    "status": "stub"
+  },
+  {
+    "title": "Input sequence",
+    "summary": "Input sequence belongs to Client prediction in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/input-sequence",
+    "status": "stub"
+  },
+  {
+    "title": "Snapshot interpolation",
+    "summary": "Snapshot interpolation belongs to Interpolation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/snapshot-interpolation",
+    "status": "stub"
+  },
+  {
+    "title": "Interpolation buffer",
+    "summary": "Interpolation buffer belongs to Interpolation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/interpolation-buffer",
+    "status": "stub"
+  },
+  {
+    "title": "Resimulation",
+    "summary": "Resimulation belongs to Rollback netcode in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/resimulation",
+    "status": "stub"
+  },
+  {
+    "title": "Input history",
+    "summary": "Input history belongs to Rollback netcode in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/input-history",
+    "status": "stub"
+  },
+  {
+    "title": "Area of interest",
+    "summary": "Area of interest belongs to Interest management in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/area-of-interest",
+    "status": "stub"
+  },
+  {
+    "title": "Visibility set",
+    "summary": "Visibility set belongs to Interest management in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/visibility-set",
+    "status": "stub"
+  },
+  {
+    "title": "Save state",
+    "summary": "Save state belongs to Saving / persistence in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/save-state",
+    "status": "stub"
+  },
+  {
+    "title": "Checkpoint",
+    "summary": "Checkpoint belongs to Saving / persistence in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/checkpoint",
+    "status": "stub"
+  },
+  {
+    "title": "Procedural generation",
+    "summary": "Procedural generation belongs to Procedural generation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/procedural-generation",
+    "status": "stub"
+  },
+  {
+    "title": "Noise",
+    "summary": "Noise belongs to Procedural generation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/noise",
+    "status": "stub"
+  },
+  {
+    "title": "Level design",
+    "summary": "Level design belongs to World generation vs level design in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/level-design",
+    "status": "stub"
+  },
+  {
+    "title": "POI",
+    "summary": "POI belongs to World generation vs level design in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/poi",
+    "status": "stub"
+  },
+  {
+    "title": "Game feel",
+    "summary": "Game feel belongs to Game feel vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/game-feel",
+    "status": "stub"
+  },
+  {
+    "title": "Anticipation",
+    "summary": "Anticipation belongs to Game feel vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/anticipation",
+    "status": "stub"
+  },
+  {
+    "title": "Squash and stretch",
+    "summary": "Squash and stretch belongs to Animation principles in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/squash-and-stretch",
+    "status": "stub"
+  },
+  {
+    "title": "Follow-through",
+    "summary": "Follow-through belongs to Animation principles in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/follow-through",
+    "status": "stub"
+  },
+  {
+    "title": "HUD",
+    "summary": "HUD belongs to UI/HUD game vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/hud",
+    "status": "stub"
+  },
+  {
+    "title": "Health bar",
+    "summary": "Health bar belongs to UI/HUD game vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/health-bar",
+    "status": "stub"
+  },
+  {
+    "title": "Game state",
+    "summary": "Game state belongs to Game architecture vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/game-state",
+    "status": "stub"
+  },
+  {
+    "title": "Game mode",
+    "summary": "Game mode belongs to Game architecture vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/game-mode",
+    "status": "stub"
+  },
+  {
+    "title": "Object pooling",
+    "summary": "Object pooling belongs to The “large game” performance vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/object-pooling",
+    "status": "stub"
+  },
+  {
+    "title": "Draw calls",
+    "summary": "Draw calls belongs to The “large game” performance vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/draw-calls",
+    "status": "stub"
+  },
+  {
+    "title": "Shader warm-up",
+    "summary": "Shader warm-up belongs to Shader/pipeline compilation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/shader-warm-up",
+    "status": "stub"
+  },
+  {
+    "title": "Pipeline caching",
+    "summary": "Pipeline caching belongs to Shader/pipeline compilation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/pipeline-caching",
+    "status": "stub"
+  },
+  {
+    "title": "Three.js",
+    "summary": "Three.js belongs to Engine comparison in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/threejs",
+    "status": "stub"
+  },
+  {
+    "title": "React Three Fiber",
+    "summary": "React Three Fiber belongs to Engine comparison in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Game Dev",
+    "url": "/concepts/react-three-fiber",
+    "status": "stub"
+  },
+  {
+    "title": "Hack The Box",
+    "summary": "Hack The Box belongs to Offensive security in security. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Security",
+    "url": "/concepts/hack-the-box",
+    "status": "stub"
+  },
+  {
+    "title": "TryHackMe",
+    "summary": "TryHackMe belongs to Offensive security in security. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Security",
+    "url": "/concepts/tryhackme",
+    "status": "stub"
+  },
+  {
+    "title": "SQL injection",
+    "summary": "SQL injection belongs to Web security in security. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Security",
+    "url": "/concepts/sql-injection",
+    "status": "stub"
+  },
+  {
+    "title": "CSRF",
+    "summary": "CSRF belongs to Web security in security. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Security",
+    "url": "/concepts/csrf",
+    "status": "stub"
+  },
+  {
+    "title": "PCAP analysis",
+    "summary": "PCAP analysis belongs to Blue team in security. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Security",
+    "url": "/concepts/pcap-analysis",
+    "status": "stub"
+  },
+  {
+    "title": "Malware analysis",
+    "summary": "Malware analysis belongs to Blue team in security. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Security",
+    "url": "/concepts/malware-analysis",
+    "status": "stub"
+  },
+  {
+    "title": "Binary exploitation",
+    "summary": "Binary exploitation belongs to Binary and reverse engineering in security. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Security",
+    "url": "/concepts/binary-exploitation",
+    "status": "stub"
+  },
+  {
+    "title": "Reverse engineering",
+    "summary": "Reverse engineering belongs to Binary and reverse engineering in security. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Security",
+    "url": "/concepts/reverse-engineering",
+    "status": "stub"
+  },
+  {
+    "title": "HackerOne",
+    "summary": "HackerOne belongs to Practice and career in security. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Security",
+    "url": "/concepts/hackerone",
+    "status": "stub"
+  },
+  {
+    "title": "PortSwigger Web Security Academy",
+    "summary": "PortSwigger Web Security Academy belongs to Practice and career in security. A catalogue entry for the vocabulary tutorials skip.",
+    "domain": "Security",
+    "url": "/concepts/portswigger-web-security-academy",
+    "status": "stub"
+  }
+]
