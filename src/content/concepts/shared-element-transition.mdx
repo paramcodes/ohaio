@@ -1,0 +1,123 @@
+---
+summary: "A shared element transition carries one object between two states so the eye follows it. The web can do this now, but in a list the naming strategy decides whether the element travels or the whole transition silently fails."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "docs"
+    title: "view-transition-name CSS property"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/view-transition-name"
+    publisher: "MDN Web Docs"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "CSS View Transitions Module Level 2"
+    url: "https://drafts.csswg.org/css-view-transitions-2/"
+    publisher: "W3C"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "Element-scoped view transitions"
+    url: "https://developer.chrome.com/docs/css-ui/view-transitions/element-scoped-view-transitions"
+    publisher: "Chrome for Developers"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "Shared element transitions in Compose"
+    url: "https://developer.android.com/develop/ui/compose/animation/shared-elements"
+    publisher: "Android Developers"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "Material motion (container transform)"
+    url: "https://m2.material.io/develop/android/theming/motion"
+    publisher: "Material Design"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import SharedElementTransitionLab from "../../components/labs/SharedElementTransitionLab";
+
+## The short definition
+
+A shared element transition is the pattern where one thing is visibly the *same object* on both sides of a change. A grid tile becomes the detail hero; a list row slides to the top when you reorder it; a button grows into the dialog it opened. The element is "shared" between the two states, and the animation exists so the user's eye can follow it instead of re-scanning the screen.
+
+The View Transitions API is the *mechanism* — `startViewTransition`, the snapshot pseudo-tree, cross-document opt-in — and [it has its own field note](/concepts/view-transition/). This note is about the pattern, and specifically about the case the mechanism makes hard: shared elements inside a list, where the object's identity has to survive a change in position.
+
+The pattern is older than the web API. Android and Material formalised it as the *container transform* and *shared element* transition years ago, and Jetpack Compose exposes it directly as `SharedTransitionLayout` with a `sharedTransitionScope` modifier. The web caught up with `view-transition-name`, and inherited the same central question the native toolkits had to answer: **what marks two snapshots as the same element?**
+
+## The name is the identity — and that is the whole problem
+
+`view-transition-name` is how you tell the browser "this snapshot and that snapshot are the same object." The browser pairs them by name and morphs one into the other. Everything about the shared-element pattern reduces to choosing names that survive the change you are animating.
+
+For a single element between two fixed views, that is easy — give the tile's image and the hero's image the same name and only those two carry it. That is the grid-to-detail morph, and it is what the base API note covers.
+
+For a list it falls apart, because a list changes shape: rows reorder, get filtered, get added and removed. Three naming strategies present themselves, and measured in Chrome 156, two of the three are wrong:
+
+| Naming on each row | What the reorder does | Transition took (measured) |
+| --- | --- | --- |
+| One shared literal name (`tile`) on every row | The browser finds duplicate names, refuses to guess, and **skips the transition** — nothing moves | `~30 ms` (no animation ran) |
+| Index-based names (`tile-0`, `tile-1`, …) | The transition runs, but slot 0 always morphs into slot 0, so the *positions* crossfade instead of the card travelling | `~650–850 ms` (wrong pairing) |
+| `view-transition-name: match-element` | Each element is named by its identity, so the moved card flies to its new slot | `~650–850 ms` (correct morph) |
+
+One number is a genuine tell and the other is not. A skipped transition resolves in a few dozen milliseconds because there is no animation to wait for; anything that actually animates pays the full capture-plus-morph cost. But **duration does not separate index names from `match-element`** — in repeated runs both land in the same ~650–850 ms band, because both do the same amount of work. The two working strategies differ only in *what* moves, which you have to see, not time: with index names the slots crossfade contents, with `match-element` the moved card travels. The measurable, load-independent fact is skipped-against-animated; the pairing difference is behavioural.
+
+## See it work
+
+<SharedElementTransitionLab client:visible />
+
+Pick a naming strategy, then press "Move last to front". On **one shared name**, the reorder reads back as *skipped* — the cards teleport because every card declared the same `view-transition-name`. On **index names**, the reorder "animates," but watch closely: the card you moved does not travel; the slots crossfade contents. Only **match-element** makes the moved card physically move to its new home.
+
+## match-element: naming by identity
+
+`view-transition-name: match-element` tells the browser to generate a unique name per element from the element itself, not from a string you wrote. Two elements both set to `match-element` do **not** collide, because each gets its own identity-derived name. That is exactly what a list needs: the row keeps its name when it moves, so the browser pairs the old position with the new one and morphs the element across.
+
+Measured in Chrome 156: `CSS.supports("view-transition-name", "match-element")` returns `true`. Note the spelling — it is the bare keyword `match-element`, not a function; `CSS.supports("view-transition-name", "match-element()")` returns `false`. The keyword landed in the Level 2 draft and shipped in Chromium before the more ambitious group syntax below, so it is the one to reach for today.
+
+The catch is that `match-element` matches on *element identity*. A list row and a separate detail header are two different DOM nodes, so `match-element` will not pair them — for a grid-to-detail morph you still name both explicitly. `match-element` is the tool for "the same element, moved," not "one element becoming another."
+
+## The future that is not here yet: groups
+
+The pattern's harder cases are one-to-many and many-to-one: a collapsed group of avatars expanding into a row of individuals, or four thumbnails merging into one hero. That needs a *View Transition Group* — several elements sharing one transition under a name that is not globally unique. The proposed syntax is `view-transition-name: share(--group)`, using a custom identifier so multiple elements opt into the same named group.
+
+Measured in Chrome 156, `CSS.supports("view-transition-name", "share(--x)")` returns **`false`**. The group syntax is specified in the Level 2 draft but not shipped. So today, the many-to-one morph has to be hand-built — pick one element to carry the name and fade the rest, or use a FLIP technique with explicit transforms. Do not write `share:` expecting it to work; check for it and keep the fallback.
+
+Element-scoped transitions *are* available: `document.startViewTransition({ update, types, group })` lets several transitions run at once and nest, which is what you want when a shared element morphs inside a page that is itself transitioning. The `{ group }` option is accepted in this browser (measured), even though the `share:` naming that would fully exploit it is not.
+
+## When the pattern earns its place
+
+A shared element transition is the strongest continuity cue available, because it answers "where did that come from" without the user thinking. Use it when:
+
+- an item is *promoted* — a thumbnail to a hero, a chip to a full row, a button to a dialog;
+- a list is reordered and the moved item should be trackable;
+- two screens share a persistent object (the same album art, the same avatar) across a route change.
+
+Skip it when the two states do not actually share an object — a shared-element morph between unrelated things reads as a bug, not a transition. And skip it for high-frequency, keyboard-driven actions, where any travel is latency. The API makes it easy to name everything; the discipline is to name only the one element that is genuinely the same object on both sides.
+
+## Failure modes
+
+| Symptom | Cause |
+| --- | --- |
+| Reorder does nothing / hard cut | Every row shares one literal `view-transition-name` → the transition is skipped as ambiguous |
+| Slots crossfade instead of the card travelling | Names are index-based, so they follow position, not identity |
+| `match-element` won't morph a list row into a detail header | It matches element *identity*; two different nodes never pair |
+| `share(--group)` does nothing | View Transition Groups are not shipped in current browsers (measured `false`) |
+| The whole page fades along with the card | The `root` group kept its default animation; disable it so only the named element moves |
+| Nothing animates under reduced-motion settings | Expected — honour it and swap instantly; the morph is decoration |
+
+## Distinctions
+
+- **Shared element transition vs. the View Transitions API.** The API is the mechanism (snapshots, names, pseudo-tree). "Shared element transition" is the interaction pattern the API can implement — the same word pair Android used long before the web had `startViewTransition`.
+- **Shared element vs. crossfade.** A crossfade changes what is painted in one place. A shared element moves a thing through space, preserving the user's sense of object constancy.
+- **Shared element vs. FLIP.** FLIP (First-Last-Invert-Play) is the pre-API technique for the same effect: measure an element before and after a layout change, then transform it from the old box to the new one. `view-transition-name` with `match-element` is the browser doing FLIP for you, across the snapshot boundary.
+
+## Check yourself
+
+1. You give every row in a reorderable list `view-transition-name: card`. The reorder hard-cuts instead of animating. Why does a duplicate name abort the whole transition rather than just failing to match?
+2. `match-element` makes a moved row travel to its new slot, but it will not morph a row into a separate detail header. What property of the naming explains both behaviours?
+3. You reach for `share(--hero)` to merge four thumbnails into one image and nothing happens in current Chrome. What is the honest fallback, and how would you detect whether to attempt the group syntax at all?

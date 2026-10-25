@@ -1,0 +1,251 @@
+---
+summary: "Hover is a continuously-evaluated state of a pointing device, not an event: it matches the element under the pointer and every ancestor above it, which is why the gate, the gap, the close delay and the hit test matter more than the transition."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "spec"
+    title: "Media Queries Level 4 — interaction media features (hover, any-hover, pointer)"
+    url: "https://www.w3.org/TR/mediaqueries-4/#mf-interaction"
+    publisher: "W3C"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "Selectors Level 4 — the :hover pseudo-class"
+    url: "https://www.w3.org/TR/selectors-4/"
+    publisher: "W3C"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "Pointer Events Level 3"
+    url: "https://www.w3.org/TR/pointerevents3/"
+    publisher: "W3C"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: ":hover — CSS :hover pseudo-class"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/:hover"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "@media (hover) — hover capability"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "standard"
+    title: "Understanding Target Size (Minimum) — WCAG 2.2"
+    url: "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+    publisher: "W3C"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+---
+import HoverLab from "../../components/labs/HoverLab";
+
+## The short definition
+
+`:hover` is a selector that the browser re-evaluates continuously against the position of a pointing device. It is not an event, it has no duration, and it does not mean "the user meant this".
+
+Two properties follow from that definition and account for most of the work:
+
+- It matches the element under the pointer **and every ancestor of that element**. The specification calls this the hovered element's ancestor chain, and it is the reason a card lights up when you hover the text inside it — and the reason a hover style on a child can be inherited by a parent you did not name.
+- It matches whatever the hit test says is on top, which is not necessarily the element you can see. A transparent overlay counts; an element with `pointer-events: none` does not.
+
+<HoverLab client:visible />
+
+## What the pointer is over, and what is over it
+
+Measured in Chrome 156 at 900 × 700, by reading `document.querySelectorAll(":hover")` after each move of a real mouse pointer. The test page is a `<div>` containing a button, a link, and a card with a transparent overlay painted on top of it:
+
+| Pointer position | Elements matching `:hover`, outermost first |
+| --- | --- |
+| Over the button | `html`, `body`, the stage, the button |
+| Over the transparent overlay sitting on the card | `html`, `body`, the stage, the wrapper, **the overlay** — the card below it does not match |
+| The same spot, overlay set to `pointer-events: none` | …, the wrapper, **the card** |
+| Over a blank part of the stage | `html`, `body`, the stage |
+
+The second and third rows are the two that catch people. A `::after` badge, a skeleton shimmer layer, a full-surface link stretched over a card with `inset: 0` — any of them silently owns the hover state of everything underneath, because `:hover` follows the hit test, and the hit test follows paint order. The fix is one declaration on the layer that is only there to be looked at:
+
+```css
+.overlay {
+  pointer-events: none;
+}
+```
+
+## The gate is not about the selector
+
+The standard advice is to put every hover rule inside a capability query:
+
+```css
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { border-color: var(--accent); }
+}
+```
+
+The reason is not that `:hover` fails to match on a touchscreen. It does match. Measured, with the same page loaded in three device profiles in the same browser build:
+
+| Profile | `(hover: hover)` | `(any-hover: hover)` | `(pointer: fine)` | `(pointer: coarse)` | `:hover` matched during a tap | The gated rule painted |
+| --- | --- | --- | --- | --- | --- | --- |
+| Desktop, no touch | `true` | `true` | `true` | `false` | — | yes |
+| Phone, 390 × 844, touch | `false` | `false` | `false` | `true` | **yes** (`html, body, stage, button`) | **no** |
+| Touchscreen laptop, 1280 × 800, touch | `false` | `false` | `false` | `true` | yes | no |
+
+On the touch profiles the button entered the hover chain on tap, and the rule still did not apply, because the rule lives behind the gate and the gate is closed. That is the whole point of gating: not to make hover work on touch, but to stop your hover styling from being triggered by a tap and then *left there*.
+
+The spec wording is worth reading once, because it explains the third row. `hover` queries the **primary** pointing device; `any-hover` queries **any available** device. A laptop with both a trackpad and a screen should report `hover: none` with `any-hover: hover`. In this browser's touch emulation both came back `false`, so `any-hover` did not rescue the hybrid case in the test — but the pair is the reason the gate is written with two conditions rather than one, and it is why the honest version of the advice is:
+
+- Gate the *decoration* with `hover: hover` — the shadow, the colour shift, the reveal.
+- Never gate the *affordance* with it. If the only way to reach an action is hovering, a phone user never sees it, and a keyboard user does not either. Put the same state on `:focus-within` and give touch a real control.
+
+## Four decisions, in the order they break
+
+The lab lets you set each of these independently. All four numbers below came from it, measured against the production build in Chrome 156 at 1440 × 950, with the opacity read from `getComputedStyle` per animation frame.
+
+### 1. The gap is a lie the geometry tells
+
+A tooltip placed 8 px below its trigger with a margin is not reachable. The pointer has to cross dead space, and dead space means the trigger is no longer hovered:
+
+| Setup | Pointer parked in the 8 px gap, opacity sampled per frame after the leave |
+| --- | --- |
+| `margin-block-start: 8px`, `transition: opacity 120ms` | `1.00` at 5 ms, `0.86` at 38 ms, `0.58` at 72 ms, `0.31` at 107 ms, `0` by 192 ms |
+| Same gap, bridge added | `1.00` throughout — the group never leaves the hover chain |
+| No gap at all | the leave never fires |
+
+The lab's own sampler reads 30 ms after React's `mouseleave` instead of per frame and reports `0.86` for the first row: the same fade on a different clock. Either way, by the time the pointer has travelled the 8 px it has lost most of the surface.
+
+The bridge is three lines and it is the one that makes a hover surface usable:
+
+```css
+.tip::before {
+  content: "";
+  position: absolute;
+  inset-block-end: 100%;
+  block-size: 8px; /* exactly the gap */
+}
+```
+
+The pseudo-element belongs to the tooltip, and the tooltip is a descendant of the group, so hovering the bridge keeps the group in the hover chain. The pointer never leaves, `pointerleave` never fires, and the surface never knows it was at risk.
+
+### 2. Open instantly, close slowly
+
+The asymmetry is the same one every menu system uses, and it is a timing fact rather than a taste fact. With a 140 ms delay on the closing transition and none on the opening one:
+
+| Moment | Measured opacity |
+| --- | --- |
+| Pointer parked in the dead gap, per-frame trace 5 ms → 104 ms after the leave | `1.00` the whole way (`0.86` → `0.31` over the same window with the delay removed) |
+| Same, at 154 ms / 221 ms / 287 ms | `0.92` / `0.36` / `0` |
+| The lab's own sampler, 30 ms after the leave | "still `1.00` at 30 ms" |
+| Pointer crosses the gap and lands on the surface 110 ms later | `1.00` throughout — the surface never blinked |
+
+```css
+.tip {
+  transition: opacity 120ms linear 140ms; /* delay only on the base rule */
+}
+
+.group:hover .tip {
+  transition-delay: 0ms; /* …and cancelled on the way in */
+}
+```
+
+The delay belongs on the *base* rule and is removed by the hover rule. Written the other way round it delays the appearance, which is the thing users notice as lag.
+
+### 3. A closed surface must not be a hit target
+
+`opacity: 0` is invisible. It is not absent. Measured by asking `document.elementFromPoint()` at the tooltip's own centre while the surface is faded out — on the touch profile, because on a hover-capable pointer arriving at that spot opens the tooltip before the click lands:
+
+| Closed tooltip | `elementFromPoint` returns | Where the click landed |
+| --- | --- | --- |
+| `opacity: 0` only | **the tooltip** | the closed tooltip |
+| `opacity: 0; pointer-events: none` | the row underneath | the row behind |
+
+An invisible rectangle sitting over your interface, intercepting clicks, is one of the hardest bugs to see in a screenshot and the easiest to reproduce: click where the tooltip was and read which element received it. The lab counts those steals for exactly that reason. The pair of declarations is the fix, and both halves are load-bearing:
+
+```css
+.tip {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.group:hover .tip {
+  opacity: 1;
+  pointer-events: auto;
+}
+```
+
+`visibility: hidden` is the alternative and it does two more things for you — it removes the element from the accessibility tree and from the hit test wholesale — but it animates discretely, so the fade needs `transition: opacity, visibility 0s 120ms` on the way out.
+
+### 4. A disabled control still hovers
+
+Measured on a `<button disabled>` with a `:hover` rule and a capture-phase listener on the document:
+
+| Signal on the disabled button | Result |
+| --- | --- |
+| `button.matches(":hover")` | `true` |
+| Computed `background-color` | `rgb(255, 0, 0)` — the hover rule applied |
+| `mouseover`, `mouseenter` | dispatched |
+| `pointerdown` | dispatched |
+| `mousedown`, `mouseup`, `click` | **never dispatched** |
+
+So a CSS tooltip over a disabled button opens on hover and then cannot be dismissed by the thing you wrote to dismiss it, and a JavaScript tooltip bound to the same hover events opens on a control that will not answer a click. If a control can be disabled, its hover behaviour needs an explicit decision, usually this one:
+
+```css
+:is(.card, .tip):has(:disabled) {
+  pointer-events: none;
+}
+```
+
+## What a tap actually sends
+
+On the touch profile, a single tap on a button produced this sequence, in this order:
+
+```
+pointerover → pointerenter → pointerdown → pointerup → pointerleave
+→ mouseover → mouseenter → mousemove → mousedown → mouseup → click
+```
+
+The pointer phase finishes — *including* `pointerleave` — before the compatibility mouse events are synthesized. On a mouse, the two families interleave instead (`pointerover, pointerenter, mouseover, mouseenter, pointermove, mousemove, pointerdown, mousedown, pointerup, mouseup, click`). Anything written as "use pointer events, they are the modern replacement" is not equivalent on touch: by the time your `mouseover` handler runs, the pointer is already gone.
+
+MDN's `:hover` page is blunt about the consequence and worth quoting: on touchscreens the pseudo-class "might never match, match only for a moment after touching an element, or continue to match even after the user has stopped touching and until the user touches another element." This browser build took the middle branch — the hover chain was cleared as soon as the next tap landed elsewhere. Which branch a device takes is not something you get to choose, so hover cannot be a contract. It can only be decoration on top of a control that works without it.
+
+## Where it goes wrong
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| The hover style sticks after a tap | Ungated `:hover` on a touch device | Wrap the rule in `@media (hover: hover) and (pointer: fine)` |
+| The tooltip closes when you move into it | The gap is dead space | `::before` bridge the size of the gap, or remove the gap |
+| Clicks land on nothing | An `opacity: 0` surface is still hit-testable | `pointer-events: none` on the closed state |
+| The whole list of rows highlights | `:hover` matched an ancestor of the row | Move the hover rule to the row, not the list; or `.list:hover .row { }` → `.list .row:hover { }` |
+| A card never shows hover | A transparent layer above it owns the hit test | `pointer-events: none` on the layer |
+| Hover works, keyboard does nothing | Hover is the only carrier of the state | Add `:focus-within` / `:has(:focus-visible)` to the same selector |
+| The tooltip opens on a disabled control | `mouseover` and `mouseenter` still fire when disabled | Decide the disabled case explicitly; `:has(:disabled)` |
+| The interface feels laggy on a toolbar | Each tooltip animates its entrance separately | After the first is open, subsequent ones appear with no delay and no animation |
+
+## Accessibility
+
+Hover is a *visual* answer to *where is my pointer*, and pointer position is not an accessible state. Everything a hover reveals has to be reachable another way, which in practice means the same selector list gets `:focus-within` on it and the revealed surface contains real, focusable controls.
+
+Two details carry more weight than the animation:
+
+- **Contrast.** A hover that lightens a background changes a ratio. The default Chrome focus ring measures `auto 1px` against whatever is behind it, which is why an explicit ring with `outline-offset` is more reliable than a background shift.
+- **Target size.** WCAG 2.2's Target Size (Minimum) asks for 24 × 24 CSS px targets — a toolbar of 20 px icons with a hover-revealed action row is exactly the pattern that fails it, with or without a pointer you can hover.
+
+## The mental model
+
+Ask one question: **what does this state do when there is no pointer?**
+
+- Nothing — it is feedback about a mouse position. Then gate it, and keep it honest: instant on, slow off, never load-bearing.
+- Something — it reveals a control, an answer, a decision. Then it is not hover, it is disclosure, and disclosure needs a click, a `:focus-within`, and a surface that exists without a pointer at all. See [popover](/concepts/popover).
+
+The animation is the smallest of the four decisions. The gap, the close delay and the hit test decide whether the thing is usable; the transition only decides whether it looks considered.
+
+- [Focus state](/concepts/focus) — the other continuously-evaluated state, and the one keyboard users actually have.
+- [Popover](/concepts/popover) — the platform surface a hover card should usually be built from, and why hover-opening one is a trap.
+- [Anchored popover](/concepts/anchored-popover) — placement, where the gap between trigger and surface is specified rather than improvised.

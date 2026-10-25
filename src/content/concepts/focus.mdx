@@ -1,0 +1,224 @@
+---
+summary: "Focus is the single element that will receive the next keypress. The browser decides the order, the stops, the scroll and the ring — and all four are measurable, so guessing about them is optional."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "spec"
+    title: "HTML Standard — sequentially focusable and focusable"
+    url: "https://html.spec.whatwg.org/multipage/interaction.html#data-models-for-user-interaction:-sequentially-focusable-and-focusable"
+    publisher: "WHATWG"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "Selectors Level 4 — the :focus-visible pseudo-class"
+    url: "https://drafts.csswg.org/selectors/#the-focus-visible-pseudo"
+    publisher: "CSS Working Group"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "UI Events — focus and focusin"
+    url: "https://www.w3.org/TR/uievents/"
+    publisher: "W3C"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "HTMLElement.focus() and the preventScroll option"
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "standard"
+    title: "Understanding Focus Visible (2.4.7) — WCAG 2.2"
+    url: "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html"
+    publisher: "W3C"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "standard"
+    title: "Understanding Focus Not Obscured (Minimum) (2.4.11) — WCAG 2.2"
+    url: "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+    publisher: "W3C"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Keyboard-focusable scrollers"
+    url: "https://developer.chrome.com/blog/keyboard-focusable-scrollers"
+    publisher: "Chrome for Developers"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "ARIA Author Practice Guide — keyboard interaction"
+    url: "https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/"
+    publisher: "W3C"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import FocusLab from "../../components/labs/FocusLab";
+
+## The short definition
+
+Focus is one element at a time, for the whole document: the element that will receive the next keystroke. `document.activeElement` names it, `:focus` styles it, and sequential focus navigation — Tab, Shift+Tab, and whatever the platform adds — moves it.
+
+Three selectors cover almost everything, and they answer different questions:
+
+| Selector | Question it answers |
+| --- | --- |
+| `:focus` | Is this the element that will get the keystrokes? |
+| `:focus-visible` | …and would a ring here actually help the person typing? |
+| `:focus-within` | Is focus anywhere inside this subtree? |
+
+The rest of this page is what the browser has already decided, because every one of those decisions is observable and most of the bugs in this area come from assuming them.
+
+<FocusLab client:visible />
+
+## The tab order is not the DOM order
+
+The HTML specification defines *sequentially focusable* elements: interactive by default, or given a `tabindex` of zero, and ordered by document position except where a positive `tabindex` pulls an element out and puts it earlier. Measured in Chrome 156 by pressing Tab and reading `document.activeElement` after each press.
+
+Four links, the second one carrying `tabindex="2"`:
+
+| DOM order | Tab order, measured |
+| --- | --- |
+| `one`, `two (tabindex=2)`, `three`, `button` | `one` → `three` → `button` → *the document* → `two` |
+
+Positive values do not make an element earlier than its neighbours in the way people expect; they move it to a separate group that comes **after** every natural stop. The same page, tabbed from the top, shows the natural stops first and the boosted link last, past the end of the page.
+
+That is the whole argument against positive `tabindex`. Use `0` to make something focusable in place, `-1` to make it focusable by script but not by Tab, and leave the order to the DOM. If the reading order is wrong, the markup is in the wrong order, and a number is a lie about the structure.
+
+## What counts as a stop
+
+Measured sequences, each starting from a known element:
+
+| Situation | Measured |
+| --- | --- |
+| Three radio buttons, the middle one checked. Focus the checked one, press Tab | Lands on the element **after the whole group** — the other two radios are skipped |
+| …then press ArrowRight three times inside the group | `r3 → r1 → r2`, each arrow also moving the `checked` state with it |
+| A `<div role="button" onclick>` between two buttons | Tab: `before → after`. The card is never visited |
+| …and calling `.focus()` on that card | Nothing happens; `document.activeElement` stays on `<body>`. Its `tabIndex` property reads `-1` |
+| A scrollable `<div>` holding only text | It **is** a stop: `first → the scroller → last` |
+| The same `<div>`, now holding a button | It is not: `first → the button inside → last` |
+| Tab past the final stop on the page | `document.activeElement === document.body` |
+
+The radio row is the point most implementations get wrong by accident: a group of radios is one stop with arrow keys inside it, and a custom widget that reimplements a radio group as seven focusable divs turns one stop into seven. The scrollable-box rows are Chrome's [keyboard-focusable scrollers](https://developer.chrome.com/blog/keyboard-focusable-scrollers): a box you can scroll becomes reachable so that keyboard users can scroll it, but only when nothing inside it already is. The card row is the one to internalise: **`onclick` is not a keyboard equivalent**, and no amount of `role="button"` fixes the fact that the element cannot be focused.
+
+## Focus is not the ring
+
+The single most useful measurement on this page: whether `:focus-visible` matches, by how focus arrived.
+
+| How focus arrived | `:focus` | `:focus-visible` |
+| --- | --- | --- |
+| Mouse click on a `<button>` | yes | **no** |
+| Tab | yes | yes |
+| `element.focus()` from script, on a fresh page where the keyboard has never been used | yes | **yes** |
+| `input.focus()` from script, no keyboard used | yes | yes |
+| `element.focus()` on a `tabindex="-1"` button | yes | yes |
+| `body.focus()` with `contenteditable` | yes | yes |
+
+`focus-visible` is not a reading of "the user pressed Tab". It is the user agent's judgement that a ring would be useful, and that judgement has a modality memory: script focus on a page that has not been touched by a mouse looks, to the browser, like keyboard activity. So do not write `:focus-visible` as a synonym for keyboard, and do not treat it as a state you can reason about from the event that triggered it.
+
+What you can rely on is the idiom, tested both ways on the same page:
+
+```css
+:focus {
+  outline: 3px solid blue;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+```
+
+Measured: Tab → computed `outline-style: solid`. Mouse click → `outline-style: none`. The rule that removes the ring on click does not remove it on keyboard, and that is the only case `:focus-visible` was ever for.
+
+## The ring is a drawing, not a layout
+
+| Element | Box before | Box after |
+| --- | --- | --- |
+| A button given `outline: 3px solid red` and focus | `101.91 × 30`, `x = 59.59` | `101.91 × 30`, `x = 59.59` — unchanged |
+| A button with `border-width: 4px` next to a 1 px neighbour | height `30` | height `36` — the layout moved |
+
+`outline` is painted outside the box and takes no part in layout, which is why it is the right property for a focus ring: a ring that changed layout would make the interface jump every time focus moved. `outline-offset` adds the gap without adding size. If you build the ring from `box-shadow` you get the same no-layout property plus rounded corners and colour control, and you lose the forced-colours and high-contrast-mode behaviour that a real `outline` participates in — which is the reason the recommended recipe is an outline with an offset, not a shadow.
+
+## Focus moves the page
+
+Focusing an element scrolls it into view, through every ancestor scroller, and that is a specification behaviour rather than a courtesy. Measured on a button sitting 672 px below the viewport top inside two nested scrollable boxes:
+
+| Call | Page scroll | Outer scroller | Inner scroller | Element's distance from the viewport top |
+| --- | --- | --- | --- | --- |
+| `el.focus({ preventScroll: true })` | `0` | `0` | `0` | `672 px` — still off-screen, and focused |
+| `el.focus()` | `0` | `274 px` | `221 px` | `177 px` |
+
+`preventScroll` is the option for the cases where the jump is the bug: restoring focus into a list you are about to re-render, syncing focus between two panes, moving focus during a scroll animation. It is not the option for "I don't like the scroll" — an element can be focused and invisible at the same time, and that is a worse keyboard experience than a jump. The honest pair is `focus({ preventScroll: true })` and then `scrollIntoView({ block: "nearest" })` when you actually want it seen on your own schedule.
+
+The lab measures the same thing one level down, in a 99 px order-summary scroller whose "Apply coupon" button sits below its own bottom edge:
+
+| Call | Scroller `scrollTop`, read on the line after | 700 ms later | Where the button ended up |
+| --- | --- | --- | --- |
+| `el.focus()` | `0 → 159 px` | `159 px` | `652 px` from the viewport top, inside a box running `598 → 697 px` |
+| `el.focus({ preventScroll: true })` | `0 px` | `0 px` | still `811 px` — below the box, focused and unseen |
+
+Two things fall out of the first column. `scroll-behavior` is **not** inherited, so a site that smooth-scrolls the document (`html { scroll-behavior: smooth }`, measured as computed `smooth` on the root and `auto` inside the lab's scroller) does not make nested focus scrolls animate. And when a scroller *is* given `scroll-behavior: smooth`, the focus scroll is asynchronous: the same test forced to `smooth` read a `0 px` delta synchronously and `159 px` after 700 ms. Anything that measures a scroll right after calling `focus()` has to know which of those two worlds it is in.
+
+## Three events, two of which bubble
+
+Measured by putting a non-capturing listener on a wrapper around an input and moving focus into and out of it:
+
+| Listener | Fired? |
+| --- | --- |
+| `focus` on the parent, non-capturing | **no** |
+| `focusin` on the parent, non-capturing | yes |
+| `blur` / `focusout` on the input itself | yes, both |
+
+`focus` and `blur` do not bubble; `focusin` and `focusout` do. Every delegated focus handler is therefore a `focusin` handler, and the `relatedTarget` on those events is the element focus came from — the only reliable way to tell "the user left this field" apart from "the user moved to the next one".
+
+Then the one that surprises people most, measured with `t0` focused and a click landing on a plain `<div>`:
+
+| Moment | `document.activeElement` | Elements matching `:focus` |
+| --- | --- | --- |
+| Before the click | the element | it |
+| After clicking a non-focusable element | `document.body` | none |
+
+Clicking anything that is not focusable blurs whatever had focus. That is why a click on a label, an icon, or a card background closes your dropdown, clears your selection, and collapses your inline editor — and why the standard fix is to call `preventDefault()` on the `mousedown` of the chrome that must not steal focus.
+
+## Where it goes wrong
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Keyboard users cannot reach the control | A `div` with `onclick` | A real `<button>`; if it must be a div, `tabindex="0"` plus the keydown handler |
+| The ring is gone and nobody notices | `outline: none` on `:focus`, or on a reset that applies to everything | Style `:focus-visible`; never remove the ring without replacing the drawing |
+| The page jumps to the top when a dialog opens | Focus moved to a container that was scrolled out | `focus({ preventScroll: true })`, then scroll deliberately |
+| Tab leaves the page and lands in the browser chrome | There was nothing left to focus; the document is the last stop | Keep a real last stop; trap focus only inside a modal, and return it |
+| Seven tab stops where there should be one | A custom widget made every item focusable | Roving `tabindex`: one stop for the group, arrows inside it |
+| A click on the panel header closes the panel | Clicking a non-focusable element blurs the field | `preventDefault()` on `mousedown` for that element |
+| The inert region is still tabbable, or focus lands in it | Only `aria-hidden` was set | `inert` — measured: `element.focus()` inside an inert subtree is refused outright |
+| Focus is on the body after a route change | Nothing restored it | Move focus to the new context and announce it. See [focus restoration](/concepts/focus-restoration) |
+
+## Accessibility
+
+WCAG 2.2 [Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) asks that the indicator be *visible*, not pretty, and [Focus Not Obscured (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html) — added in 2.2 — asks that a sticky header or a cookie banner not cover the focused element entirely. Both are about the drawing, and both are the reason the ring is not a style preference.
+
+Two properties of focus that are easy to lose: it is a single element, so a widget with two focusable halves needs two stops and a plan for what happens between them; and it is *state*, not a colour, so `:focus-within` on a container is a legitimate way to style a field group — measured, the wrapper matches while the input inside it is focused and stops matching the moment focus leaves.
+
+## The mental model
+
+Stop asking "how do I make the focus ring nice" and ask the two questions that determine everything else:
+
+1. **What is the set of stops, in order?** That is the DOM. If the answer is wrong, change the markup, not the number.
+2. **Where does focus go when the state changes?** Opening a surface, moving into a step, deleting the row you were on — each of those is a focus decision, and each one you skip is a keyboard user dropped on the floor of the document.
+
+The ring is the visible half of a contract about position. The position is the other half, and it is the part you have to design.
+
+- [Hover](/concepts/hover) — the other continuously-evaluated state, and the one that only exists when a pointer does.
+- [Focus management](/concepts/focus-management) — the rules for where focus goes when the page changes underneath it.
+- [Focus restoration](/concepts/focus-restoration) — the specific case of putting it back where it came from.
+- [Keyboard navigation](/concepts/keyboard-navigation) — roving tabindex, and the keys a widget has to answer.
+- [Command palette](/concepts/command-palette) — a modal dialog, a trap, and the boundary condition where a trap with one stop is not a trap.

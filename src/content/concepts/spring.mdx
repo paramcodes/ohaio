@@ -1,0 +1,177 @@
+---
+summary: "A spring describes motion with forces instead of a clock: stiffness pulls, damping resists, mass adds inertia. The duration is an outcome, not an input."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "docs"
+    title: "Spring animations"
+    url: "https://motion.dev/docs/animate#spring"
+    publisher: "Motion"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "Motion"
+    url: "https://developer.apple.com/design/human-interface-guidelines/motion"
+    publisher: "Apple Human Interface Guidelines"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "A friendly introduction to spring physics"
+    url: "https://www.joshwcomeau.com/animation/a-friendly-introduction-to-spring-physics/"
+    publisher: "Josh W. Comeau"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "video"
+    title: "Designing Fluid Interfaces"
+    url: "https://developer.apple.com/videos/play/wwdc2018/803/"
+    publisher: "Apple Worldwide Developers Conference 2018"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "linear() easing function"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/linear"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import SpringLab from "../../components/labs/SpringLab";
+
+## The short definition
+
+A spring is a model of motion, not a curve drawn through time.
+
+You give it three properties — **stiffness**, **damping**, and **mass** — and a target. Each frame, the spring pulls toward the target with a force proportional to the distance, loses energy to damping, and accelerates according to its mass. The motion that comes out is the consequence.
+
+That is the whole difference from easing. A cubic-bezier curve says *when* the element reaches each percentage of its travel. A spring says *how* the element behaves, and lets the clock fall where it may.
+
+This matters most when the interface can interrupt itself. A curve has to finish or restart. A spring carries its current velocity into the next target, so a gesture, a reversal, or a second tap continues the same physical motion rather than cutting to a new animation.
+
+## What the three numbers do
+
+| Parameter | What it controls | Raising it |
+| --- | --- | --- |
+| Stiffness | Force toward the target | Snappier start, faster settle, more overshoot if damping is low |
+| Damping | Resistance to motion | Less bounce, softer landing, slower settle if raised too far |
+| Mass | Inertia of the moving object | Heavier, slower start and longer settle |
+
+The relationship between damping and the other two is the number worth knowing:
+
+```text
+ζ = damping / (2 × √(stiffness × mass))
+```
+
+That is the **damping ratio**. It collapses three sliders into one description of character:
+
+| Ratio | Name | Behaviour |
+| --- | --- | --- |
+| `ζ < 1` | Underdamped | Crosses the target, oscillates, settles |
+| `ζ = 1` | Critically damped | Settles as fast as possible without crossing |
+| `ζ > 1` | Overdamped | No overshoot, but slower to arrive |
+
+For routine UI, most good springs sit slightly under `1` — enough life to read as physical, not enough to look like a toy. A ratio near `1` is the safe default for panels and sheets. Lower values belong to gestures that need a rubber-band character, and only when the surface has room to recover.
+
+## Feel the difference
+
+<SpringLab client:visible />
+
+The lab fixes the distance and changes the physics. Run the snappy preset, then the bouncy one, then the heavy one. The graph is position over time: a flat line at the target is the ideal, and the overshoot above it is the bounce.
+
+Notice that there is no duration field. The spring's decay rate sets the clock; a longer travel covers more ground without stretching the settle time by the same ratio. That is why springs feel consistent across elements of different sizes.
+
+## Springs versus curves
+
+Use a curve when you know the choreography. Use a spring when the interface is driven by a person.
+
+| Situation | Better tool |
+| --- | --- |
+| Page-load sequence with fixed beats | Curve or keyframes |
+| Progress bar, spinner, scroll-scrubbed motion | Linear |
+| Button press, menu, toast | Curve is usually enough |
+| Drag, swipe, sheet with momentum | Spring |
+| Crossfade after an async result | Curve |
+| Element that can be interrupted mid-flight | Spring |
+
+The test is interruption. Press a button that opens a panel, then close it halfway through the entrance. A CSS transition retargets cleanly if it is a transition rather than a keyframe; a spring keeps the momentum and turns around like a physical object. If neither interruption matters, a curve is lighter and easier to reason about.
+
+## Interruptibility is the real feature
+
+The reason Apple's fluid interfaces feel alive is not that they bounce. It is that every motion continues the velocity of the finger.
+
+A drag ends at 900px/s; the sheet should keep moving at 900px/s and decelerate. A spring receives that velocity as an initial condition. A keyframe animation that starts at `translateY(0)` and ends at `translateY(100%)` begins from a standstill, which looks like the interface forgot what your hand was doing.
+
+The same logic applies to retargeting. If an element is already moving when the target changes, pass the current velocity into the new spring. Motion libraries expose this by default for interrupted spring animations; hand-rolled physics usually does not unless you write it.
+
+## Writing it down
+
+In Motion, a spring is a transition description:
+
+```tsx
+const transition = {
+  type: "spring",
+  stiffness: 320,
+  damping: 30,
+  mass: 1,
+};
+
+<motion.div animate={{ x: open ? 0 : 320 }} transition={transition} />
+```
+
+Those numbers give a ratio of `0.84` — quick, decisive, with almost no overshoot. Motion also accepts Apple-style parameters, which are easier to hand to a designer:
+
+```tsx
+const transition = { type: "spring", duration: 0.45, bounce: 0.15 };
+```
+
+`duration` here is a perceptual target, not a guarantee; the spring still decides when it has settled. `bounce` maps to overshoot and behaves like `1 − ζ` in spirit, not in exact arithmetic.
+
+CSS has no native spring timing function. If you need CSS-only motion, generate a `linear()` easing curve that samples a spring closely enough for the distance involved, and accept that it cannot react to interruption or velocity. For gesture-driven surfaces, the JavaScript spring is usually the correct choice, with `transform` as the animated property so the browser can composite it.
+
+## Duration is an outcome
+
+A spring settles when its displacement falls below a threshold. In practice, for an underdamped spring a useful estimate of the 2% settling time is:
+
+```text
+t ≈ 4 / (ζ × √(stiffness / mass))
+```
+
+This is why mass and damping surprise people. Raising mass does not just make the element "bigger"; it lowers the natural frequency and stretches the settle time. Raising damping past critical removes the bounce but also slows the arrival.
+
+Keep the felt duration of interface motion in the usual range: roughly 300–500ms for panels and sheets, shorter for small controls. If a spring runs longer than that, the cause is usually too much mass or too little stiffness, not an intentional design choice.
+
+## Where springs fail
+
+| Symptom | Usual cause |
+| --- | --- |
+| Everything feels wobbly | Low damping applied to routine surfaces |
+| A drawer feels slow | High mass, or a spring configured for a gesture reused for a tap |
+| Overshoot clips the viewport | Bouncy spring on an element near an edge, with no room to recover |
+| Motion feels disconnected from the hand | Gesture velocity not passed into the release animation |
+| The UI feels heavy while scrolling | Layout properties animated per frame, or too many promoted layers |
+| Reduced motion removes all feedback | Spatial travel disabled without keeping opacity or colour state changes |
+
+A bouncy spring is a personality decision. It belongs on a surface the user rarely sees and can afford to watch settle. It does not belong on a tooltip, a checkbox, or anything used hundreds of times a day.
+
+## Reduced motion
+
+`prefers-reduced-motion` asks for less spatial travel and less continuous motion, not for a dead interface.
+
+For springs, the respectful version is to jump to the final state or replace the spring with a short opacity change. Keep the state indication: a panel still opens, a button still acknowledges the press. Do not leave an element mid-flight because the physics loop was switched off.
+
+## The mental model
+
+A spring is **behaviour**, not timing.
+
+- If the user is driving the motion, use a spring.
+- If the motion must survive interruption, use a spring.
+- If the sequence is fixed and no hand is involved, a curve is simpler.
+- Tune character with the damping ratio, then check the settle time.
+- If the result feels heavy, reduce mass before adding stiffness.
+
+Springs look like more work than a curve. They are less work than rebuilding continuity by hand every time an interaction changes direction. See [easing](/concepts/easing) for the curve-first view of the same problem.

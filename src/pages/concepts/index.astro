@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { DOMAIN_META, DOMAIN_ORDER, catalogue, stats } from "@/lib/site";
+import { DOMAIN_META, DOMAIN_ORDER, catalogue, stats, statusLabel } from "@/lib/site";
 
 const title = "The full index";
 const description =
@@ -84,8 +84,16 @@ const description =
                     <div class="concept-row" data-concept={card.slug}>
                       <span class="concept-title-cell">
                         <a class="concept-link" href={card.url}>{card.title}</a>
-                        {card.status === "published" ? (
-                          <span class="status-tag status-tag--published">Field note</span>
+                        {card.status === "published" || card.status === "in-review" ? (
+                          <span
+                            class={
+                              card.status === "published"
+                                ? "status-tag status-tag--published"
+                                : "status-tag status-tag--review"
+                            }
+                          >
+                            {statusLabel(card.status)}
+                          </span>
                         ) : null}
                       </span>
                       <span class="concept-row-copy">{card.summary}</span>

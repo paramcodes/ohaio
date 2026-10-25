@@ -178,7 +178,7 @@ export const paths: LearningPath[] = [
         why: "At scale, the network can only care about the part of the world near each player.",
       },
       {
-        slug: "lod",
+        slug: "level-of-detail",
         why: "Distance is a budget. Spend detail where it can be seen.",
       },
       {

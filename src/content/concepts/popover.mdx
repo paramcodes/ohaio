@@ -1,0 +1,195 @@
+---
+summary: "A popover is a small surface the platform owns: it lives in the top layer, closes on Escape or a click outside, and hands focus back — none of which you have to write."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "spec"
+    title: "Popover attribute — HTML Standard"
+    url: "https://html.spec.whatwg.org/dev/popover.html"
+    publisher: "WHATWG"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "popover HTML global attribute"
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/popover"
+    publisher: "MDN Web Docs"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "CSS Anchor Positioning Module Level 1"
+    url: "https://drafts.csswg.org/css-anchor-position-1/"
+    publisher: "CSS Working Group"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Popover and dialog"
+    url: "https://web.dev/learn/css/popover-and-dialog"
+    publisher: "web.dev"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Popover API lands in Baseline"
+    url: "https://web.dev/blog/popover-api"
+    publisher: "web.dev"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "CSS anchor positioning"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import PopoverLab from "../../components/labs/PopoverLab";
+
+## The short definition
+
+`popover` is a global attribute that promotes an element into the **top layer**: a rendering plane above every positioned element in the document, ordered by when it was opened rather than by `z-index`.
+
+Add the attribute, add a button with `popovertarget` pointing at the element's `id`, and the browser owns the rest of the behaviour: opening, closing, light dismiss, the Escape key, and where focus goes when it all ends. The typical implementation of a menu — a portal, a click-outside listener with a capture-phase caveat, a keydown handler, a focus trap, a `z-index` escalation against a sticky header — collapses into an attribute and a few lines of CSS.
+
+What it deliberately does *not* give you is placement. That half is a separate specification, and it is the reason a lot of teams still reach for a positioning library.
+
+<PopoverLab client:visible />
+
+## What the platform takes over
+
+| Behaviour | What happens | What you would otherwise write |
+| --- | --- | --- |
+| Light dismiss | A click or tap outside closes an `auto` popover | A `pointerdown` listener, plus the "did the click land inside?" test |
+| Escape (in `auto`) | Closes the topmost popover and returns focus | A `keydown` handler and a focus restore |
+| One at a time | Opening an `auto` popover closes the other open `auto` popovers | A registry of open surfaces |
+| Focus return | After a keyboard close, focus goes back to the invoker | `previousElement.focus()` and the case where it was removed |
+| Stacking | The top layer sits above everything positioned, including sticky and fixed elements | A `z-index` ladder, and a war with someone else's |
+| Clipping | An ancestor's `overflow: clip` cannot cut the surface off | Portals, or measuring the clipping ancestor |
+| Accessibility | The element is hidden from the a11y tree while closed | `hidden`, `aria-expanded`, and keeping them in sync |
+
+Two of those rows have a footnote the table cannot carry. Escape is `auto`-only, and focus return is not automatic in the mouse case: measured in the lab, Escape put the caret back on the invoker button, while a light dismiss on a non-focusable part of the page left `document.activeElement` on the body. And "one at a time" is a rule about `auto` popovers — two `manual` ones happily stack, both open, both ignoring the click outside.
+
+The last two are the ones people underestimate. A dropdown inside an `overflow: clip` card, or inside a table cell, has historically needed a portal into `document.body` — which then detaches the node from its layout context and breaks inherited styles. The top layer has the same escape hatch without the DOM surgery: the element stays where you wrote it.
+
+That claim is worth checking rather than repeating. In Chrome 156 at 1440 × 900, with the lab's `overflow: clip` stage as the clipping ancestor:
+
+| Measured | Result |
+| --- | --- |
+| Popover moved 60 px above the stage's clip edge | Hit-testing at its own corner returned the popover. Computed `z-index: auto` |
+| A `position: absolute` control at the same coordinates | Hit-testing returned the paragraph behind it. The stage clipped it |
+| Invoker's accessibility properties, closed | `expanded=false`, with no `aria-expanded` attribute in the DOM |
+| The same, open | `expanded=true`; the menu's items appear in the tree |
+| Menu item while closed | Absent from the tree entirely |
+
+The clipping ancestor is `.lab-stage`, which has `overflow: clip` and no transform, so it never becomes the containing block for fixed-position descendants — that is why the absolute control was cut and the top-layer surface was not.
+
+The transform case is the one that bites a JavaScript fallback. Ask the same stage to carry `transform: translateY(0)` and re-measure:
+
+| Surface | Asked for `top: 323px` | Got |
+| --- | --- | --- |
+| A `position: fixed` control inside the stage, no transform on it | — | `323px` |
+| The same control, ancestor transformed | `323px` | `677px` — the transformed stage became its containing block |
+| The popover, no transform on the ancestor | `313px` | `313px` |
+| The popover, ancestor transformed | `313px` | `313px` |
+
+A top-layer surface is positioned against the viewport no matter what any ancestor does to the coordinate system. A `position: fixed` fallback is one `transform`, one `filter`, one `will-change` away from being re-anchored inside the very box you were trying to escape. That is the whole argument for the attribute over the class named `popover`.
+
+## auto is a promise, manual is an escape hatch
+
+`popover="auto"` is the default and the right answer for menus, tooltips-turned-menus, cookie banners that should yield, and anything the user should be able to dismiss by clicking past it.
+
+`popover="manual"` stays open until something closes it. Use it for surfaces that must survive a click elsewhere: a video overlay, a recording indicator, a panel where the user is mid-selection and an accidental click outside should not destroy their work.
+
+The trade is explicit: manual popovers get no light dismiss and no Escape. In the lab, switch to `manual` and the "click anywhere out here" pad stops closing anything — the readout stops reporting "a click outside" and starts reporting only the trigger. Measured: with two `manual` popovers open at once, a click on the pad left both open, and so did Escape. The `beforetoggle` event never fired, so the lab's "Closed by" readout stayed on "nothing yet" — the only thing that closes a manual popover is your own code.
+
+There is also a `hint` value, which is not implemented anywhere and does not appear in the interoperable baseline. Write `auto` or `manual`.
+
+## Placement is a second, younger specification
+
+The popover tells you *that* the surface is on top. CSS anchor positioning tells you *where*:
+
+```css
+.trigger {
+  anchor-name: --row-actions;
+}
+
+.menu {
+  position-anchor: --row-actions;
+  position-area: block-end;
+  position-try-fallbacks: flip-block, flip-inline;
+  margin: 0;
+}
+```
+
+`position-area` picks one of the nine positions around the anchor's area. `position-try-fallbacks` is the part that makes it usable in a real page: if the preferred side would overflow, the browser tries the alternatives in order, so a menu near the bottom of the viewport opens upward without a line of JavaScript.
+
+Before that, placement was a measurement loop: read the trigger's rect, read the surface's size, subtract the viewport, flip when it does not fit, then redo it on scroll and resize — a floating-ui–shaped job. Keep that path as a fallback, feature-detected:
+
+```css
+@supports (position-area: block-end) {
+  .menu { position-anchor: --row-actions; position-area: block-end; }
+}
+```
+
+The lab reports which path it is using. On a browser without anchor positioning the surface is placed by a handful of lines of maths on open; on a browser with it, the CSS does the work and there is no scroll listener at all.
+
+Both paths were measured in the same lab. With anchor positioning, `block-end` put the surface's top edge exactly on the trigger's bottom edge (`0 px` gap) and centred it on the inline axis, which is what the keyword means: the surface is 19 px wider than the trigger, so it sits 9 px to its left. `position-try-fallbacks` did the flipping without a listener. With `CSS.supports("position-area: block-end")` forced to `false`, the arithmetic fallback produced the same contract — an 8 px gap and one shared edge on all four sides — plus a `scroll` and `resize` listener to stay correct, which the CSS path never needs.
+
+One consequence of the centring is worth knowing before you style a menu: `position-area: block-end` will not line the surface's left edge up with the trigger's, because a single keyword centres the surface on the axis it is not placing along. Measured in the same lab, with the surface 19 px wider than its trigger:
+
+| Declaration | Gap below the trigger | Left edge versus the trigger's |
+| --- | --- | --- |
+| `position-area: block-end` | `0 px` | `-9 px` (centred) |
+| `position-area: block-end span-inline-end` | `0 px` | `0 px` |
+| `position-area: bottom left` | `0 px` | `-121 px` (the surface's right edge meets the anchor's left) |
+
+The second keyword is the alignment axis, and `span-` is what makes it stick to the anchor's edge instead of the viewport's.
+
+## Not a tooltip, not a dialog
+
+| Surface | Opens on | Closes on | Takes focus | For |
+| --- | --- | --- | --- | --- |
+| Tooltip | Hover or focus, after a delay | Pointer leaves, focus leaves, Escape | No | Naming a control |
+| Popover | A click on its invoker | Click outside, Escape, another popover | Optionally | Menus, filters, small forms, previews |
+| Dialog | A script (`showModal()`) | An explicit cancel or accept | Yes, and it traps | A decision that blocks the page |
+
+The common mistake is a hover card built with `popover` and a `mouseenter` handler. An `auto` popover that opens on hover traps the pointer: moving toward the surface can cross the gap that counts as "outside", and the dismissal fires before the user arrives. Hover behaviour needs a deliberate delay, a bridge over the gap, and a rule about touch — which is why the popover-hover proposal exists and why most sites should not hand-roll it.
+
+The opposite mistake is a dialog where a popover belongs. If the user can legitimately ignore the surface and keep working, it is a popover. If they must answer it, it is a dialog — and a popover will steal their Escape key and their click without ever making the page behind unavailable.
+
+## Where it goes wrong
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| The surface opens centred in the viewport | The UA stylesheet centres popovers with `inset: 0; margin: auto` | Set `margin: 0` and anchor it, or place it yourself |
+| It appears behind a sticky header | The element is not actually in the top layer — no `popover` attribute, only `position: fixed` | Use the attribute, not a class named `popover` |
+| Menu closes the instant you move toward it | Hover-opened `auto` popover with a gap | Open on click, or add a deliberate delay and a bridge |
+| Escape closes the page's own overlay first | Two stacked surfaces both handling Escape | Let the platform order the top layer; remove your handler |
+| Focus lands on `body` after close | The invoker was removed from the DOM while the surface was open | Keep the invoker alive, or restore focus yourself |
+| Nothing closes it | `popover="manual"` chosen for the top-layer benefit | Use `auto` unless you specifically need to survive a click outside |
+| The layout jumps when it opens | The surface is in flow (`position: static`) | Popovers are fixed by default; check that no rule overrode `position` |
+
+## Accessibility
+
+An `auto` popover is a disclosure, not a modal. The browser hides the closed element from the accessibility tree, exposes it when open, and marks the relationship through the invoker: the table above was read straight out of the accessibility tree, and the button carried `expanded=false` / `expanded=true` while its DOM had no `aria-expanded` attribute at all. Write the attribute yourself only if you also write the open/close logic in script; adding it on top of a native `popovertarget` gives two sources of state, and the one you maintain is the one that goes stale.
+
+What is still yours: the contents. A menu needs `role="menu"` semantics only if it behaves as a menu — arrow keys between items, Home and End, Escape, typeahead. If it is a list of links and buttons that happens to float, leave it as plain focusable content and let Tab do its job. A "menu" that announces itself as a menu but does not implement the keyboard contract is worse than an undecorated popover, because screen reader users will trust the role and the keys will not be there.
+
+## The mental model
+
+Ask one question about any floating surface: **who should own the dismissal?**
+
+- The user, by clicking anywhere else → `popover="auto"`.
+- The code, because the click outside means something → `popover="manual"`.
+- The user, but only after answering → `<dialog>` with `showModal()`.
+
+Everything else — the layer, the Escape key, the focus return — is already decided, and deciding it again in script is how you end up with a dropdown that traps the tab order on a phone.
+
+- [Anchored popover](/concepts/anchored-popover) — the placement half, in more detail.
+- [Command palette](/concepts/command-palette) — the case where a popover is the wrong tool and a modal dialog is right.
+- [Focus management](/concepts/focus-management) — what happens to the caret when the surface opens and closes.

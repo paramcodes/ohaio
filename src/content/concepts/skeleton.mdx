@@ -1,0 +1,151 @@
+---
+summary: "A skeleton screen is a stand-in drawn in the shape of the real thing. Its job is not to look like content but to hold the space content will need."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "article"
+    title: "Skeleton Screens 101"
+    url: "https://www.nngroup.com/articles/skeleton-screens/"
+    publisher: "Nielsen Norman Group"
+    author: "Kate Moran"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "video"
+    title: "Skeleton Screens vs. Progress Bars vs. Spinners"
+    url: "https://www.nngroup.com/videos/skeleton-screens-vs-progress-bars-vs-spinners/"
+    publisher: "Nielsen Norman Group"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Best Practices For Animated Progress Indicators"
+    url: "https://www.smashingmagazine.com/2016/12/best-practices-for-animated-progress-indicators/"
+    publisher: "Smashing Magazine"
+    author: "Erin Malouhey"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Implementing Skeleton Screens In React"
+    url: "https://www.smashingmagazine.com/2020/04/skeleton-screens-react/"
+    publisher: "Smashing Magazine"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Optimize Cumulative Layout Shift"
+    url: "https://web.dev/articles/optimize-cls"
+    publisher: "web.dev"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "aria-busy"
+    url: "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-busy"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import SkeletonLab from "../../components/labs/SkeletonLab";
+
+## The short definition
+
+A skeleton screen is a placeholder drawn in the outline of the content that has not arrived yet: grey rectangles where the avatar, the headline, and the three lines of body copy will be.
+
+It borrows the oldest trick in print layout — the dummy that holds a slot until the final art exists — and applies it to a request in flight. Because the shape is close enough to the finished page, the brain reads *rendered, mostly* rather than *blank, waiting*. The perceived wait shortens even though no millisecond of it actually did.
+
+The part most implementations get wrong is the second sentence of the definition. A skeleton is not primarily a stylistic choice. It is a **promise about geometry**, and the promise is the whole value.
+
+## What it buys, in order
+
+| Benefit | Where it comes from |
+| --- | --- |
+| The page is visibly responding | Something is on screen 100ms in, instead of nothing at 800ms |
+| The user can predict what is coming | The outline resembles the finished layout, so attention goes where the content will be |
+| Nothing below moves when the data lands | The placeholder already occupies the height the content will need |
+| Lower perceived wait | Fills and outlines give the eye something to process while it waits |
+
+The first two are perceptual and cheap to fake. The third is structural and cannot be faked — it is the one that decides whether the skeleton was worth drawing.
+
+<SkeletonLab client:visible />
+
+In the lab, the placeholder on the left reserves exactly the height the arriving rows need, so the block underneath never moves. Switch it to *a box of guesswork* and the same skeleton shifts the page as far as the spinner does. At that point it is decoration over a layout bug.
+
+## The promise is a size, not a picture
+
+You do not have to reproduce the final card. You have to reserve the box it will land in. Two declarations usually do it:
+
+```css
+.post-row {
+  min-block-size: 3.4rem;      /* skeleton and real row agree on this */
+}
+
+.thumbnail {
+  aspect-ratio: 1 / 1;         /* the image reserves its own height before it decodes */
+}
+```
+
+`min-block-size` is the agreed contract between the two states. `aspect-ratio` is the same idea for media, where the intrinsic size is unknown until the bytes arrive. For anything inserted by a script — an ad slot, an embed, a cookie banner — reserve a fixed height on the container instead, and let the content overflow into it rather than push the document.
+
+This is the same money that Cumulative Layout Shift is denominated in. The Web Vitals threshold is a CLS of 0.1 or less for the worst shift clusters on a page, and the classic offenders are images without dimensions, dynamically injected content, and web fonts. A well-sized skeleton removes one of them by construction. A badly sized one adds another: now the page shifts twice, once to the placeholder height and once again to the real one.
+
+The lab reports the browser's own number, collected with a `layout-shift` PerformanceObserver across one replay:
+
+| Placeholder | CLS for one load |
+| --- | --- |
+| Mirrors the row height | 0.0022 |
+| A box of guesswork | 0.0175 |
+
+Both runs include the spinner panel on the right, which shifts in either case, so the first row's 0.0022 is entirely the spinner's doing: the mirrored skeleton contributes nothing at all. Removing the guesswork costs eight times the shift. Both numbers sit under the 0.1 budget, which is the trap — a single list on a quiet page looks fine in a lab, and a page with eight of these regions, three undimensioned images and a font swap does not.
+
+## When to draw one at all
+
+Skeletons are for waits you cannot remove, on surfaces that would otherwise be blank, and where the layout is stable enough to sketch. All four clauses matter.
+
+| Wait | What to show |
+| --- | --- |
+| Under about 200ms | Nothing. A placeholder that flashes is worse than the blank it replaces |
+| Roughly 0.2 – 10s | Skeleton for a page or a large region; a small local spinner for a control |
+| Beyond roughly 10s | Something with a real number in it — a determinate progress bar, or a cancellable job with a way to leave and come back |
+
+The thresholds come from work on animated progress indicators, which separates *indeterminate* indicators (spinner, skeleton, shimmer: they say "still working", nothing more) from *determinate* ones (a percentage: they say how long, and therefore make a promise the code has to keep).
+
+Skeletons are the strongest choice for full-page loads, where there is a lot of structure to pre-draw and the eye has something to read ahead in. They are a weak choice for a single field, a modal with one paragraph, or any result whose shape is genuinely unknown — a search that might return three items or zero. Show a small, local indicator there instead, and keep it next to the thing the user asked of.
+
+The failure mode to avoid is the frame-display skeleton: a grey wireframe of a page that is structurally different from what finally loads. The user reads the outline as a preview of the result, and the correction costs more trust than the wait did.
+
+## Saying it out loud to assistive technology
+
+A skeleton is decoration. Mark the placeholder shapes `aria-hidden="true"`; a screen reader that walks the tree should not hear six empty divs.
+
+The region carrying the loading state is the one that takes `aria-busy`. Set it to `true` while the request is in flight and `false` once it settles. The attribute does not announce anything by itself. What it does is tell assistive technology that what is on screen right now is provisional, so it should hold off on presenting a half-built widget rather than reading out a table with three rows and then a table with thirty.
+
+Two consequences worth thinking about before shipping:
+
+- `aria-busy` is not a status message. If the user has no way to know the content is arriving, put an explicit `role="status"` line in the loading region — "Loading your orders" — and let it announce once.
+- Placeholder content that changes on a timer is not a live region and should never be one. A skeleton that re-announces its shimmering blocks every second is an announcement that nothing has happened.
+
+## Where it goes wrong
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Text below jumps when data lands | The placeholder is shorter than the real content | Share a `min-block-size` between the two states |
+| Images arrive and shove the page | No dimensions reserved | `aspect-ratio` on the box, or `width`/`height` on the element |
+| The skeleton flashes for 120ms | No minimum display time | Hold a placeholder for at least ~200ms, or delay showing it ~150ms |
+| Skeleton stays for a minute | No ceiling on the strategy | Swap to a determinate indicator, or offer a way out |
+| Layout guessed wrong, content differs | Wireframe drawn without knowing the result | Use a spinner local to the region; do not sketch a page you cannot predict |
+| The page shifts twice | Placeholder swapped for another placeholder of a different height | One reservation, one swap |
+
+## The mental model
+
+Think of a skeleton as a **layout assertion** that happens to be drawable. It claims: this region will be this tall, in this shape, and nothing after it will move. Either the claim is true and the placeholder is doing real work, or it is false and you have paid for a screenshot of a guess.
+
+Two questions settle any implementation. *Does the box underneath stay still?* And *if this wait went past ten seconds, what would the user see?* If the second question has no answer, the skeleton is not a loading strategy — it is a curtain.
+
+- [Shimmer](/concepts/shimmer) — the animation people put on top of a skeleton, and what it actually signals.
+- [Layout thrashing](/concepts/layout-thrashing) — the read-then-write loop that makes measuring these shifts expensive if you do it naively.
+- [Focus management](/concepts/focus-management) — where the caret should go once the placeholder is replaced by real, focusable content.

@@ -1,0 +1,173 @@
+---
+summary: "Easing is the shape of change over time. The curve decides whether an interface feels immediate, mechanical, or alive."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-24"
+sources:
+  - kind: "docs"
+    title: "easing-function"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function"
+    publisher: "MDN Web Docs"
+    role: "primary"
+    free: true
+    accessed: "2026-10-24"
+  - kind: "spec"
+    title: "CSS Easing Functions Level 1"
+    url: "https://www.w3.org/TR/css-easing-1/"
+    publisher: "W3C"
+    role: "primary"
+    free: true
+    accessed: "2026-10-24"
+  - kind: "docs"
+    title: "Easing and duration tokens"
+    url: "https://m3.material.io/styles/motion/easing-and-duration/tokens-specs"
+    publisher: "Material Design 3"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-24"
+  - kind: "docs"
+    title: "Transitions"
+    url: "https://motion.dev/docs/react-transitions"
+    publisher: "Motion"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-24"
+  - kind: "tool"
+    title: "easing.dev"
+    url: "https://easing.dev/"
+    publisher: "easing.dev"
+    role: "reference"
+    free: true
+    accessed: "2026-10-24"
+  - kind: "article"
+    title: "Animation performance and timing"
+    url: "https://web.dev/articles/animations-guide"
+    publisher: "web.dev"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-24"
+---
+import EasingLab from "../../components/labs/EasingLab";
+
+## The short definition
+
+Easing is the function that turns elapsed time into progress.
+
+At `t = 0` the animation has not moved. At `t = 1` it has arrived. A linear curve spends equal progress on every equal slice of time. Every other curve redistributes that progress: fast first, slow last, or slow at both ends.
+
+That redistribution is the whole effect. The element still travels the same distance in the same duration; easing changes **where the motion spends its speed**.
+
+It matters because movement is how an interface explains itself. A panel that starts instantly and settles softly reads as a thing responding to your touch. The same panel moving at constant speed reads as a machine executing a command.
+
+## Where linear is right
+
+Linear is not the enemy. It is correct wherever the animation represents continuous progress rather than a physical object:
+
+- a progress bar that tracks a download;
+- a spinner rotating at constant speed;
+- a marquee;
+- any motion driven directly by scroll position, where the scrollbar itself is the clock. See [scroll-linked animation](/concepts/scroll-linked-animation).
+
+In those cases, adding easing makes the indicator lie about the underlying rate. For a scrubbed animation, the curve should stay linear for the same reason: the user is already controlling time.
+
+For everything else — entrances, exits, hovers, slide-overs, expanding panels — the curve is doing expressive work.
+
+## The curves worth memorizing
+
+| Curve | Character | Use it for |
+| --- | --- | --- |
+| `linear` | Constant speed | Progress, scrubbed motion, rotation |
+| Ease out | Immediate start, soft landing | Entrances, hover lifts, anything arriving |
+| Ease in-out | Damped at both ends | Movement already on screen |
+| Drawer | Very steep start, long settle | Large surfaces sliding into place |
+| Overshoot | Passes the target, settles back | Rare, playful moments with room to recover |
+
+The built-in CSS keywords are weaker than they look. `ease-out` accelerates less sharply than a good custom curve, and `ease-in` — which starts slowly — is almost never what an interface wants. A dropdown with `ease-in` feels slower than the same dropdown with a stronger exit curve, even when the durations are identical, because the delay lands exactly when the user is watching.
+
+Two curves cover most of the work:
+
+```css
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+```
+
+Use the first for things that appear, disappear, or respond to a press. Use the second for things that move from one place on screen to another. Reach for a third when a specific surface has a specific character, not because more curves make a system richer.
+
+## Feel the difference
+
+<EasingLab client:visible />
+
+The lab keeps distance and duration fixed and changes only the curve. Watch where each dot spends its speed: the selected curve and the faint linear control arrive together, but they do not travel together.
+
+The toast card below the lane uses the same curve. That is the point — an easing decision is not abstract. It is the character of every surface that shares the token.
+
+## Duration is part of the curve
+
+Perceived speed is not a property of the clock. A 180ms dropdown feels more responsive than a 400ms one. A 400ms drawer with a steep early curve can feel faster than a 250ms drawer that starts slowly.
+
+Keep routine interface motion under 300ms:
+
+| Interaction | Working range |
+| --- | --- |
+| Button press feedback | 100–160ms |
+| Tooltip, small popover | 125–200ms |
+| Dropdown, select | 150–250ms |
+| Modal, drawer | 200–350ms |
+| Page transition | 250–400ms |
+
+Scale duration with distance. A 6px tooltip shift should not take as long as a full-screen panel. Large surfaces travel farther in absolute pixels, so they can take slightly longer without reading as sluggish.
+
+There is also an asymmetry worth using: occasional interactions can enter slightly slower and exit faster. High-frequency ephemeral UI inverts that. A tooltip or hover highlight should appear instantly and fade out over roughly 100–150ms, so the interface never makes the user wait to see what they already pointed at.
+
+## What should actually animate
+
+Easing only applies to properties worth animating. Stick to `transform` and `opacity` for motion; both can skip layout and paint. Colour changes are fine. Animating `width`, `height`, `top`, or `left` forces the browser to recalculate layout on every frame.
+
+```css
+.card {
+  transition:
+    transform 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out);
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+```
+
+Never write `transition: all`. It animates properties you did not intend, and it silently adopts future ones. Name the properties explicitly.
+
+Press states belong on `:active` at zero delay. A subtle scale — 0.95 to 0.98 — is enough to tell the user the interface heard the press. Hover motion should be gated behind `@media (hover: hover) and (pointer: fine)`, or touch devices will replay it on tap.
+
+## Failure modes
+
+| Symptom | Usual cause |
+| --- | --- |
+| Motion feels sluggish | `ease-in`, or a duration above 300ms for routine UI |
+| Entrance feels mechanical | Linear timing on something that should arrive |
+| Element appears from nowhere | Starting at `scale(0)` instead of `scale(0.95)` plus opacity |
+| Interface feels unresponsive | No `:active` state, or transitions on layout properties |
+| Toolbar feels laggy | Every tooltip replays the first-open delay and animation |
+| Motion feels heavy on Android | Permanent `will-change`, blur filters, or too many promoted layers |
+
+## Reduced motion
+
+`prefers-reduced-motion` is not a request to remove all feedback. It is a request to remove spatial travel and continuous motion. Keep opacity and colour changes, drop large translations and scale, and pause looping decoration rather than yanking it with `display: none`.
+
+Motion's JavaScript animations ignore a CSS media query, so honour the preference in JavaScript too — with `useReducedMotion()` or a global `MotionConfig reducedMotion="user"`.
+
+## The mental model
+
+Easing is the **character** of the change, not the change itself.
+
+- If something enters, start immediately and land softly.
+- If something moves across the screen, damp both ends.
+- If something reports continuous progress, stay linear.
+- If something is used hundreds of times a day, do not animate it at all.
+
+A curve assumes the motion will run to a fixed script. When a hand can interrupt it, a [spring](/concepts/spring) models the handoff better.
+
+The curve is small. Its consistency is what makes a whole interface feel like one hand drew it.

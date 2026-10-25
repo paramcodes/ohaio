@@ -1,8 +1,24 @@
 import catalogueData from "@/data/catalogue.json";
 import cardsData from "@/data/cards.json";
+import publishedData from "@/data/published.json";
+import { DOMAIN_META, type DomainId, type DomainMeta } from "./domains";
+import {
+  statusRank,
+  type ConceptFormat,
+  type ConceptStatus,
+} from "./status";
 
-export type DomainId = "backend" | "frontend" | "ui" | "gamedev" | "security";
-export type ConceptStatus = "published" | "stub";
+export { DOMAIN_META, DOMAIN_ORDER, isDomainId } from "./domains";
+export type { DomainId, DomainMeta } from "./domains";
+export {
+  FORMAT_LABEL,
+  STATUS_ORDER,
+  isIndexable,
+  isPublished,
+  isReadable,
+  statusLabel,
+} from "./status";
+export type { ConceptFormat, ConceptStatus } from "./status";
 
 export interface ConceptCard {
   slug: string;
@@ -15,6 +31,11 @@ export interface ConceptCard {
   status: ConceptStatus;
   difficulty: number;
   url: string;
+  format: ConceptFormat;
+  priority: "P0" | "P1" | "P2";
+  updated: string;
+  reviewed?: string;
+  sourceCount: number;
 }
 
 export interface Layer {
@@ -35,89 +56,35 @@ export interface Domain {
   conceptCount: number;
   layerCount: number;
   publishedCount: number;
+  inReviewCount: number;
 }
 
-export const catalogue = catalogueData as { domains: Domain[] };
-export const cards = cardsData as ConceptCard[];
+export const catalogue = catalogueData as unknown as { domains: Domain[] };
+export const cards = cardsData as unknown as ConceptCard[];
 export const cardBySlug = new Map(cards.map((card) => [card.slug, card]));
 
-export const DOMAIN_ORDER: DomainId[] = [
-  "backend",
-  "frontend",
-  "ui",
-  "gamedev",
-  "security",
-];
-
-export const DOMAIN_META: Record<
-  DomainId,
-  {
-    name: string;
-    jp: string;
-    color: string;
-    atlas: string;
-    tint: string;
-    tagline: string;
-  }
-> = {
-  backend: {
-    name: "Backend",
-    jp: "基盤",
-    color: "#35604f",
-    atlas: "#74b79c",
-    tint: "#e7efe9",
-    tagline: "Concurrency, storage, networks, and the failure modes behind them.",
-  },
-  frontend: {
-    name: "Frontend",
-    jp: "前面",
-    color: "#40518c",
-    atlas: "#8b9ee0",
-    tint: "#e9ecf7",
-    tagline: "The browser as a distributed system, from cache to paint.",
-  },
-  ui: {
-    name: "Interface",
-    jp: "界面",
-    color: "#8d522e",
-    atlas: "#dd9a68",
-    tint: "#f3ebe2",
-    tagline: "Motion, scroll, components, and the words that make interaction legible.",
-  },
-  gamedev: {
-    name: "Game Dev",
-    jp: "遊戯",
-    color: "#64436f",
-    atlas: "#b58cc7",
-    tint: "#f0eaf3",
-    tagline: "Simulation, rendering, and the craft that makes a world respond.",
-  },
-  security: {
-    name: "Security",
-    jp: "守り",
-    color: "#8d3137",
-    atlas: "#d97b80",
-    tint: "#f6e8e8",
-    tagline: "Break it carefully, then understand exactly why it broke.",
-  },
-};
+export const publishedSlugs = new Set(publishedData.slugs);
 
 export const stats = {
   concepts: cards.length,
   domains: catalogue.domains.length,
   layers: catalogue.domains.reduce((sum, domain) => sum + domain.layerCount, 0),
   fieldNotes: cards.filter((card) => card.status === "published").length,
+  inReview: cards.filter((card) => card.status === "in-review").length,
+  sources: cards.reduce((sum, card) => sum + card.sourceCount, 0),
 };
 
 export const publishedCards = cards.filter((card) => card.status === "published");
+export const inReviewCards = cards.filter((card) => card.status === "in-review");
 
-export const featured = cardBySlug.get("lost-update") ?? publishedCards[0];
+export const featured =
+  publishedCards[0] ?? inReviewCards[0] ?? cardBySlug.get("lost-update") ?? cards[0];
 
 export function getDomain(id: string): Domain | undefined {
   return catalogue.domains.find((domain) => domain.id === id);
 }
 
-export function domainMeta(id: DomainId) {
+export function domainMeta(id: DomainId): DomainMeta {
   return DOMAIN_META[id];
 }
 
@@ -135,31 +102,34 @@ export function neighbours(slug: string) {
 }
 
 export function relatedTo(card: ConceptCard, limit = 4): ConceptCard[] {
-  return cards
-    .filter(
-      (candidate) =>
-        candidate.slug !== card.slug &&
-        candidate.domain === card.domain &&
-        candidate.layer === card.layer,
-    )
-    .slice(0, limit);
+  const sameLayer = cards.filter(
+    (candidate) =>
+      candidate.slug !== card.slug &&
+      candidate.domain === card.domain &&
+      candidate.layer === card.layer,
+  );
+  if (sameLayer.length >= limit) return sameLayer.slice(0, limit);
+  const sameDomain = cards.filter(
+    (candidate) =>
+      candidate.slug !== card.slug &&
+      candidate.domain === card.domain &&
+      candidate.layer !== card.layer,
+  );
+  return [...sameLayer, ...sameDomain].slice(0, limit);
 }
 
 export function difficultyLabel(value: number): string {
   return ["", "Approach", "Everyday", "Working", "Deep", "Specialist"][value] ?? "Working";
 }
 
-export function statusLabel(status: ConceptStatus): string {
-  return status === "published" ? "Field note" : "Filed entry";
-}
-
 export function searchConcepts(query: string, limit = 10): ConceptCard[] {
   const q = query.trim().toLowerCase();
-  const pool = [...cards];
+  const pool = cards.filter((card) => card.status !== "archived");
   if (!q) {
-    return pool
+    return [...pool]
       .sort((a, b) => {
-        if (a.status !== b.status) return a.status === "published" ? -1 : 1;
+        const rank = statusRank(a.status) - statusRank(b.status);
+        if (rank !== 0) return rank;
         return a.title.localeCompare(b.title);
       })
       .slice(0, limit);
@@ -177,11 +147,17 @@ export function searchConcepts(query: string, limit = 10): ConceptCard[] {
       if (layer.includes(q)) score += 35;
       if (summary.includes(q)) score += 20;
       if (card.domainName.toLowerCase().includes(q)) score += 10;
-      if (card.status === "published") score += 4;
+      if (card.status === "published") score += 8;
+      else if (card.status === "in-review") score += 4;
       return { card, score };
     })
     .filter((entry) => entry.score > 0)
-    .sort((a, b) => b.score - a.score || a.card.title.localeCompare(b.card.title));
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        statusRank(a.card.status) - statusRank(b.card.status) ||
+        a.card.title.localeCompare(b.card.title),
+    );
 
   return scored.slice(0, limit).map((entry) => entry.card);
 }

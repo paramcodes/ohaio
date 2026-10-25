@@ -1,0 +1,181 @@
+---
+summary: "A command palette is a modal dialog wearing a search box. The filter is the easy part; the dialog semantics, the keyboard contract and the action registry are the product."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "standard"
+    title: "Combobox Pattern — ARIA Authoring Practices Guide"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/"
+    publisher: "W3C WAI"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "standard"
+    title: "Dialog (Modal) Pattern — ARIA Authoring Practices Guide"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+    publisher: "W3C WAI"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "<dialog>: the Dialog element"
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog"
+    publisher: "MDN Web Docs"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "HTMLDialogElement.prototype.showModal()"
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal"
+    publisher: "MDN Web Docs"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Designing Retool's Command Palette"
+    url: "https://retool.com/blog/designing-the-command-palette"
+    publisher: "Retool"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "aria-activedescendant"
+    url: "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-activedescendant"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import CommandPaletteLab from "../../components/labs/CommandPaletteLab";
+
+## The short definition
+
+A command palette is a keyboard-invoked modal that filters a list of everything the product can do, and runs the one you pick. It came out of developer tools — Emacs's `M-x`, then Sublime, then VS Code's "Go to Symbol" — and spread to products where the surface area of actions outran the menu bar.
+
+The pattern is two established widgets bolted together: a **modal dialog** for the container, and a **combobox with a listbox** for the query and results. Almost every palette bug lives in one of the two halves that people skip, because they are invisible until a keyboard or a screen reader touches them.
+
+<CommandPaletteLab client:visible />
+
+Toggle the lab to *a positioned div* and press Tab inside the palette. Focus leaves. The two fields behind it are still reachable, still clickable, and still announce themselves to a screen reader as part of the page you supposedly left. That is the whole argument for the dialog element, demonstrated in one keystroke.
+
+Both paths measured in Chrome 156 at 1440 × 900, with the same panel markup and the same two form fields sitting behind it:
+
+| Probe | `<dialog>` + `showModal()` | The positioned div |
+| --- | --- | --- |
+| `matches(":modal")` while open | `true` | `false` — it is never modal |
+| Focus on open | The palette input | The palette input, if you remember to move it |
+| Tab from the input | The close button, still inside | The close button, then an article link |
+| Readout after two Tabs | "inside the palette" | "out to the page" |
+| `behindField.focus()` from script | Rejected; focus did not move | Succeeded; the background took the caret |
+| Escape | Closes, and focus returns to the trigger | Closes only while focus is still inside the box |
+
+The last row is the quiet one. A hand-written Escape handler is attached to a subtree, so the moment focus wanders out of the surface, your cancel key stops working — and Tab is exactly what makes it wander.
+
+## The dialog half
+
+`<dialog>` plus `showModal()` is not a styled `<div>`. It gives you five things at once:
+
+| What | Behaviour |
+| --- | --- |
+| Top layer | The palette renders above everything, without a `z-index` negotiation |
+| Backdrop | `::backdrop` is a real element you can dim, and clicking it is detectable |
+| Focus trap | Tab and Shift+Tab cannot leave the dialog |
+| Inert page | Everything outside the dialog becomes non-focusable and hidden from assistive technology |
+| Escape | Fires a `cancel` event, and the dialog closes if you do not prevent it |
+
+Hand-rolling those five is a standing source of regressions: the trap needs to know about newly focused elements, `inert` needs to be applied to every sibling rather than one container, and Escape has to cooperate with every other overlay on the page.
+
+The trap has a boundary condition worth knowing, because a palette is exactly the surface that hits it: it cycles through the *tabbable elements inside the dialog*. The first version of this lab had one — the input, since the result rows are moved with `aria-activedescendant` and are not focusable. Pressing Tab from it went nowhere inside, so Chrome released focus to the document and `document.activeElement` was `<body>`. Adding a real close button gave the cycle two stops, and Tab has stayed inside ever since. If your palette has one focusable element, it has no trap.
+
+Two details people get wrong even with `showModal()`. First, the dialog must be *shown* modally, not merely given the `open` attribute — `open` gives you a non-modal dialog with no backdrop, no trap, and no inert background. Second, closing returns focus to whatever the browser thinks was active before; if the trigger was removed or re-rendered, focus lands on `<body>` and the keyboard user has started the page over. Restore it deliberately.
+
+## The combobox half
+
+The input is `role="combobox"`, the list is `role="listbox"`, each row is `role="option"`, and the row the arrows are on is named by `aria-activedescendant` on the input.
+
+That last part is the choice that decides whether the palette is usable by keyboard. There are two ways to move a highlight through a list:
+
+| Approach | How | What it costs |
+| --- | --- | --- |
+| `aria-activedescendant` | Focus stays in the input; the attribute names the highlighted option | One focusable element; the DOM must keep the highlighted option rendered and scrolled into view |
+| Roving tabindex | Each option is focusable; the `tabindex="0"` moves between them | Every arrow press is a real focus move, and the input loses the caret |
+
+A palette wants the caret. The user is mid-word, and typing another character should filter, not navigate. So the input keeps focus, the arrows move a virtual highlight, and `aria-activedescendant` tells assistive technology which option that highlight is on. It is the pattern the ARIA guide documents for "list with autocomplete", and it comes with obligations: the highlighted option must be visible, `aria-selected` must follow the highlight, and the list must be labelled.
+
+## The keyboard contract
+
+A palette is used by people who have decided what they want to do. Every millisecond and every ambiguity in the contract is paid for in frustration:
+
+- **Open** — `⌘K` on Mac, `Ctrl K` elsewhere, and a visible button for everyone who does not know the shortcut. The binding must not fight the browser's own: `Ctrl K` focuses the address bar in Chrome unless you prevent the default. It must also not fight *your app's* own, which is the subtler version of the same bug — see below.
+- **Filter** — as typed, no debounce for a local list. Debouncing a client-side filter over a few hundred entries buys nothing and feels broken.
+- **Move** — `↑` `↓` wrap around, `Home` / `End` jump to the ends, and the highlight scrolls into view.
+- **Run** — `↵`. `Tab` never runs anything; it moves focus, and inside a dialog it should not be able to leave.
+- **Cancel** — `Esc`, always, and it returns focus to the trigger.
+- **Discover** — the empty query shows the most useful commands, not nothing. A blank palette teaches nobody what it can do.
+
+The empty state and the no-match state are where most palettes are lazy. "Nothing matches `hydra`" is a dead end; "Nothing matches `hydra`. Try *Hydration*" is a route out.
+
+### One shortcut, one owner
+
+This atlas has a `⌘K` palette of its own, in the shell, mounted once for every page. The first version of this lab bound the same keys on `window`. Pressing them inside the lab opened *both*, and the symptom was bizarre: the first Escape appeared to do nothing, because it was closing the other dialog — the one on top of the stack.
+
+Scoping fixed it, and the fix is two lines: bind the shortcut where the surface lives, and stop the event there.
+
+```tsx
+// on the lab's own container, not on window
+if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
+  event.preventDefault();
+  event.stopPropagation();
+  toggle();
+}
+```
+
+`preventDefault()` alone is not enough — it stops the browser, not the other React listener on `window`. `stopPropagation()` is what keeps a second component from hearing the same keystroke. Measured after the change: `⌘K` with focus inside the lab opened only the lab (`document.querySelector(".palette-overlay")` stayed `null`), and `⌘K` with focus anywhere else on the page opened only the atlas's.
+
+## Matching
+
+Fuzzy matching is a substring-with-gaps test, and its ranking rules are what make it feel mind-readingly good or randomly bad:
+
+- A contiguous run beats scattered characters.
+- Matches at the start of a word beat matches mid-word — `scl` should find "Scroll snap" before "Cascade layers".
+- The whole label is searchable, but only the label is displayed. Searching a hidden alias list is invisible help.
+- Ties break by recency or by the user's own frequency, not by array order.
+
+Highlight the characters that matched. It is the only feedback that explains why a result is in the list at all, and without it a fuzzy matcher looks like a broken one.
+
+## The registry is the product
+
+A palette is only as good as the list of things it can do, and that list has a hard requirement: **every command must be reachable from the menus too, with the same name**. If the palette can do something the interface cannot, it is a second, secret UI that nobody documents and every support ticket trips over. If it can do fewer things than the menus, users stop trusting it and go back to clicking.
+
+The practical consequence is architectural: actions are declared once, as data — a label, a group, optional shortcut, a scope, a `run` function — and both the menus and the palette render from that registry. Retool's write-up of their palette arrives at the same place from the design side: the palette is a view over the app's action catalogue, and the work goes into keeping the catalogue honest.
+
+Two decisions the registry forces:
+
+- **Scope.** A "Rename" command means something on a page and nothing on another. Either filter the catalogue to the current scope, or label the rows so the user knows what they will be renaming.
+- **Destructive actions.** Deleting things belongs in the palette only with a confirmation step, or with the same hold-to-confirm you use elsewhere. A palette that can destroy with `↵` is a fast way to lose work.
+
+## Where it goes wrong
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Tab walks out of the palette | A positioned div, not `showModal()` | Use `<dialog>`; the trap is the point |
+| The page behind is still clickable | `open` attribute instead of modal | `showModal()`, which makes the rest inert |
+| Screen reader reads every row as you arrow | Focus moved per option instead of `aria-activedescendant` | Keep focus in the input |
+| `↵` does nothing on the highlighted row | Highlight state and active index stored in two places | One source: the index |
+| Escape closes the palette and the page's editor too | Two overlays both listening on `window` | Let the dialog own Escape; scope the rest |
+| Escape seems to do nothing on the first press | Two surfaces bound the same open key, so two are stacked | One owner per shortcut: `stopPropagation()` where you claim it |
+| Results flicker while typing | Debounce on a local list | Filter synchronously; debounce only server calls |
+| Nobody discovers what it does | Empty query renders an empty list | Seed the empty state with frequent commands |
+| Focus is lost after running a command | The trigger re-rendered while the dialog was open | Restore focus explicitly on close |
+
+## The mental model
+
+Say the name out loud in order: **command** palette, not command **search**. The noun is the action; the search box is the input method. A palette that returns only pages is a worse version of the site's search, and one that returns actions nobody can find in the menus is a hidden interface.
+
+Build it as a dialog, wire the combobox properly, keep one registry that the menus share, and put the same name on the same verb everywhere.
+
+- [Popover](/concepts/popover) — the lighter sibling, and why a palette is not one.
+- [Focus trap](/concepts/focus-trap) — what `showModal()` does for you, and when the platform already provides it.
+- [Focus management](/concepts/focus-management) — where the caret goes on open, on close, and after a command runs.

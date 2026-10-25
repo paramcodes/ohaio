@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { DOMAIN_META, DOMAIN_ORDER, catalogue } from "@/lib/site";
+import { DOMAIN_META, DOMAIN_ORDER, catalogue, statusLabel } from "@/lib/site";
 import { paths } from "@/data/paths";
 
 export function getStaticPaths() {
@@ -82,8 +82,16 @@ const description = `${domain.name} concepts in the ohaio field guide: ${domain.
           {layer.concepts.map((card) => (
             <div class="domain-concept" data-concept={card.slug}>
               <a class="domain-concept-title" href={card.url}>{card.title}</a>
-              {card.status === "published" ? (
-                <span class="status-tag status-tag--published">Field note</span>
+              {card.status === "published" || card.status === "in-review" ? (
+                <span
+                  class={
+                    card.status === "published"
+                      ? "status-tag status-tag--published"
+                      : "status-tag status-tag--review"
+                  }
+                >
+                  {statusLabel(card.status)}
+                </span>
               ) : null}
               <span class="domain-concept-copy">{card.summary}</span>
             </div>

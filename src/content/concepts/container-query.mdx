@@ -1,0 +1,127 @@
+---
+summary: "A container query lets a component restyle itself from the size of its own parent, not the browser window. It is the difference between a page that is responsive and a component that is responsive."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "docs"
+    title: "@container (CSS at-rule)"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/@container"
+    publisher: "MDN Web Docs"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "container-type (CSS property)"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/container-type"
+    publisher: "MDN Web Docs"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "CSS Containment Module Level 3"
+    url: "https://www.w3.org/TR/css-contain-3/"
+    publisher: "W3C"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "CSS containment: Container queries (guide)"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+    publisher: "MDN Web Docs"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "container (CSS shorthand property)"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/container"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import ContainerQueryLab from "../../components/labs/ContainerQueryLab";
+
+## The short definition
+
+A **container query** applies styles based on the size of the element being *styled's ancestor container*, instead of the size of the viewport. You mark an element as a query container with `container-type`, then write `@container` rules that its descendants match against that element's dimensions.
+
+The distinction that makes it matter: a media query answers a question about the **whole browser window**. A container query answers a question about **the space this one component was actually given**. Those are the same question only when a component spans the window — which most reusable components never do.
+
+## The problem it exists to solve
+
+Consider one card component. It appears in a 320px sidebar, a 700px main column, and a full-width modal — all inside the *same* 1440px viewport. A media query can only see 1440px, so it hands all three the same layout. To make the card fit each slot you end up passing modifier classes from the parent, or writing a breakpoint ladder that guesses the card's width from the window's width. Both leak the page's layout back into the component.
+
+Container queries invert that. The card asks its own wrapper "how wide am I?" and picks a layout accordingly. The component becomes self-contained: drop it in any slot and it adapts without the slot telling it what to do.
+
+## The mechanism
+
+Two pieces, and forgetting either one is the whole reason "my container query doesn't work":
+
+```css
+.card-wrap {
+  container-type: inline-size;   /* 1. make this a query container */
+  container-name: card;          /*    optional: name it */
+}
+
+@container card (min-width: 20rem) {   /* 2. query that container */
+  .card { grid-template-columns: 7rem 1fr; }
+}
+```
+
+- **`container-type` is the switch.** Without it there is no query container and `@container` simply never matches — it is not a fallback to the viewport, it is a dead rule. `inline-size` is the everyday value: it establishes a query container on the **inline axis only** and applies inline-size containment, so the element's width can be computed independently of its children.
+- **`container-name`** lets you target a specific container when several are nested, and avoids an inner query accidentally answering to an outer one.
+- **The condition** (`min-width`, `width > 20rem`, `orientation`, aspect-ratio) is evaluated against the container's content box, not the window.
+
+### `inline-size` versus `size`
+
+`container-type: size` queries **both** axes, but it applies full size containment: the element's block size is computed *ignoring its children*. That means an element with `container-type: size` and no explicit height collapses to zero — it can no longer be sized by its content. This is the single most common container-query bug, and it is why `inline-size` (which leaves block size content-driven) is the default choice. Only reach for `size` when you are also setting an explicit block dimension.
+
+## See it work
+
+<ContainerQueryLab client:visible />
+
+The lab puts two identical cards in one resizable box. The top card's layout is driven by `@container`; the bottom card's identical layout is driven by `@media` at the same `20rem` threshold. Now drag the width:
+
+- The **viewport metric never moves** — you are resizing a box, not the window.
+- The **`@media` card is frozen** in its two-column layout, because the window is far wider than `20rem` and that is the only fact a media query can see.
+- The **`@container` card flips** to one column the instant the box drops below `20rem`, because it is measuring the box it actually lives in.
+- **"Cards agree?"** turns to `no` across the narrow range. That disagreement is the entire argument: the media-query card is rendering a layout chosen for a viewport it does not occupy.
+
+The title is sized with `6cqi` — container query units, where `1cqi` is 1% of the container's inline size — so its pixel size rides the box width too. Flip `container-type` to `none` and the layout flip stops dead: with no query container there is nothing for `@container` to measure, so the card freezes at its base one-column layout no matter how wide the box gets. The `cqi` units fall back to the viewport at the same time (visible as a jump in the title when the container is below its `clamp` ceiling).
+
+## Container query units
+
+Alongside the at-rule, a set of length units resolve against the nearest query container:
+
+| Unit | Resolves to |
+| --- | --- |
+| `cqi` / `cqw` | 1% of the container's inline / width size |
+| `cqb` / `cqh` | 1% of the container's block / height size |
+| `cqmin` / `cqmax` | the smaller / larger of the two |
+
+These let a component scale type and spacing to its own box without a media query at all — `font-size: clamp(0.85rem, 6cqi, 2rem)` grows with the container and stays bounded. Note the asymmetry: `cqh` and friends need a container that queries the block axis (`container-type: size`), which brings the collapse caveat above with it.
+
+## Failure modes
+
+| Symptom | Cause |
+| --- | --- |
+| `@container` rule never applies | No ancestor has `container-type` set — there is no query container |
+| Container collapses to zero height | `container-type: size` applies block-size containment; give it an explicit height or use `inline-size` |
+| Inner card queries the wrong element | A nearer ancestor became the query container; use `container-name` and target it |
+| Component looks fine full-width, broken in a sidebar | It was built with media queries, so it never saw the sidebar's real width |
+| `cqh` has no effect | Block-axis container units need `container-type: size`, not `inline-size` |
+| Query matches unexpectedly at the boundary | The condition is measured against the container's **content box**, so padding/border shift the effective threshold |
+
+## Distinctions
+
+- **Container query vs. media query.** A media query reads the viewport (or a media feature like `prefers-color-scheme`); a container query reads a specific ancestor element's box. Media queries are for pages, container queries are for components.
+- **Container query vs. container query units.** The at-rule switches discrete layouts across a threshold; the `cqi`/`cqh` units scale a continuous value with the container. They pair well but are independent features.
+- **Container query vs. responsive images.** `srcset`/`<picture>` choose an image *file* by viewport or slot; container queries choose *CSS* by an ancestor's size. Different mechanism, same goal of matching presentation to available space.
+
+## Check yourself
+
+1. You add an `@container (min-width: 40rem)` rule and nothing changes, with no error. What one declaration is almost certainly missing, and on which element does it belong?
+2. A card with `container-type: size` and no height suddenly renders empty. Explain why, and what you would change if you only need to react to width.
+3. The same card must show one column at 300px and two at 600px, but it appears in a sidebar and a full-width page inside the *same* viewport. Why can a media query not do this, and what does the container-based version need on its wrapper?

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import LogoMark from "@/components/LogoMark.astro";
+import DomainIcon from "@/components/DomainIcon.astro";
 import ReadingProgress from "@/components/ReadingProgress";
 import graphData from "@/data/graph.json";
 import {
@@ -10,15 +10,18 @@ import {
   cards,
   difficultyLabel,
   featured,
+  inReviewCards,
   publishedCards,
   stats,
+  statusLabel,
 } from "@/lib/site";
 
 const title = "ohaio";
 const description =
   "A morning field guide to the working concepts behind backend, frontend, interface, game development, and security engineering. Read one entry, follow the connections, keep the map.";
 
-const notes = publishedCards.slice(0, 6);
+const notes = [...publishedCards, ...inReviewCards].slice(0, 6);
+const featuredMeta = DOMAIN_META[featured.domain];
 
 const nodes = graphData.nodes;
 const minX = Math.min(...nodes.map((node) => node.x));
@@ -74,66 +77,113 @@ const domainLabels = drawnNodes.filter((node) => node.type === "domain");
 
 <BaseLayout title={title} description={description}>
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <p class="hero-kicker">
-          <span class="jp">おはよう</span>
-          <span>A morning field guide for working engineers</span>
-        </p>
+    <div class="wrap">
+      <p class="hero-kicker">
+        <span class="jp">おはよう</span>
+        <span>A morning field guide for working engineers</span>
+      </p>
+
+      <div class="hero-intro">
         <h1 class="hero-title">
           The vocabulary<br />production teaches<br />the hard way.
         </h1>
-        <p class="hero-lede">
-          {stats.concepts} working concepts across backend, frontend, interface, game
-          development, and security. Each one gets a plain definition, a place in the map,
-          and a way to go deeper.
-        </p>
-        <div class="hero-actions">
-          <a class="button button-primary" href={featured.url}>
-            Start with a field note
-            <span class="arrow" aria-hidden="true">↗</span>
-          </a>
-          <a class="button button-quiet" href="/atlas">Open the atlas</a>
-        </div>
-        <div class="hero-stats">
-          <div>
-            <span class="stat-value">{stats.concepts}</span>
-            <span class="stat-label">entries</span>
-          </div>
-          <div>
-            <span class="stat-value">{stats.domains}</span>
-            <span class="stat-label">domains</span>
-          </div>
-          <div>
-            <span class="stat-value">{stats.layers}</span>
-            <span class="stat-label">layers</span>
-          </div>
-          <div>
-            <span class="stat-value">{stats.fieldNotes}</span>
-            <span class="stat-label">field notes</span>
+        <div class="hero-intro-side">
+          <p class="hero-lede">
+            {stats.concepts} working concepts across backend, frontend, interface, game
+            development, and security. Each one gets a plain definition, a place in the map,
+            and a way to go deeper.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href={featured.url}>
+              Start with a field note
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+            <a class="button button-quiet" href="/atlas">Open the atlas</a>
           </div>
         </div>
       </div>
 
-      <aside class="hero-plate" aria-label="First field note">
-        <div class="plate-top">
-          <LogoMark class="plate-mark" />
-          <span class="plate-jp jp" aria-hidden="true">朝の記録</span>
-        </div>
-        <div class="plate-entry">
-          <div class="plate-entry-label">
-            <span>Field note 01</span>
-            <span>{featured.domainName}</span>
+      <div class="hero-panel" style={`--dc: ${featuredMeta.color}; --dtint: ${featuredMeta.tint}`}>
+        <div class="hero-panel-body">
+          <div class="hero-panel-copy">
+            <p class="hero-panel-label">
+              <span class="domain-dot" aria-hidden="true"></span>
+              Field note 01
+              <span aria-hidden="true">·</span>
+              {featured.domainName}
+            </p>
+            <a class="hero-panel-title" href={featured.url} data-concept={featured.slug}>
+              {featured.title}
+            </a>
+            <p class="hero-panel-summary">{featured.summary}</p>
+            <a class="button button-primary" href={featured.url}>
+              Read the field note
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
           </div>
-          <a class="plate-entry-title" href={featured.url} data-concept={featured.slug}>
-            {featured.title}
-          </a>
-          <p>{featured.summary}</p>
-          <a class="plate-entry-link" href={featured.url}>
-            Read the note <span class="arrow" aria-hidden="true">→</span>
+
+          <div class="hero-panel-art" aria-hidden="true">
+            <span class="hero-panel-jp jp">朝の記録</span>
+            <svg
+              class="hero-constellation"
+              viewBox={`0 0 ${viewW} ${viewH}`}
+              role="presentation"
+            >
+              <g>
+                {edgePaths.map((path) => (
+                  <path class="constellation-edge" d={path.d} style={`stroke: ${path.color}`} />
+                ))}
+              </g>
+              {drawnNodes.map((node) => (
+                <circle
+                  class="constellation-node"
+                  cx={node.px}
+                  cy={node.py}
+                  r={node.radius * 1.35}
+                  fill={node.color}
+                />
+              ))}
+            </svg>
+          </div>
+        </div>
+
+        <div class="hero-panel-foot">
+          <div class="hero-tabs">
+            {DOMAIN_ORDER.map((id) => {
+              const domain = catalogue.domains.find((item) => item.id === id);
+              if (!domain) return null;
+              return (
+                <a href={`/domains/${id}`}>
+                  <span class="jp" aria-hidden="true">{DOMAIN_META[id].jp}</span>
+                  {domain.name}
+                </a>
+              );
+            })}
+          </div>
+          <a class="text-link" href="/atlas">
+            Explore the atlas <span class="arrow" aria-hidden="true">→</span>
           </a>
         </div>
-      </aside>
+      </div>
+
+      <div class="hero-stats">
+        <div>
+          <span class="stat-value">{stats.concepts}</span>
+          <span class="stat-label">entries</span>
+        </div>
+        <div>
+          <span class="stat-value">{stats.domains}</span>
+          <span class="stat-label">domains</span>
+        </div>
+        <div>
+          <span class="stat-value">{stats.layers}</span>
+          <span class="stat-label">layers</span>
+        </div>
+        <div>
+          <span class="stat-value">{stats.fieldNotes}</span>
+          <span class="stat-label">field notes</span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -153,7 +203,7 @@ const domainLabels = drawnNodes.filter((node) => node.type === "domain");
       <div class="atlas-plate">
         <div class="atlas-plate-meta">
           <i aria-hidden="true"></i>
-          404 points plotted
+          {nodes.length} points plotted
         </div>
         <svg
           class="constellation-plate"
@@ -214,24 +264,25 @@ const domainLabels = drawnNodes.filter((node) => node.type === "domain");
         </p>
       </div>
 
-      <div class="domain-list">
+      <div class="domain-grid">
         {DOMAIN_ORDER.map((id) => {
           const domain = catalogue.domains.find((item) => item.id === id);
           if (!domain) return null;
           const meta = DOMAIN_META[id];
           return (
             <a
-              class="domain-row"
+              class="domain-card"
               href={`/domains/${id}`}
-              style={`--dc: ${meta.color}`}
+              style={`--dc: ${meta.color}; --dtint: ${meta.tint}`}
             >
-              <span class="domain-glyph jp" aria-hidden="true">{meta.jp}</span>
-              <span class="domain-name">
-                {domain.name}
-                <small>{meta.tagline}</small>
+              <span class="domain-glyph" aria-hidden="true">
+                <DomainIcon domain={id} />
               </span>
-              <span class="domain-blurb">{domain.description}</span>
-              <span class="domain-tail">
+              <span class="domain-card-body">
+                <span class="domain-name">{domain.name}</span>
+                <span class="domain-blurb">{meta.tagline}</span>
+              </span>
+              <span class="domain-card-foot">
                 <span class="domain-count">
                   {domain.conceptCount} entries / {domain.layerCount} layers
                 </span>
@@ -256,30 +307,41 @@ const domainLabels = drawnNodes.filter((node) => node.type === "domain");
         </a>
       </div>
 
-      <div class="note-list">
-        {notes.map((note, index) => {
+      <div class="note-grid">
+        {notes.map((note) => {
           const meta = DOMAIN_META[note.domain];
           return (
             <a
-              class="note-row"
+              class="note-card"
               href={note.url}
               data-concept={note.slug}
-              style={`--dc: ${meta.color}`}
+              style={`--dc: ${meta.color}; --dtint: ${meta.tint}`}
             >
-              <span class="note-number">{String(index + 1).padStart(2, "0")}</span>
-              <span>
-                <span class="note-title">{note.title}</span>
-                <span class="note-copy">{note.summary}</span>
+              <span class="note-thumb" aria-hidden="true">
+                <DomainIcon domain={note.domain} />
+              </span>
+              <span class="note-body">
                 <span class="note-meta">
                   <span class="domain-chip" style={`--dc: ${meta.color}`}>
                     <i class="domain-dot" />
                     {note.domainName}
                   </span>
-                  <span>{note.layerName}</span>
-                  <span>{difficultyLabel(note.difficulty)}</span>
+                  <span class={note.status === "published" ? "status-tag status-tag--published" : "status-tag status-tag--review"}>
+                    {statusLabel(note.status)}
+                  </span>
+                </span>
+                <span class="note-title">{note.title}</span>
+                <span class="note-copy">{note.summary}</span>
+                <span class="note-foot">
+                  <span>
+                    {difficultyLabel(note.difficulty)} · {note.sourceCount}{" "}
+                    {note.sourceCount === 1 ? "source" : "sources"}
+                  </span>
+                  <span class="note-read">
+                    Read note <span class="arrow" aria-hidden="true">→</span>
+                  </span>
                 </span>
               </span>
-              <span class="note-tail arrow" aria-hidden="true">→</span>
             </a>
           );
         })}

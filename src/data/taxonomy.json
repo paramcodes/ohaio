@@ -1,0 +1,4007 @@
+{
+  "version": 1,
+  "updated": "2026-10-24",
+  "domains": [
+    {
+      "id": "backend",
+      "name": "Backend",
+      "jp": "\u57fa\u76e4",
+      "tagline": "Concurrency, storage, networks, and the failure modes behind them.",
+      "description": "Concurrency, databases, networking, queues, and the failure modes that only appear under load.",
+      "layers": [
+        {
+          "id": "production-failure-overload",
+          "number": "1",
+          "name": "Production failure / overload",
+          "description": "Concepts that belong together under production failure / overload in this domain.",
+          "concepts": [
+            "partial-failure",
+            "cache-stampede",
+            "retry-storm",
+            "circuit-breaker",
+            "bulkhead-pattern",
+            "backpressure"
+          ]
+        },
+        {
+          "id": "latency-where-backend-engineering-gets-serious",
+          "number": "2",
+          "name": "Latency",
+          "description": "Latency \u2014 where backend engineering gets serious",
+          "concepts": [
+            "tail-latency",
+            "latency-distribution"
+          ]
+        },
+        {
+          "id": "networking-tcp-http-internals",
+          "number": "3",
+          "name": "Networking / TCP / HTTP internals",
+          "description": "Concepts that belong together under networking / tcp / http internals in this domain.",
+          "concepts": [
+            "time-wait",
+            "close-wait"
+          ]
+        },
+        {
+          "id": "connection-pools",
+          "number": "4",
+          "name": "Connection pools",
+          "description": "Concepts that belong together under connection pools in this domain.",
+          "concepts": [
+            "connection-pool-exhaustion",
+            "pool-starvation"
+          ]
+        },
+        {
+          "id": "database-concurrency",
+          "number": "5",
+          "name": "Database concurrency",
+          "description": "Concepts that belong together under database concurrency in this domain.",
+          "concepts": [
+            "write-skew",
+            "mvcc",
+            "lost-update"
+          ]
+        },
+        {
+          "id": "postgresql-internals",
+          "number": "6",
+          "name": "PostgreSQL internals",
+          "description": "Concepts that belong together under postgresql internals in this domain.",
+          "concepts": [
+            "wal",
+            "lsn"
+          ]
+        },
+        {
+          "id": "query-performance-things-people-discover-the-hard-way",
+          "number": "7",
+          "name": "Query performance",
+          "description": "Query-performance things people discover the hard way",
+          "concepts": [
+            "n1-query-problem",
+            "write-amplification"
+          ]
+        },
+        {
+          "id": "storage-engines-lsm-rocksdb",
+          "number": "8",
+          "name": "Storage engines / LSM / RocksDB",
+          "description": "Concepts that belong together under storage engines / lsm / rocksdb in this domain.",
+          "concepts": [
+            "compaction",
+            "lsm-tree"
+          ]
+        },
+        {
+          "id": "distributed-systems",
+          "number": "9",
+          "name": "Distributed systems",
+          "description": "Concepts that belong together under distributed systems in this domain.",
+          "concepts": [
+            "split-brain",
+            "clock-skew",
+            "fencing-tokens"
+          ]
+        },
+        {
+          "id": "messaging-queues-kafka",
+          "number": "10",
+          "name": "Messaging / queues / Kafka",
+          "description": "Concepts that belong together under messaging / queues / kafka in this domain.",
+          "concepts": [
+            "transactional-outbox",
+            "at-most-once-delivery"
+          ]
+        },
+        {
+          "id": "api-correctness",
+          "number": "11",
+          "name": "API correctness",
+          "description": "Concepts that belong together under api correctness in this domain.",
+          "concepts": [
+            "idempotency",
+            "idempotency-key"
+          ]
+        },
+        {
+          "id": "caching-far-deeper-than-use-redis",
+          "number": "12",
+          "name": "Caching beyond Redis",
+          "description": "Caching \u2014 far deeper than \u201cuse Redis\u201d",
+          "concepts": [
+            "stale-while-revalidate",
+            "cache-invalidation-race"
+          ]
+        },
+        {
+          "id": "concurrency",
+          "number": "13",
+          "name": "Concurrency",
+          "description": "Concepts that belong together under concurrency in this domain.",
+          "concepts": [
+            "false-sharing",
+            "race-condition"
+          ]
+        },
+        {
+          "id": "runtime-garbage-collection",
+          "number": "14",
+          "name": "Runtime / garbage collection",
+          "description": "Concepts that belong together under runtime / garbage collection in this domain.",
+          "concepts": [
+            "goroutine-leak",
+            "stop-the-world-gc"
+          ]
+        },
+        {
+          "id": "linux-os-internals",
+          "number": "15",
+          "name": "Linux / OS internals",
+          "description": "Concepts that belong together under linux / os internals in this domain.",
+          "concepts": [
+            "oom-killer",
+            "file-descriptor-exhaustion"
+          ]
+        },
+        {
+          "id": "kubernetes-containers",
+          "number": "16",
+          "name": "Kubernetes / containers",
+          "description": "Concepts that belong together under kubernetes / containers in this domain.",
+          "concepts": [
+            "crashloopbackoff",
+            "oomkilled"
+          ]
+        },
+        {
+          "id": "observability",
+          "number": "17",
+          "name": "Observability",
+          "description": "Concepts that belong together under observability in this domain.",
+          "concepts": [
+            "tail-sampling",
+            "red-method"
+          ]
+        },
+        {
+          "id": "sre-incident-response-jargon",
+          "number": "18",
+          "name": "SRE and incident response",
+          "description": "SRE / incident response jargon",
+          "concepts": [
+            "error-budget",
+            "rollback"
+          ]
+        },
+        {
+          "id": "distributed-observability-much-deeper",
+          "number": "19",
+          "name": "Distributed observability",
+          "description": "Distributed observability \u2014 much deeper",
+          "concepts": [
+            "trace-context-propagation",
+            "cross-service-correlation"
+          ]
+        },
+        {
+          "id": "deployment-release-engineering",
+          "number": "20",
+          "name": "Deployment / release engineering",
+          "description": "Concepts that belong together under deployment / release engineering in this domain.",
+          "concepts": [
+            "canary-deployment"
+          ]
+        },
+        {
+          "id": "database-migrations",
+          "number": "21",
+          "name": "Database migrations",
+          "description": "Concepts that belong together under database migrations in this domain.",
+          "concepts": [
+            "expand-and-contract-migration",
+            "online-migration"
+          ]
+        },
+        {
+          "id": "distributed-transactions",
+          "number": "22",
+          "name": "Distributed transactions",
+          "description": "Concepts that belong together under distributed transactions in this domain.",
+          "concepts": [
+            "2pc",
+            "saga-pattern"
+          ]
+        },
+        {
+          "id": "security-things-backend-engineers-eventually-encounter",
+          "number": "23",
+          "name": "Backend security",
+          "description": "Security things backend engineers eventually encounter",
+          "concepts": [
+            "ssrf",
+            "hermetic-build"
+          ]
+        },
+        {
+          "id": "software-testing-beyond-unitintegration-tests",
+          "number": "24",
+          "name": "Testing beyond unit tests",
+          "description": "Software testing beyond unit/integration tests",
+          "concepts": [
+            "property-based-testing",
+            "fuzz-testing"
+          ]
+        },
+        {
+          "id": "weird-debugging-phenomena",
+          "number": "25",
+          "name": "Weird debugging phenomena",
+          "description": "Concepts that belong together under weird debugging phenomena in this domain.",
+          "concepts": [
+            "heisenbug",
+            "bohrbug"
+          ]
+        },
+        {
+          "id": "data-correctness-event-driven-systems",
+          "number": "26",
+          "name": "Data correctness",
+          "description": "Data correctness / event-driven systems",
+          "concepts": [
+            "event-sourcing",
+            "eventual-consistency"
+          ]
+        },
+        {
+          "id": "architecture-concepts-that-become-important-at-scale",
+          "number": "27",
+          "name": "Architecture at scale",
+          "description": "Architecture concepts that become important at scale",
+          "concepts": [
+            "strangler-fig-pattern",
+            "bounded-context"
+          ]
+        },
+        {
+          "id": "cache-database-distributed-system-intersection",
+          "number": "28",
+          "name": "Cache / database / distributed-system intersection",
+          "description": "Concepts that belong together under cache / database / distributed-system intersection in this domain.",
+          "concepts": [
+            "cache-consistency-gap",
+            "stale-replica-stale-cache"
+          ]
+        },
+        {
+          "id": "storage-hardware-performance",
+          "number": "29",
+          "name": "Storage hardware",
+          "description": "Storage / hardware performance",
+          "concepts": [
+            "silent-data-corruption",
+            "iops"
+          ]
+        },
+        {
+          "id": "modern-ai-servingbackend-infrastructure",
+          "number": "30",
+          "name": "Modern AI-serving infrastructure",
+          "description": "Modern AI-serving/backend infrastructure",
+          "concepts": [
+            "pagedattention",
+            "continuous-batching"
+          ]
+        },
+        {
+          "id": "build-systems-cicd-internals",
+          "number": "31",
+          "name": "Build systems and CI/CD",
+          "description": "Build systems / CI/CD internals",
+          "concepts": [
+            "reproducible-build",
+            "deterministic-build"
+          ]
+        },
+        {
+          "id": "api-gateway-microservice-specific-problems",
+          "number": "32",
+          "name": "API gateway problems",
+          "description": "API gateway / microservice-specific problems",
+          "concepts": [
+            "fan-out-explosion",
+            "n1-service-calls"
+          ]
+        },
+        {
+          "id": "multi-tenant-systems",
+          "number": "33",
+          "name": "Multi-tenant systems",
+          "description": "Concepts that belong together under multi-tenant systems in this domain.",
+          "concepts": [
+            "noisy-neighbor",
+            "tenant-isolation"
+          ]
+        },
+        {
+          "id": "rate-limiting-deeper-than-100-requestsminute",
+          "number": "34",
+          "name": "Rate limiting",
+          "description": "Rate limiting deeper than \u201c100 requests/minute\u201d",
+          "concepts": [
+            "token-bucket",
+            "fixed-window-rate-limit"
+          ]
+        },
+        {
+          "id": "clocktime-problems",
+          "number": "35",
+          "name": "Clock/time problems",
+          "description": "Concepts that belong together under clock/time problems in this domain.",
+          "concepts": [
+            "clock-drift",
+            "clock-step"
+          ]
+        },
+        {
+          "id": "production-data-pipeline-problems",
+          "number": "36",
+          "name": "Production data pipeline problems",
+          "description": "Concepts that belong together under production data pipeline problems in this domain.",
+          "concepts": [
+            "consumer-lag"
+          ]
+        },
+        {
+          "id": "debugging-tools-techniques-people-eventually-learn",
+          "number": "37",
+          "name": "Debugging tools",
+          "description": "Debugging tools / techniques people eventually learn",
+          "concepts": [
+            "strace",
+            "ltrace"
+          ]
+        },
+        {
+          "id": "particularly-nasty-production-only-phenomena",
+          "number": "38",
+          "name": "Production-only phenomena",
+          "description": "Particularly nasty \u201cproduction-only\u201d phenomena",
+          "concepts": [
+            "gray-failure",
+            "fail-slow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frontend",
+      "name": "Frontend",
+      "jp": "\u524d\u9762",
+      "tagline": "The browser as a distributed system, from cache to paint.",
+      "description": "Caching, rendering, hydration, memory, and the races hiding between state and paint.",
+      "layers": [
+        {
+          "id": "clientserver-state-caching",
+          "number": "1",
+          "name": "Client/server state and caching",
+          "description": "Client/server-state caching",
+          "concepts": [
+            "query-cache",
+            "optimistic-update"
+          ]
+        },
+        {
+          "id": "nextjs-modern-routing-internals",
+          "number": "4",
+          "name": "Next.js and modern routing",
+          "description": "Next.js / modern routing internals",
+          "concepts": [
+            "rsc-payload",
+            "hydration"
+          ]
+        },
+        {
+          "id": "react-rendering-internals",
+          "number": "5",
+          "name": "React rendering internals",
+          "description": "Concepts that belong together under react rendering internals in this domain.",
+          "concepts": [
+            "concurrent-rendering",
+            "view-transition"
+          ]
+        },
+        {
+          "id": "react-compiler-memoization",
+          "number": "6",
+          "name": "React Compiler and memoization",
+          "description": "React Compiler / memoization",
+          "concepts": [
+            "automatic-memoization",
+            "react-compiler"
+          ]
+        },
+        {
+          "id": "browser-rendering-pipeline",
+          "number": "7",
+          "name": "Browser rendering pipeline",
+          "description": "Concepts that belong together under browser rendering pipeline in this domain.",
+          "concepts": [
+            "layout-thrashing",
+            "style-recalculation"
+          ]
+        },
+        {
+          "id": "main-thread-performance",
+          "number": "8",
+          "name": "Main-thread performance",
+          "description": "Concepts that belong together under main-thread performance in this domain.",
+          "concepts": [
+            "long-task",
+            "main-thread-blocking"
+          ]
+        },
+        {
+          "id": "network-performance",
+          "number": "9",
+          "name": "Network performance",
+          "description": "Concepts that belong together under network performance in this domain.",
+          "concepts": [
+            "request-waterfall",
+            "abortcontroller"
+          ]
+        },
+        {
+          "id": "data-fetching-architecture",
+          "number": "10",
+          "name": "Data fetching architecture",
+          "description": "Concepts that belong together under data fetching architecture in this domain.",
+          "concepts": [
+            "optimistic-mutation",
+            "fetch-waterfall"
+          ]
+        },
+        {
+          "id": "state-management-much-deeper-than-redux",
+          "number": "11",
+          "name": "State management",
+          "description": "State management \u2014 much deeper than Redux",
+          "concepts": [
+            "store-tearing",
+            "client-state"
+          ]
+        },
+        {
+          "id": "memory-and-browser-runtime",
+          "number": "12",
+          "name": "Memory and browser runtime",
+          "description": "Concepts that belong together under memory and browser runtime in this domain.",
+          "concepts": [
+            "detached-dom-tree",
+            "memory-leak"
+          ]
+        },
+        {
+          "id": "web-storage",
+          "number": "13",
+          "name": "Web storage",
+          "description": "Concepts that belong together under web storage in this domain.",
+          "concepts": [
+            "indexeddb",
+            "localstorage"
+          ]
+        },
+        {
+          "id": "service-workers-offline-first",
+          "number": "14",
+          "name": "Service workers / offline-first",
+          "description": "Concepts that belong together under service workers / offline-first in this domain.",
+          "concepts": [
+            "service-worker",
+            "service-worker-lifecycle"
+          ]
+        },
+        {
+          "id": "bfcache-navigation-internals",
+          "number": "15",
+          "name": "bfcache / navigation internals",
+          "description": "Concepts that belong together under bfcache / navigation internals in this domain.",
+          "concepts": [
+            "bfcache",
+            "page-snapshot"
+          ]
+        },
+        {
+          "id": "rendering-architecture",
+          "number": "16",
+          "name": "Rendering architecture",
+          "description": "Concepts that belong together under rendering architecture in this domain.",
+          "concepts": [
+            "island-architecture",
+            "csr"
+          ]
+        },
+        {
+          "id": "code-delivery",
+          "number": "17",
+          "name": "Code delivery",
+          "description": "Concepts that belong together under code delivery in this domain.",
+          "concepts": [
+            "tree-shaking",
+            "code-splitting"
+          ]
+        },
+        {
+          "id": "images-media",
+          "number": "18",
+          "name": "Images / media",
+          "description": "Concepts that belong together under images / media in this domain.",
+          "concepts": [
+            "srcset",
+            "image-decoding"
+          ]
+        },
+        {
+          "id": "css-engineering",
+          "number": "19",
+          "name": "CSS engineering",
+          "description": "Concepts that belong together under css engineering in this domain.",
+          "concepts": [
+            "cascade-layers",
+            "specificity"
+          ]
+        },
+        {
+          "id": "accessibility-as-engineering-constraints",
+          "number": "20",
+          "name": "Accessibility constraints",
+          "description": "Accessibility as engineering constraints",
+          "concepts": [
+            "focus-management",
+            "focus-trap"
+          ]
+        },
+        {
+          "id": "virtualization",
+          "number": "21",
+          "name": "Virtualization",
+          "description": "Concepts that belong together under virtualization in this domain.",
+          "concepts": [
+            "virtual-scrolling",
+            "windowing"
+          ]
+        },
+        {
+          "id": "race-conditions-in-frontend-state",
+          "number": "22",
+          "name": "Race conditions in frontend state",
+          "description": "Concepts that belong together under race conditions in frontend state in this domain.",
+          "concepts": [
+            "stale-closure",
+            "stale-state"
+          ]
+        },
+        {
+          "id": "optimistic-ui",
+          "number": "23",
+          "name": "Optimistic UI",
+          "description": "Concepts that belong together under optimistic ui in this domain.",
+          "concepts": [
+            "speculative-ui",
+            "temporary-state"
+          ]
+        },
+        {
+          "id": "security",
+          "number": "24",
+          "name": "Security",
+          "description": "Concepts that belong together under security in this domain.",
+          "concepts": [
+            "xss",
+            "dom-xss"
+          ]
+        },
+        {
+          "id": "frontend-observability",
+          "number": "25",
+          "name": "Frontend observability",
+          "description": "Concepts that belong together under frontend observability in this domain.",
+          "concepts": [
+            "core-web-vitals",
+            "real-user-monitoring-rum"
+          ]
+        },
+        {
+          "id": "frontend-debugging-phenomena",
+          "number": "26",
+          "name": "Frontend debugging phenomena",
+          "description": "Concepts that belong together under frontend debugging phenomena in this domain.",
+          "concepts": [
+            "hydration-only-bug",
+            "flaky-ui-test"
+          ]
+        },
+        {
+          "id": "browser-throttling",
+          "number": "27",
+          "name": "Browser throttling",
+          "description": "Concepts that belong together under browser throttling in this domain.",
+          "concepts": [
+            "background-tab-throttling",
+            "timer-throttling"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ui",
+      "name": "Interface",
+      "jp": "\u754c\u9762",
+      "tagline": "Motion, scroll, components, and the words that make interaction legible.",
+      "description": "Motion, scroll, components, feedback, layout, and the vocabulary that turns intent into prompts.",
+      "layers": [
+        {
+          "id": "motion",
+          "number": "1",
+          "name": "Motion",
+          "description": "Concepts that belong together under motion in this domain.",
+          "concepts": [
+            "easing",
+            "spring"
+          ]
+        },
+        {
+          "id": "scroll",
+          "number": "2",
+          "name": "Scroll",
+          "description": "Concepts that belong together under scroll in this domain.",
+          "concepts": [
+            "scroll-snap",
+            "scroll-linked-animation"
+          ]
+        },
+        {
+          "id": "components",
+          "number": "3",
+          "name": "Components",
+          "description": "Concepts that belong together under components in this domain.",
+          "concepts": [
+            "popover",
+            "command-palette"
+          ]
+        },
+        {
+          "id": "interaction",
+          "number": "4",
+          "name": "Interaction",
+          "description": "Concepts that belong together under interaction in this domain.",
+          "concepts": [
+            "hover",
+            "focus"
+          ]
+        },
+        {
+          "id": "feedback",
+          "number": "5",
+          "name": "Feedback",
+          "description": "Concepts that belong together under feedback in this domain.",
+          "concepts": [
+            "progressive-disclosure"
+          ]
+        },
+        {
+          "id": "navigation",
+          "number": "6",
+          "name": "Navigation",
+          "description": "Concepts that belong together under navigation in this domain.",
+          "concepts": [
+            "shared-element-transition",
+            "breadcrumbs"
+          ]
+        },
+        {
+          "id": "layout",
+          "number": "7",
+          "name": "Layout",
+          "description": "Concepts that belong together under layout in this domain.",
+          "concepts": [
+            "container-query",
+            "visual-hierarchy"
+          ]
+        },
+        {
+          "id": "visual-hierarchy",
+          "number": "8",
+          "name": "Visual hierarchy",
+          "description": "Concepts that belong together under visual hierarchy in this domain.",
+          "concepts": [
+            "primary-action",
+            "secondary-action"
+          ]
+        },
+        {
+          "id": "loading",
+          "number": "9",
+          "name": "Loading",
+          "description": "Concepts that belong together under loading in this domain.",
+          "concepts": [
+            "skeleton",
+            "shimmer"
+          ]
+        },
+        {
+          "id": "react-ui",
+          "number": "10",
+          "name": "React UI",
+          "description": "Concepts that belong together under react ui in this domain.",
+          "concepts": [
+            "server-component",
+            "client-component"
+          ]
+        },
+        {
+          "id": "accessibility",
+          "number": "11",
+          "name": "Accessibility",
+          "description": "Concepts that belong together under accessibility in this domain.",
+          "concepts": [
+            "focus-restoration",
+            "keyboard-navigation"
+          ]
+        },
+        {
+          "id": "ecosystem",
+          "number": "12",
+          "name": "Ecosystem",
+          "description": "Concepts that belong together under ecosystem in this domain.",
+          "concepts": [
+            "shadcnui",
+            "radix"
+          ]
+        },
+        {
+          "id": "prompting",
+          "number": "13",
+          "name": "Patterns",
+          "description": "Prompting",
+          "concepts": [
+            "anchored-popover",
+            "minimal-editorial-layout"
+          ]
+        },
+        {
+          "id": "principle",
+          "number": "14",
+          "name": "Principles",
+          "description": "Principle",
+          "concepts": [
+            "state-transitions",
+            "interaction-feedback"
+          ]
+        },
+        {
+          "id": "learn-first",
+          "number": "15",
+          "name": "Learn first",
+          "description": "Concepts that belong together under learn first in this domain.",
+          "concepts": [
+            "microinteraction",
+            "whitespace"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gamedev",
+      "name": "Game Dev",
+      "jp": "\u904a\u622f",
+      "tagline": "Simulation, rendering, and the craft that makes a world respond.",
+      "description": "Scene graphs, physics, netcode, shaders, and the craft that makes a world respond.",
+      "layers": [
+        {
+          "id": "the-foundational-game-dev-vocabulary",
+          "number": "1",
+          "name": "Foundational vocabulary",
+          "description": "The foundational game-dev vocabulary",
+          "concepts": [
+            "game-world",
+            "world-coordinates"
+          ]
+        },
+        {
+          "id": "scene-graph",
+          "number": "2",
+          "name": "Scene graph",
+          "description": "Concepts that belong together under scene graph in this domain.",
+          "concepts": [
+            "scene-graph",
+            "scene"
+          ]
+        },
+        {
+          "id": "mesh-geometry-material",
+          "number": "3",
+          "name": "Mesh / geometry / material",
+          "description": "Concepts that belong together under mesh / geometry / material in this domain.",
+          "concepts": [
+            "mesh",
+            "geometry"
+          ]
+        },
+        {
+          "id": "pbr",
+          "number": "4",
+          "name": "PBR",
+          "description": "Concepts that belong together under pbr in this domain.",
+          "concepts": [
+            "pbr",
+            "metalness"
+          ]
+        },
+        {
+          "id": "lighting",
+          "number": "5",
+          "name": "Lighting",
+          "description": "Concepts that belong together under lighting in this domain.",
+          "concepts": [
+            "directional-light",
+            "point-light"
+          ]
+        },
+        {
+          "id": "shaders",
+          "number": "6",
+          "name": "Shaders",
+          "description": "Concepts that belong together under shaders in this domain.",
+          "concepts": [
+            "vertex-shader",
+            "fragment-shader"
+          ]
+        },
+        {
+          "id": "the-game-loop",
+          "number": "7",
+          "name": "The game loop",
+          "description": "Concepts that belong together under the game loop in this domain.",
+          "concepts": [
+            "game-loop",
+            "fixed-timestep"
+          ]
+        },
+        {
+          "id": "determinism",
+          "number": "8",
+          "name": "Determinism",
+          "description": "Concepts that belong together under determinism in this domain.",
+          "concepts": [
+            "determinism",
+            "deterministic-simulation"
+          ]
+        },
+        {
+          "id": "physics",
+          "number": "9",
+          "name": "Physics",
+          "description": "Concepts that belong together under physics in this domain.",
+          "concepts": [
+            "rigid-body",
+            "collider"
+          ]
+        },
+        {
+          "id": "collision-detection",
+          "number": "10",
+          "name": "Collision detection",
+          "description": "Concepts that belong together under collision detection in this domain.",
+          "concepts": [
+            "aabb",
+            "broad-phase"
+          ]
+        },
+        {
+          "id": "animation",
+          "number": "11",
+          "name": "Animation",
+          "description": "Concepts that belong together under animation in this domain.",
+          "concepts": [
+            "skeletal-animation",
+            "animation-clip"
+          ]
+        },
+        {
+          "id": "character-controller",
+          "number": "12",
+          "name": "Character controller",
+          "description": "Concepts that belong together under character controller in this domain.",
+          "concepts": [
+            "character-controller",
+            "acceleration"
+          ]
+        },
+        {
+          "id": "camera-systems",
+          "number": "13",
+          "name": "Camera systems",
+          "description": "Concepts that belong together under camera systems in this domain.",
+          "concepts": [
+            "camera-smoothing",
+            "perspective-camera"
+          ]
+        },
+        {
+          "id": "input",
+          "number": "14",
+          "name": "Input",
+          "description": "Concepts that belong together under input in this domain.",
+          "concepts": [
+            "gamepad",
+            "input-mapping"
+          ]
+        },
+        {
+          "id": "ai-npc-behavior",
+          "number": "15",
+          "name": "AI / NPC behavior",
+          "description": "Concepts that belong together under ai / npc behavior in this domain.",
+          "concepts": [
+            "behavior-tree",
+            "fsm"
+          ]
+        },
+        {
+          "id": "navigation",
+          "number": "16",
+          "name": "Navigation",
+          "description": "Concepts that belong together under navigation in this domain.",
+          "concepts": [
+            "navmesh"
+          ]
+        },
+        {
+          "id": "level-design-vocabulary",
+          "number": "17",
+          "name": "Level design",
+          "description": "Level design vocabulary",
+          "concepts": [
+            "level",
+            "map"
+          ]
+        },
+        {
+          "id": "open-world-vocabulary",
+          "number": "18",
+          "name": "Open world",
+          "description": "Open-world vocabulary",
+          "concepts": [
+            "world-streaming"
+          ]
+        },
+        {
+          "id": "lod",
+          "number": "19",
+          "name": "Level of detail",
+          "description": "LOD",
+          "concepts": [
+            "level-of-detail",
+            "lod-bias"
+          ]
+        },
+        {
+          "id": "culling",
+          "number": "20",
+          "name": "Culling",
+          "description": "Concepts that belong together under culling in this domain.",
+          "concepts": [
+            "frustum-culling",
+            "occlusion-culling"
+          ]
+        },
+        {
+          "id": "instancing",
+          "number": "21",
+          "name": "Instancing",
+          "description": "Concepts that belong together under instancing in this domain.",
+          "concepts": [
+            "instancedmesh",
+            "instancing"
+          ]
+        },
+        {
+          "id": "batching",
+          "number": "22",
+          "name": "Batching",
+          "description": "Concepts that belong together under batching in this domain.",
+          "concepts": [
+            "batching"
+          ]
+        },
+        {
+          "id": "draw-calls",
+          "number": "23",
+          "name": "Draw calls",
+          "description": "Concepts that belong together under draw calls in this domain.",
+          "concepts": [
+            "state-change",
+            "material-switch"
+          ]
+        },
+        {
+          "id": "overdraw",
+          "number": "24",
+          "name": "Overdraw",
+          "description": "Concepts that belong together under overdraw in this domain.",
+          "concepts": [
+            "overdraw",
+            "fill-rate"
+          ]
+        },
+        {
+          "id": "post-processing",
+          "number": "25",
+          "name": "Post-processing",
+          "description": "Concepts that belong together under post-processing in this domain.",
+          "concepts": [
+            "bloom",
+            "depth-of-field"
+          ]
+        },
+        {
+          "id": "particles-vfx",
+          "number": "26",
+          "name": "Particles / VFX",
+          "description": "Concepts that belong together under particles / vfx in this domain.",
+          "concepts": [
+            "particle-system",
+            "particle-emitter"
+          ]
+        },
+        {
+          "id": "audio",
+          "number": "27",
+          "name": "Audio",
+          "description": "Concepts that belong together under audio in this domain.",
+          "concepts": [
+            "spatial-audio",
+            "sound-effect"
+          ]
+        },
+        {
+          "id": "asset-pipeline",
+          "number": "28",
+          "name": "Asset pipeline",
+          "description": "Concepts that belong together under asset pipeline in this domain.",
+          "concepts": [
+            "gltf",
+            "texture-atlas"
+          ]
+        },
+        {
+          "id": "texture-atlasing",
+          "number": "29",
+          "name": "Texture atlasing",
+          "description": "Concepts that belong together under texture atlasing in this domain.",
+          "concepts": [
+            "uv-packing",
+            "atlas-coordinates"
+          ]
+        },
+        {
+          "id": "web-specific-game-technology",
+          "number": "30",
+          "name": "Web game technology",
+          "description": "Web-specific game technology",
+          "concepts": [
+            "webgpu",
+            "offscreencanvas"
+          ]
+        },
+        {
+          "id": "webassembly",
+          "number": "31",
+          "name": "WebAssembly",
+          "description": "Concepts that belong together under webassembly in this domain.",
+          "concepts": [
+            "wasm",
+            "emscripten"
+          ]
+        },
+        {
+          "id": "web-workers",
+          "number": "32",
+          "name": "Web Workers",
+          "description": "Concepts that belong together under web workers in this domain.",
+          "concepts": [
+            "web-worker",
+            "sharedarraybuffer"
+          ]
+        },
+        {
+          "id": "ecs",
+          "number": "33",
+          "name": "ECS",
+          "description": "Concepts that belong together under ecs in this domain.",
+          "concepts": [
+            "entity",
+            "component"
+          ]
+        },
+        {
+          "id": "multiplayer-networking",
+          "number": "34",
+          "name": "Multiplayer networking",
+          "description": "Concepts that belong together under multiplayer networking in this domain.",
+          "concepts": [
+            "client-prediction",
+            "interest-management"
+          ]
+        },
+        {
+          "id": "client-prediction",
+          "number": "35",
+          "name": "Client prediction",
+          "description": "Concepts that belong together under client prediction in this domain.",
+          "concepts": [
+            "server-reconciliation",
+            "input-sequence"
+          ]
+        },
+        {
+          "id": "interpolation",
+          "number": "36",
+          "name": "Interpolation",
+          "description": "Concepts that belong together under interpolation in this domain.",
+          "concepts": [
+            "snapshot-interpolation",
+            "interpolation-buffer"
+          ]
+        },
+        {
+          "id": "rollback-netcode",
+          "number": "37",
+          "name": "Rollback netcode",
+          "description": "Concepts that belong together under rollback netcode in this domain.",
+          "concepts": [
+            "resimulation",
+            "input-history"
+          ]
+        },
+        {
+          "id": "interest-management",
+          "number": "38",
+          "name": "Interest management",
+          "description": "Concepts that belong together under interest management in this domain.",
+          "concepts": [
+            "area-of-interest",
+            "visibility-set"
+          ]
+        },
+        {
+          "id": "saving-persistence",
+          "number": "39",
+          "name": "Saving / persistence",
+          "description": "Concepts that belong together under saving / persistence in this domain.",
+          "concepts": [
+            "save-state",
+            "checkpoint"
+          ]
+        },
+        {
+          "id": "procedural-generation",
+          "number": "40",
+          "name": "Procedural generation",
+          "description": "Concepts that belong together under procedural generation in this domain.",
+          "concepts": [
+            "procedural-generation",
+            "noise"
+          ]
+        },
+        {
+          "id": "world-generation-vs-level-design",
+          "number": "41",
+          "name": "World generation vs level design",
+          "description": "Concepts that belong together under world generation vs level design in this domain.",
+          "concepts": [
+            "level-design",
+            "poi"
+          ]
+        },
+        {
+          "id": "game-feel-vocabulary",
+          "number": "42",
+          "name": "Game feel",
+          "description": "Game feel vocabulary",
+          "concepts": [
+            "game-feel",
+            "anticipation"
+          ]
+        },
+        {
+          "id": "animation-principles",
+          "number": "43",
+          "name": "Animation principles",
+          "description": "Concepts that belong together under animation principles in this domain.",
+          "concepts": [
+            "squash-and-stretch",
+            "follow-through"
+          ]
+        },
+        {
+          "id": "uihud-game-vocabulary",
+          "number": "44",
+          "name": "UI and HUD",
+          "description": "UI/HUD game vocabulary",
+          "concepts": [
+            "hud",
+            "health-bar"
+          ]
+        },
+        {
+          "id": "game-architecture-vocabulary",
+          "number": "45",
+          "name": "Game architecture",
+          "description": "Game architecture vocabulary",
+          "concepts": [
+            "game-state",
+            "game-mode"
+          ]
+        },
+        {
+          "id": "the-large-game-performance-vocabulary",
+          "number": "46",
+          "name": "Large-game performance",
+          "description": "The \u201clarge game\u201d performance vocabulary",
+          "concepts": [
+            "object-pooling",
+            "draw-calls"
+          ]
+        },
+        {
+          "id": "shaderpipeline-compilation",
+          "number": "47",
+          "name": "Shader/pipeline compilation",
+          "description": "Concepts that belong together under shader/pipeline compilation in this domain.",
+          "concepts": [
+            "shader-warm-up",
+            "pipeline-caching"
+          ]
+        },
+        {
+          "id": "engine-comparison",
+          "number": "48",
+          "name": "Engine comparison",
+          "description": "Concepts that belong together under engine comparison in this domain.",
+          "concepts": [
+            "threejs",
+            "react-three-fiber"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "name": "Security",
+      "jp": "\u5b88\u308a",
+      "tagline": "Break it carefully, then understand exactly why it broke.",
+      "description": "Offensive, defensive, and binary security concepts with sandboxed ways to practice.",
+      "layers": [
+        {
+          "id": "offensive-security",
+          "number": "1",
+          "name": "Offensive security",
+          "description": "Concepts that belong together under offensive security in this domain.",
+          "concepts": [
+            "hack-the-box",
+            "tryhackme"
+          ]
+        },
+        {
+          "id": "web-security",
+          "number": "2",
+          "name": "Web security",
+          "description": "Concepts that belong together under web security in this domain.",
+          "concepts": [
+            "sql-injection",
+            "csrf"
+          ]
+        },
+        {
+          "id": "blue-team",
+          "number": "3",
+          "name": "Blue team",
+          "description": "Concepts that belong together under blue team in this domain.",
+          "concepts": [
+            "pcap-analysis",
+            "malware-analysis"
+          ]
+        },
+        {
+          "id": "binary-and-reverse-engineering",
+          "number": "4",
+          "name": "Binary and reverse engineering",
+          "description": "Concepts that belong together under binary and reverse engineering in this domain.",
+          "concepts": [
+            "binary-exploitation",
+            "reverse-engineering"
+          ]
+        },
+        {
+          "id": "practice-and-career",
+          "number": "5",
+          "name": "Practice and career",
+          "description": "Concepts that belong together under practice and career in this domain.",
+          "concepts": [
+            "hackerone",
+            "portswigger-web-security-academy"
+          ]
+        }
+      ]
+    }
+  ],
+  "concepts": {
+    "partial-failure": {
+      "title": "Partial failure",
+      "domain": "backend",
+      "layer": "production-failure-overload",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "cache-stampede": {
+      "title": "Cache stampede",
+      "domain": "backend",
+      "layer": "production-failure-overload",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "retry-storm": {
+      "title": "Retry storm",
+      "domain": "backend",
+      "layer": "production-failure-overload",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "circuit-breaker": {
+      "title": "Circuit breaker",
+      "domain": "backend",
+      "layer": "production-failure-overload",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "bulkhead-pattern": {
+      "title": "Bulkhead pattern",
+      "domain": "backend",
+      "layer": "production-failure-overload",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "backpressure": {
+      "title": "Backpressure",
+      "domain": "backend",
+      "layer": "production-failure-overload",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "tail-latency": {
+      "title": "Tail latency",
+      "domain": "backend",
+      "layer": "latency-where-backend-engineering-gets-serious",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "latency-distribution": {
+      "title": "Latency distribution",
+      "domain": "backend",
+      "layer": "latency-where-backend-engineering-gets-serious",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "time-wait": {
+      "title": "TIME_WAIT",
+      "domain": "backend",
+      "layer": "networking-tcp-http-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "close-wait": {
+      "title": "CLOSE_WAIT",
+      "domain": "backend",
+      "layer": "networking-tcp-http-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "connection-pool-exhaustion": {
+      "title": "Connection pool exhaustion",
+      "domain": "backend",
+      "layer": "connection-pools",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "pool-starvation": {
+      "title": "Pool starvation",
+      "domain": "backend",
+      "layer": "connection-pools",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "write-skew": {
+      "title": "Write skew",
+      "domain": "backend",
+      "layer": "database-concurrency",
+      "difficulty": 4,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "mvcc": {
+      "title": "MVCC",
+      "domain": "backend",
+      "layer": "database-concurrency",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "lost-update": {
+      "title": "Lost update",
+      "domain": "backend",
+      "layer": "database-concurrency",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "wal": {
+      "title": "WAL",
+      "domain": "backend",
+      "layer": "postgresql-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "lsn": {
+      "title": "LSN",
+      "domain": "backend",
+      "layer": "postgresql-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "n1-query-problem": {
+      "title": "N+1 query problem",
+      "domain": "backend",
+      "layer": "query-performance-things-people-discover-the-hard-way",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "write-amplification": {
+      "title": "Write amplification",
+      "domain": "backend",
+      "layer": "query-performance-things-people-discover-the-hard-way",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "compaction": {
+      "title": "Compaction",
+      "domain": "backend",
+      "layer": "storage-engines-lsm-rocksdb",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "lsm-tree": {
+      "title": "LSM tree",
+      "domain": "backend",
+      "layer": "storage-engines-lsm-rocksdb",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "split-brain": {
+      "title": "Split brain",
+      "domain": "backend",
+      "layer": "distributed-systems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "clock-skew": {
+      "title": "Clock skew",
+      "domain": "backend",
+      "layer": "distributed-systems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "fencing-tokens": {
+      "title": "Fencing tokens",
+      "domain": "backend",
+      "layer": "distributed-systems",
+      "difficulty": 5,
+      "format": "field-note",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "transactional-outbox": {
+      "title": "Transactional outbox",
+      "domain": "backend",
+      "layer": "messaging-queues-kafka",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "at-most-once-delivery": {
+      "title": "At-most-once delivery",
+      "domain": "backend",
+      "layer": "messaging-queues-kafka",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "idempotency": {
+      "title": "Idempotency",
+      "domain": "backend",
+      "layer": "api-correctness",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "idempotency-key": {
+      "title": "Idempotency key",
+      "domain": "backend",
+      "layer": "api-correctness",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "stale-while-revalidate": {
+      "title": "stale-while-revalidate",
+      "domain": "backend",
+      "layer": "caching-far-deeper-than-use-redis",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "cache-invalidation-race": {
+      "title": "Cache invalidation race",
+      "domain": "backend",
+      "layer": "caching-far-deeper-than-use-redis",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "false-sharing": {
+      "title": "False sharing",
+      "domain": "backend",
+      "layer": "concurrency",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "race-condition": {
+      "title": "Race condition",
+      "domain": "backend",
+      "layer": "concurrency",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "goroutine-leak": {
+      "title": "Goroutine leak",
+      "domain": "backend",
+      "layer": "runtime-garbage-collection",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "stop-the-world-gc": {
+      "title": "Stop-the-world GC",
+      "domain": "backend",
+      "layer": "runtime-garbage-collection",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "oom-killer": {
+      "title": "OOM killer",
+      "domain": "backend",
+      "layer": "linux-os-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "file-descriptor-exhaustion": {
+      "title": "File descriptor exhaustion",
+      "domain": "backend",
+      "layer": "linux-os-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "crashloopbackoff": {
+      "title": "CrashLoopBackOff",
+      "domain": "backend",
+      "layer": "kubernetes-containers",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "oomkilled": {
+      "title": "OOMKilled (Kubernetes)",
+      "domain": "backend",
+      "layer": "kubernetes-containers",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "tail-sampling": {
+      "title": "Tail sampling",
+      "domain": "backend",
+      "layer": "observability",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "red-method": {
+      "title": "RED method",
+      "domain": "backend",
+      "layer": "observability",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "error-budget": {
+      "title": "Error budget",
+      "domain": "backend",
+      "layer": "sre-incident-response-jargon",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "rollback": {
+      "title": "Rollback",
+      "domain": "backend",
+      "layer": "sre-incident-response-jargon",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "trace-context-propagation": {
+      "title": "Trace-context propagation",
+      "domain": "backend",
+      "layer": "distributed-observability-much-deeper",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "cross-service-correlation": {
+      "title": "Cross-service correlation",
+      "domain": "backend",
+      "layer": "distributed-observability-much-deeper",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "canary-deployment": {
+      "title": "Canary deployment",
+      "domain": "backend",
+      "layer": "deployment-release-engineering",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [
+        "canary-release"
+      ],
+      "redirectFrom": [
+        "canary-release"
+      ]
+    },
+    "expand-and-contract-migration": {
+      "title": "Expand-and-contract migration",
+      "domain": "backend",
+      "layer": "database-migrations",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "online-migration": {
+      "title": "Online migration",
+      "domain": "backend",
+      "layer": "database-migrations",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "2pc": {
+      "title": "2PC",
+      "domain": "backend",
+      "layer": "distributed-transactions",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "saga-pattern": {
+      "title": "Saga pattern",
+      "domain": "backend",
+      "layer": "distributed-transactions",
+      "difficulty": 4,
+      "format": "field-note",
+      "priority": "P1",
+      "aliases": [
+        "saga"
+      ],
+      "redirectFrom": [
+        "saga"
+      ]
+    },
+    "ssrf": {
+      "title": "Server-side request forgery (SSRF)",
+      "domain": "backend",
+      "layer": "security-things-backend-engineers-eventually-encounter",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "hermetic-build": {
+      "title": "Hermetic build",
+      "domain": "backend",
+      "layer": "security-things-backend-engineers-eventually-encounter",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "property-based-testing": {
+      "title": "Property-based testing",
+      "domain": "backend",
+      "layer": "software-testing-beyond-unitintegration-tests",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "fuzz-testing": {
+      "title": "Fuzz testing",
+      "domain": "backend",
+      "layer": "software-testing-beyond-unitintegration-tests",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "heisenbug": {
+      "title": "Heisenbug",
+      "domain": "backend",
+      "layer": "weird-debugging-phenomena",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "bohrbug": {
+      "title": "Bohrbug",
+      "domain": "backend",
+      "layer": "weird-debugging-phenomena",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "event-sourcing": {
+      "title": "Event sourcing",
+      "domain": "backend",
+      "layer": "data-correctness-event-driven-systems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "eventual-consistency": {
+      "title": "Eventual consistency",
+      "domain": "backend",
+      "layer": "data-correctness-event-driven-systems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "strangler-fig-pattern": {
+      "title": "Strangler fig pattern",
+      "domain": "backend",
+      "layer": "architecture-concepts-that-become-important-at-scale",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "bounded-context": {
+      "title": "Bounded context",
+      "domain": "backend",
+      "layer": "architecture-concepts-that-become-important-at-scale",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "cache-consistency-gap": {
+      "title": "Cache consistency gap",
+      "domain": "backend",
+      "layer": "cache-database-distributed-system-intersection",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "stale-replica-stale-cache": {
+      "title": "Stale replica + stale cache",
+      "domain": "backend",
+      "layer": "cache-database-distributed-system-intersection",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "silent-data-corruption": {
+      "title": "Silent data corruption",
+      "domain": "backend",
+      "layer": "storage-hardware-performance",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "iops": {
+      "title": "IOPS",
+      "domain": "backend",
+      "layer": "storage-hardware-performance",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "pagedattention": {
+      "title": "PagedAttention",
+      "domain": "backend",
+      "layer": "modern-ai-servingbackend-infrastructure",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "continuous-batching": {
+      "title": "Continuous batching (inference)",
+      "domain": "backend",
+      "layer": "modern-ai-servingbackend-infrastructure",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "reproducible-build": {
+      "title": "Reproducible build",
+      "domain": "backend",
+      "layer": "build-systems-cicd-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "deterministic-build": {
+      "title": "Deterministic build",
+      "domain": "backend",
+      "layer": "build-systems-cicd-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "fan-out-explosion": {
+      "title": "Fan-out explosion",
+      "domain": "backend",
+      "layer": "api-gateway-microservice-specific-problems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "n1-service-calls": {
+      "title": "N+1 service calls",
+      "domain": "backend",
+      "layer": "api-gateway-microservice-specific-problems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "noisy-neighbor": {
+      "title": "Noisy neighbor",
+      "domain": "backend",
+      "layer": "multi-tenant-systems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "tenant-isolation": {
+      "title": "Tenant isolation",
+      "domain": "backend",
+      "layer": "multi-tenant-systems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "token-bucket": {
+      "title": "Token bucket",
+      "domain": "backend",
+      "layer": "rate-limiting-deeper-than-100-requestsminute",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "fixed-window-rate-limit": {
+      "title": "Fixed-window rate limit",
+      "domain": "backend",
+      "layer": "rate-limiting-deeper-than-100-requestsminute",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "clock-drift": {
+      "title": "Clock drift",
+      "domain": "backend",
+      "layer": "clocktime-problems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "clock-step": {
+      "title": "Clock step",
+      "domain": "backend",
+      "layer": "clocktime-problems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "consumer-lag": {
+      "title": "Consumer lag",
+      "domain": "backend",
+      "layer": "production-data-pipeline-problems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "strace": {
+      "title": "strace",
+      "domain": "backend",
+      "layer": "debugging-tools-techniques-people-eventually-learn",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "ltrace": {
+      "title": "ltrace",
+      "domain": "backend",
+      "layer": "debugging-tools-techniques-people-eventually-learn",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "gray-failure": {
+      "title": "Gray failure",
+      "domain": "backend",
+      "layer": "particularly-nasty-production-only-phenomena",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "fail-slow": {
+      "title": "Fail-slow",
+      "domain": "backend",
+      "layer": "particularly-nasty-production-only-phenomena",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "query-cache": {
+      "title": "Query cache",
+      "domain": "frontend",
+      "layer": "clientserver-state-caching",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "optimistic-update": {
+      "title": "Optimistic update",
+      "domain": "frontend",
+      "layer": "clientserver-state-caching",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "rsc-payload": {
+      "title": "RSC payload",
+      "domain": "frontend",
+      "layer": "nextjs-modern-routing-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "hydration": {
+      "title": "Hydration",
+      "domain": "frontend",
+      "layer": "nextjs-modern-routing-internals",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "concurrent-rendering": {
+      "title": "Concurrent rendering",
+      "domain": "frontend",
+      "layer": "react-rendering-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "view-transition": {
+      "title": "View Transition",
+      "domain": "frontend",
+      "layer": "react-rendering-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "automatic-memoization": {
+      "title": "Automatic memoization",
+      "domain": "frontend",
+      "layer": "react-compiler-memoization",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "react-compiler": {
+      "title": "React Compiler",
+      "domain": "frontend",
+      "layer": "react-compiler-memoization",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "layout-thrashing": {
+      "title": "Layout thrashing",
+      "domain": "frontend",
+      "layer": "browser-rendering-pipeline",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "style-recalculation": {
+      "title": "Style recalculation",
+      "domain": "frontend",
+      "layer": "browser-rendering-pipeline",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "long-task": {
+      "title": "Long task",
+      "domain": "frontend",
+      "layer": "main-thread-performance",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "main-thread-blocking": {
+      "title": "Main-thread blocking",
+      "domain": "frontend",
+      "layer": "main-thread-performance",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "request-waterfall": {
+      "title": "Request waterfall",
+      "domain": "frontend",
+      "layer": "network-performance",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "abortcontroller": {
+      "title": "AbortController",
+      "domain": "frontend",
+      "layer": "network-performance",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "optimistic-mutation": {
+      "title": "Optimistic mutation",
+      "domain": "frontend",
+      "layer": "data-fetching-architecture",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "fetch-waterfall": {
+      "title": "Fetch waterfall",
+      "domain": "frontend",
+      "layer": "data-fetching-architecture",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "store-tearing": {
+      "title": "Store tearing",
+      "domain": "frontend",
+      "layer": "state-management-much-deeper-than-redux",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "client-state": {
+      "title": "Client state",
+      "domain": "frontend",
+      "layer": "state-management-much-deeper-than-redux",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "detached-dom-tree": {
+      "title": "Detached DOM tree",
+      "domain": "frontend",
+      "layer": "memory-and-browser-runtime",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "memory-leak": {
+      "title": "Memory leak",
+      "domain": "frontend",
+      "layer": "memory-and-browser-runtime",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "indexeddb": {
+      "title": "IndexedDB",
+      "domain": "frontend",
+      "layer": "web-storage",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "localstorage": {
+      "title": "localStorage",
+      "domain": "frontend",
+      "layer": "web-storage",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "service-worker": {
+      "title": "Service Worker",
+      "domain": "frontend",
+      "layer": "service-workers-offline-first",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "service-worker-lifecycle": {
+      "title": "Service-worker lifecycle",
+      "domain": "frontend",
+      "layer": "service-workers-offline-first",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "bfcache": {
+      "title": "bfcache",
+      "domain": "frontend",
+      "layer": "bfcache-navigation-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "page-snapshot": {
+      "title": "Page snapshot",
+      "domain": "frontend",
+      "layer": "bfcache-navigation-internals",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "island-architecture": {
+      "title": "Island architecture",
+      "domain": "frontend",
+      "layer": "rendering-architecture",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "csr": {
+      "title": "Client-side rendering (CSR)",
+      "domain": "frontend",
+      "layer": "rendering-architecture",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "tree-shaking": {
+      "title": "Tree shaking",
+      "domain": "frontend",
+      "layer": "code-delivery",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "code-splitting": {
+      "title": "Code splitting",
+      "domain": "frontend",
+      "layer": "code-delivery",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "srcset": {
+      "title": "srcset",
+      "domain": "frontend",
+      "layer": "images-media",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "image-decoding": {
+      "title": "Image decoding",
+      "domain": "frontend",
+      "layer": "images-media",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "cascade-layers": {
+      "title": "Cascade layers",
+      "domain": "frontend",
+      "layer": "css-engineering",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "specificity": {
+      "title": "Specificity",
+      "domain": "frontend",
+      "layer": "css-engineering",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "focus-management": {
+      "title": "Focus management",
+      "domain": "frontend",
+      "layer": "accessibility-as-engineering-constraints",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "focus-trap": {
+      "title": "Focus trap",
+      "domain": "frontend",
+      "layer": "accessibility-as-engineering-constraints",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "virtual-scrolling": {
+      "title": "Virtual scrolling",
+      "domain": "frontend",
+      "layer": "virtualization",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "windowing": {
+      "title": "Windowing",
+      "domain": "frontend",
+      "layer": "virtualization",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "stale-closure": {
+      "title": "Stale closure",
+      "domain": "frontend",
+      "layer": "race-conditions-in-frontend-state",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "stale-state": {
+      "title": "Stale state",
+      "domain": "frontend",
+      "layer": "race-conditions-in-frontend-state",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "speculative-ui": {
+      "title": "Speculative UI",
+      "domain": "frontend",
+      "layer": "optimistic-ui",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "temporary-state": {
+      "title": "Temporary state",
+      "domain": "frontend",
+      "layer": "optimistic-ui",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "xss": {
+      "title": "Cross-site scripting (XSS)",
+      "domain": "frontend",
+      "layer": "security",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "dom-xss": {
+      "title": "DOM-based XSS",
+      "domain": "frontend",
+      "layer": "security",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "core-web-vitals": {
+      "title": "Core Web Vitals",
+      "domain": "frontend",
+      "layer": "frontend-observability",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "real-user-monitoring-rum": {
+      "title": "Real User Monitoring (RUM)",
+      "domain": "frontend",
+      "layer": "frontend-observability",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "hydration-only-bug": {
+      "title": "Hydration-only bug",
+      "domain": "frontend",
+      "layer": "frontend-debugging-phenomena",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "flaky-ui-test": {
+      "title": "Flaky UI test",
+      "domain": "frontend",
+      "layer": "frontend-debugging-phenomena",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "background-tab-throttling": {
+      "title": "Background tab throttling",
+      "domain": "frontend",
+      "layer": "browser-throttling",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "timer-throttling": {
+      "title": "Timer throttling",
+      "domain": "frontend",
+      "layer": "browser-throttling",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "easing": {
+      "title": "Easing",
+      "domain": "ui",
+      "layer": "motion",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "spring": {
+      "title": "Spring",
+      "domain": "ui",
+      "layer": "motion",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "scroll-snap": {
+      "title": "Scroll snap",
+      "domain": "ui",
+      "layer": "scroll",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "scroll-linked-animation": {
+      "title": "Scroll-linked animation",
+      "domain": "ui",
+      "layer": "scroll",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "popover": {
+      "title": "Popover",
+      "domain": "ui",
+      "layer": "components",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "command-palette": {
+      "title": "Command palette",
+      "domain": "ui",
+      "layer": "components",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "hover": {
+      "title": "Hover",
+      "domain": "ui",
+      "layer": "interaction",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [
+        "hover-feedback"
+      ],
+      "redirectFrom": [
+        "hover-feedback"
+      ]
+    },
+    "focus": {
+      "title": "Focus state",
+      "domain": "ui",
+      "layer": "interaction",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "progressive-disclosure": {
+      "title": "Progressive disclosure",
+      "domain": "ui",
+      "layer": "feedback",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "shared-element-transition": {
+      "title": "Shared-element transition",
+      "domain": "ui",
+      "layer": "navigation",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "breadcrumbs": {
+      "title": "Breadcrumbs",
+      "domain": "ui",
+      "layer": "navigation",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "container-query": {
+      "title": "Container query",
+      "domain": "ui",
+      "layer": "layout",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "visual-hierarchy": {
+      "title": "Visual hierarchy",
+      "domain": "ui",
+      "layer": "layout",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "primary-action": {
+      "title": "Primary action",
+      "domain": "ui",
+      "layer": "visual-hierarchy",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "secondary-action": {
+      "title": "Secondary action",
+      "domain": "ui",
+      "layer": "visual-hierarchy",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "skeleton": {
+      "title": "Skeleton",
+      "domain": "ui",
+      "layer": "loading",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "shimmer": {
+      "title": "Shimmer",
+      "domain": "ui",
+      "layer": "loading",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "server-component": {
+      "title": "Server Component",
+      "domain": "ui",
+      "layer": "react-ui",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "client-component": {
+      "title": "Client Component",
+      "domain": "ui",
+      "layer": "react-ui",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "focus-restoration": {
+      "title": "Focus restoration",
+      "domain": "ui",
+      "layer": "accessibility",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "keyboard-navigation": {
+      "title": "Keyboard navigation",
+      "domain": "ui",
+      "layer": "accessibility",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "shadcnui": {
+      "title": "shadcn/ui",
+      "domain": "ui",
+      "layer": "ecosystem",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "radix": {
+      "title": "Radix",
+      "domain": "ui",
+      "layer": "ecosystem",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "anchored-popover": {
+      "title": "Anchored popover",
+      "domain": "ui",
+      "layer": "prompting",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "minimal-editorial-layout": {
+      "title": "Minimal editorial layout",
+      "domain": "ui",
+      "layer": "prompting",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "state-transitions": {
+      "title": "State transitions",
+      "domain": "ui",
+      "layer": "principle",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "interaction-feedback": {
+      "title": "Interaction feedback",
+      "domain": "ui",
+      "layer": "principle",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "microinteraction": {
+      "title": "Microinteraction",
+      "domain": "ui",
+      "layer": "learn-first",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "whitespace": {
+      "title": "Whitespace",
+      "domain": "ui",
+      "layer": "learn-first",
+      "difficulty": 2,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "game-world": {
+      "title": "Game world",
+      "domain": "gamedev",
+      "layer": "the-foundational-game-dev-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "world-coordinates": {
+      "title": "World coordinates",
+      "domain": "gamedev",
+      "layer": "the-foundational-game-dev-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "scene-graph": {
+      "title": "Scene graph",
+      "domain": "gamedev",
+      "layer": "scene-graph",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "scene": {
+      "title": "Scene",
+      "domain": "gamedev",
+      "layer": "scene-graph",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "mesh": {
+      "title": "Mesh",
+      "domain": "gamedev",
+      "layer": "mesh-geometry-material",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "geometry": {
+      "title": "Geometry",
+      "domain": "gamedev",
+      "layer": "mesh-geometry-material",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "pbr": {
+      "title": "Physically based rendering (PBR)",
+      "domain": "gamedev",
+      "layer": "pbr",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "metalness": {
+      "title": "Metalness",
+      "domain": "gamedev",
+      "layer": "pbr",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "directional-light": {
+      "title": "Directional light",
+      "domain": "gamedev",
+      "layer": "lighting",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "point-light": {
+      "title": "Point light",
+      "domain": "gamedev",
+      "layer": "lighting",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "vertex-shader": {
+      "title": "Vertex shader",
+      "domain": "gamedev",
+      "layer": "shaders",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "fragment-shader": {
+      "title": "Fragment shader",
+      "domain": "gamedev",
+      "layer": "shaders",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "game-loop": {
+      "title": "Game loop",
+      "domain": "gamedev",
+      "layer": "the-game-loop",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "fixed-timestep": {
+      "title": "Fixed timestep",
+      "domain": "gamedev",
+      "layer": "the-game-loop",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "determinism": {
+      "title": "Determinism",
+      "domain": "gamedev",
+      "layer": "determinism",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "deterministic-simulation": {
+      "title": "Deterministic simulation",
+      "domain": "gamedev",
+      "layer": "determinism",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "rigid-body": {
+      "title": "Rigid body",
+      "domain": "gamedev",
+      "layer": "physics",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "collider": {
+      "title": "Collider",
+      "domain": "gamedev",
+      "layer": "physics",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "aabb": {
+      "title": "AABB",
+      "domain": "gamedev",
+      "layer": "collision-detection",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "broad-phase": {
+      "title": "Broad phase",
+      "domain": "gamedev",
+      "layer": "collision-detection",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "skeletal-animation": {
+      "title": "Skeletal animation",
+      "domain": "gamedev",
+      "layer": "animation",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "animation-clip": {
+      "title": "Animation clip",
+      "domain": "gamedev",
+      "layer": "animation",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "character-controller": {
+      "title": "Character controller",
+      "domain": "gamedev",
+      "layer": "character-controller",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "acceleration": {
+      "title": "Acceleration",
+      "domain": "gamedev",
+      "layer": "character-controller",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "camera-smoothing": {
+      "title": "Camera smoothing",
+      "domain": "gamedev",
+      "layer": "camera-systems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "perspective-camera": {
+      "title": "Perspective camera",
+      "domain": "gamedev",
+      "layer": "camera-systems",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "gamepad": {
+      "title": "Gamepad",
+      "domain": "gamedev",
+      "layer": "input",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "input-mapping": {
+      "title": "Input mapping",
+      "domain": "gamedev",
+      "layer": "input",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "behavior-tree": {
+      "title": "Behavior tree",
+      "domain": "gamedev",
+      "layer": "ai-npc-behavior",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "fsm": {
+      "title": "FSM",
+      "domain": "gamedev",
+      "layer": "ai-npc-behavior",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "navmesh": {
+      "title": "NavMesh",
+      "domain": "gamedev",
+      "layer": "navigation",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [
+        "navigation-mesh"
+      ],
+      "redirectFrom": [
+        "navigation-mesh"
+      ]
+    },
+    "level": {
+      "title": "Game level",
+      "domain": "gamedev",
+      "layer": "level-design-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "map": {
+      "title": "Game map",
+      "domain": "gamedev",
+      "layer": "level-design-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "world-streaming": {
+      "title": "World streaming",
+      "domain": "gamedev",
+      "layer": "open-world-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "level-of-detail": {
+      "title": "Level of detail (LOD)",
+      "domain": "gamedev",
+      "layer": "lod",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [
+        "lod"
+      ],
+      "redirectFrom": [
+        "lod"
+      ]
+    },
+    "lod-bias": {
+      "title": "LOD bias",
+      "domain": "gamedev",
+      "layer": "lod",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "frustum-culling": {
+      "title": "Frustum culling",
+      "domain": "gamedev",
+      "layer": "culling",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "occlusion-culling": {
+      "title": "Occlusion culling",
+      "domain": "gamedev",
+      "layer": "culling",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "instancedmesh": {
+      "title": "InstancedMesh",
+      "domain": "gamedev",
+      "layer": "instancing",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "instancing": {
+      "title": "Instancing",
+      "domain": "gamedev",
+      "layer": "instancing",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "batching": {
+      "title": "Batching (rendering)",
+      "domain": "gamedev",
+      "layer": "batching",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "state-change": {
+      "title": "State change",
+      "domain": "gamedev",
+      "layer": "draw-calls",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "material-switch": {
+      "title": "Material switch",
+      "domain": "gamedev",
+      "layer": "draw-calls",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "overdraw": {
+      "title": "Overdraw",
+      "domain": "gamedev",
+      "layer": "overdraw",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "fill-rate": {
+      "title": "Fill rate",
+      "domain": "gamedev",
+      "layer": "overdraw",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "bloom": {
+      "title": "Bloom",
+      "domain": "gamedev",
+      "layer": "post-processing",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "depth-of-field": {
+      "title": "Depth of field",
+      "domain": "gamedev",
+      "layer": "post-processing",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "particle-system": {
+      "title": "Particle system",
+      "domain": "gamedev",
+      "layer": "particles-vfx",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "particle-emitter": {
+      "title": "Particle emitter",
+      "domain": "gamedev",
+      "layer": "particles-vfx",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "spatial-audio": {
+      "title": "Spatial audio",
+      "domain": "gamedev",
+      "layer": "audio",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "sound-effect": {
+      "title": "Sound effect",
+      "domain": "gamedev",
+      "layer": "audio",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "gltf": {
+      "title": "glTF",
+      "domain": "gamedev",
+      "layer": "asset-pipeline",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "texture-atlas": {
+      "title": "Texture atlas",
+      "domain": "gamedev",
+      "layer": "asset-pipeline",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "uv-packing": {
+      "title": "UV packing",
+      "domain": "gamedev",
+      "layer": "texture-atlasing",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "atlas-coordinates": {
+      "title": "Atlas coordinates",
+      "domain": "gamedev",
+      "layer": "texture-atlasing",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "webgpu": {
+      "title": "WebGPU",
+      "domain": "gamedev",
+      "layer": "web-specific-game-technology",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "offscreencanvas": {
+      "title": "OffscreenCanvas",
+      "domain": "gamedev",
+      "layer": "web-specific-game-technology",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "wasm": {
+      "title": "WebAssembly (Wasm)",
+      "domain": "gamedev",
+      "layer": "webassembly",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "emscripten": {
+      "title": "Emscripten",
+      "domain": "gamedev",
+      "layer": "webassembly",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "web-worker": {
+      "title": "Web Worker",
+      "domain": "gamedev",
+      "layer": "web-workers",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "sharedarraybuffer": {
+      "title": "SharedArrayBuffer",
+      "domain": "gamedev",
+      "layer": "web-workers",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "entity": {
+      "title": "Entity",
+      "domain": "gamedev",
+      "layer": "ecs",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "component": {
+      "title": "ECS component",
+      "domain": "gamedev",
+      "layer": "ecs",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "client-prediction": {
+      "title": "Client prediction",
+      "domain": "gamedev",
+      "layer": "multiplayer-networking",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "interest-management": {
+      "title": "Interest management",
+      "domain": "gamedev",
+      "layer": "multiplayer-networking",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "server-reconciliation": {
+      "title": "Server reconciliation",
+      "domain": "gamedev",
+      "layer": "client-prediction",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "input-sequence": {
+      "title": "Input sequence",
+      "domain": "gamedev",
+      "layer": "client-prediction",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "snapshot-interpolation": {
+      "title": "Snapshot interpolation",
+      "domain": "gamedev",
+      "layer": "interpolation",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "interpolation-buffer": {
+      "title": "Interpolation buffer",
+      "domain": "gamedev",
+      "layer": "interpolation",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "resimulation": {
+      "title": "Resimulation",
+      "domain": "gamedev",
+      "layer": "rollback-netcode",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "input-history": {
+      "title": "Input history",
+      "domain": "gamedev",
+      "layer": "rollback-netcode",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "area-of-interest": {
+      "title": "Area of interest",
+      "domain": "gamedev",
+      "layer": "interest-management",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "visibility-set": {
+      "title": "Visibility set",
+      "domain": "gamedev",
+      "layer": "interest-management",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "save-state": {
+      "title": "Save state",
+      "domain": "gamedev",
+      "layer": "saving-persistence",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "checkpoint": {
+      "title": "Checkpoint",
+      "domain": "gamedev",
+      "layer": "saving-persistence",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "procedural-generation": {
+      "title": "Procedural generation",
+      "domain": "gamedev",
+      "layer": "procedural-generation",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "noise": {
+      "title": "Noise",
+      "domain": "gamedev",
+      "layer": "procedural-generation",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "level-design": {
+      "title": "Level design",
+      "domain": "gamedev",
+      "layer": "world-generation-vs-level-design",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "poi": {
+      "title": "Points of interest (POI)",
+      "domain": "gamedev",
+      "layer": "world-generation-vs-level-design",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "game-feel": {
+      "title": "Game feel",
+      "domain": "gamedev",
+      "layer": "game-feel-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "anticipation": {
+      "title": "Anticipation",
+      "domain": "gamedev",
+      "layer": "game-feel-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "squash-and-stretch": {
+      "title": "Squash and stretch",
+      "domain": "gamedev",
+      "layer": "animation-principles",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "follow-through": {
+      "title": "Follow-through",
+      "domain": "gamedev",
+      "layer": "animation-principles",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "hud": {
+      "title": "HUD",
+      "domain": "gamedev",
+      "layer": "uihud-game-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "health-bar": {
+      "title": "Health bar",
+      "domain": "gamedev",
+      "layer": "uihud-game-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "game-state": {
+      "title": "Game state",
+      "domain": "gamedev",
+      "layer": "game-architecture-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "game-mode": {
+      "title": "Game mode",
+      "domain": "gamedev",
+      "layer": "game-architecture-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "object-pooling": {
+      "title": "Object pooling",
+      "domain": "gamedev",
+      "layer": "the-large-game-performance-vocabulary",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "draw-calls": {
+      "title": "Draw calls",
+      "domain": "gamedev",
+      "layer": "the-large-game-performance-vocabulary",
+      "difficulty": 3,
+      "format": "field-note",
+      "priority": "P0",
+      "aliases": [
+        "draw-call"
+      ],
+      "redirectFrom": [
+        "draw-call"
+      ]
+    },
+    "shader-warm-up": {
+      "title": "Shader warm-up",
+      "domain": "gamedev",
+      "layer": "shaderpipeline-compilation",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "pipeline-caching": {
+      "title": "Pipeline caching",
+      "domain": "gamedev",
+      "layer": "shaderpipeline-compilation",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "threejs": {
+      "title": "Three.js",
+      "domain": "gamedev",
+      "layer": "engine-comparison",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "react-three-fiber": {
+      "title": "React Three Fiber",
+      "domain": "gamedev",
+      "layer": "engine-comparison",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "hack-the-box": {
+      "title": "Hack The Box",
+      "domain": "security",
+      "layer": "offensive-security",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "tryhackme": {
+      "title": "TryHackMe",
+      "domain": "security",
+      "layer": "offensive-security",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "sql-injection": {
+      "title": "SQL injection",
+      "domain": "security",
+      "layer": "web-security",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "csrf": {
+      "title": "Cross-site request forgery (CSRF)",
+      "domain": "security",
+      "layer": "web-security",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "pcap-analysis": {
+      "title": "PCAP analysis",
+      "domain": "security",
+      "layer": "blue-team",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "malware-analysis": {
+      "title": "Malware analysis",
+      "domain": "security",
+      "layer": "blue-team",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "binary-exploitation": {
+      "title": "Binary exploitation",
+      "domain": "security",
+      "layer": "binary-and-reverse-engineering",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P0",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "reverse-engineering": {
+      "title": "Reverse engineering",
+      "domain": "security",
+      "layer": "binary-and-reverse-engineering",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P1",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "hackerone": {
+      "title": "HackerOne",
+      "domain": "security",
+      "layer": "practice-and-career",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    },
+    "portswigger-web-security-academy": {
+      "title": "PortSwigger Web Security Academy",
+      "domain": "security",
+      "layer": "practice-and-career",
+      "difficulty": 3,
+      "format": "standard",
+      "priority": "P2",
+      "aliases": [],
+      "redirectFrom": []
+    }
+  }
+}

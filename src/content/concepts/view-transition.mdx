@@ -1,0 +1,224 @@
+---
+summary: "A view transition snapshots the old UI, applies your DOM update, then animates between the two states. The browser does the continuity work; you supply the names."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "docs"
+    title: "View Transition API"
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API"
+    publisher: "MDN Web Docs"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "CSS View Transitions Level 1"
+    url: "https://www.w3.org/TR/css-view-transitions-1/"
+    publisher: "W3C"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "Document: startViewTransition() method"
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition"
+    publisher: "MDN Web Docs"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "Smooth transitions with the View Transition API"
+    url: "https://developer.chrome.com/docs/web-platform/view-transitions"
+    publisher: "Chrome for Developers"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "View transitions"
+    url: "https://docs.astro.build/en/guides/view-transitions/"
+    publisher: "Astro Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import ViewTransitionLab from "../../components/labs/ViewTransitionLab";
+
+## The short definition
+
+A view transition is a browser-managed animation between two states of the DOM.
+
+You call `document.startViewTransition(update)`. The browser paints a snapshot of the current page, runs your update, paints a snapshot of the result, and animates one into the other. You never write the entrance choreography or keep an element mounted across two routes.
+
+The API is deliberately narrow. It does not decide what should move. It only animates elements you have **named** with `view-transition-name`, and it leaves everything else to a default crossfade — which you can turn off.
+
+That division is the point: the browser owns continuity, you own intent.
+
+## What actually happens
+
+The sequence is worth keeping in mind because every failure mode follows from one step:
+
+1. `startViewTransition(update)` is called.
+2. The browser captures the old state into a set of snapshots.
+3. Your `update` callback runs and mutates the DOM.
+4. The browser captures the new state.
+5. Both snapshots are placed in a pseudo-element tree above the page.
+6. Named pairs morph; the rest crossfade according to the default styles.
+7. When the animation finishes, the snapshots are removed and the live DOM is revealed.
+
+The live DOM updates immediately. The animation is a visual layer on top of it, not a second copy of your application. That is why the API works across frameworks and even across documents.
+
+One consequence: the callback must finish before the new snapshot is taken. In React, `setState` is asynchronous, so returning from the callback does not mean the commit happened. Use `flushSync`:
+
+```tsx
+import { flushSync } from "react-dom";
+
+function openDetail(id: string) {
+  if (!document.startViewTransition || prefersReducedMotion) {
+    setView({ kind: "detail", id });
+    return;
+  }
+
+  document.startViewTransition(() => {
+    flushSync(() => setView({ kind: "detail", id }));
+  });
+}
+```
+
+Without the flush, the browser often captures the old UI twice, and the transition looks like nothing happened.
+
+## Names are the whole contract
+
+`view-transition-name` marks an element as a participant:
+
+```css
+.card-art {
+  view-transition-name: card-art;
+}
+```
+
+If an element with the same name exists in both the old and new states, it becomes one shared element. Everything about continuity — position, size, border radius, content morph — is derived from those two snapshots.
+
+Names must be unique among rendered elements. Two elements sharing a name is not a subtle bug; the API aborts the transition rather than guess which one should match. This is why long lists should not have a permanent name on every row. Give the clicked row a name, or generate a unique one per item and accept that only the matching pair can morph.
+
+Naming is also how you control scope. Name the one plate you want to travel and disable the page-wide fade:
+
+```css
+::view-transition-group(card-art) {
+  animation-duration: 360ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+```
+
+The `root` group is the snapshot of the entire page. Leaving its default animation on is right for a route change where the whole surface is being replaced. It is wrong when only one card should move, because the rest of the interface will crossfade behind it.
+
+## See it work
+
+<ViewTransitionLab client:visible />
+
+The lab swaps a grid for a detail view and back. Only the gradient plate is named in both states. The browser morphs it from thumbnail to hero, while the rest of the lab changes instantly.
+
+Open a panel, then close it quickly. The return trip uses the same name in reverse. Focus moves to the close control on open and back to the card on close, because a view transition animates pixels — it does not restore focus, scroll position, or reading order.
+
+## The pseudo-element tree
+
+Every transition creates this structure:
+
+```text
+::view-transition
+└── ::view-transition-group(name)
+    └── ::view-transition-image-pair(name)
+        ├── ::view-transition-old(name)
+        └── ::view-transition-new(name)
+```
+
+Style the group to control geometry and timing. Style the old and new images to control the crossfade itself. A common surprise is that the old snapshot sits above the new one by default; `mix-blend-mode: normal` on both removes the washed-out overlap you sometimes see when the two states differ in colour.
+
+These pseudo-elements live in the browser's top layer, above the document. A fixed header that should stay put during a route transition needs its own name and an animation that keeps it still. Otherwise it is captured into the root snapshot and animates with everything else.
+
+## Same document and across documents
+
+The same-document API is what the lab uses: one document, two states.
+
+Cross-document transitions cover real navigations. Both documents opt in:
+
+```css
+@view-transition {
+  navigation: auto;
+}
+```
+
+The browser then treats a same-origin navigation like a same-document swap. Elements with matching names in the outgoing and incoming documents morph; the rest crossfade. This is the closest the platform has come to native page transitions without a client-side router.
+
+Both directions must cooperate. If the destination does not opt in, the navigation is an ordinary load. If the two documents share a name but the content differs wildly, the morph still happens — the browser does not judge whether the result is legible.
+
+## When it earns its place
+
+Use a view transition when the same thing visibly changes identity:
+
+- a list item becoming a detail page;
+- a thumbnail becoming a hero image;
+- a tab whose indicator slides to a new label;
+- a route change where the header and content persist;
+- an expandable card that grows into a panel.
+
+Skip it when the change is better left instant:
+
+- keyboard-triggered actions the user repeats constantly;
+- hover states and tiny popovers;
+- a list where every row would need a named snapshot;
+- any interaction where the animation would delay the next task.
+
+The API makes it easy to animate every navigation. That is a temptation, not a design direction. Continuity helps when it explains where something came from; applied everywhere, it becomes latency.
+
+## Fallbacks and reduced motion
+
+The API is a progressive enhancement. Check for it, then do the plain update:
+
+```ts
+if (!document.startViewTransition) {
+  update();
+  return;
+}
+
+const transition = document.startViewTransition(update);
+await transition.finished;
+```
+
+`prefers-reduced-motion` is not handled automatically. Honour it explicitly: skip the transition, or keep a short opacity change and drop spatial travel. The new DOM should always be the accessible source of truth, with or without the animation.
+
+Two more lifecycle details matter in real interfaces:
+
+- `transition.finished` resolves after the visual layer is removed. Use it to clear temporary classes or restore pointer behaviour.
+- `transition.skipTransition()` ends the animation early. Offer it when a user starts interacting again; don't make them wait out a decoration.
+
+## Failure modes
+
+| Symptom | Usual cause |
+| --- | --- |
+| Nothing animates | The update was not committed before the new snapshot, or the name is missing from one state |
+| The whole page fades unexpectedly | The `root` group kept its default animation |
+| The transition is skipped entirely | Two elements share the same `view-transition-name` |
+| The shared element jumps at the end | The two states have very different geometry, or nested transforms fight the snapshot |
+| Focus is lost after opening a detail view | Focus was not moved after the DOM swap |
+| Scroll position jumps on return | Scroll restoration was not handled alongside the transition |
+| A fixed header moves with the page | The header was captured into the root snapshot |
+| Navigation feels slow | Every route animates, or large surfaces are named unnecessarily |
+
+The last one is worth repeating: each named snapshot is a painted layer. Naming a full-screen menu or a long list is not free. Animate the smallest element that carries the meaning.
+
+## The mental model
+
+A view transition is **continuity for an already-finished update**.
+
+- Decide what the user should perceive as the same object.
+- Give that object one name, and only that object.
+- Disable the root animation when the change is local.
+- Move focus and restore scroll yourself; the browser only animates pixels.
+- Treat the API as an enhancement and keep the instant path first-class.
+
+The result is not a library of page transitions. It is a small, declarative statement about what survives a change — which is usually the question an interface is already answering.

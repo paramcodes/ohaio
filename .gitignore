@@ -4,3 +4,6 @@ dist/
 .env
 .env.*
 .DS_Store
+
+# One-time migration input; content now lives as MDX in src/content/concepts
+docs/archive/

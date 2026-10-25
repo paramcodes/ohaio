@@ -8,7 +8,7 @@ import {
   offset,
   shift,
 } from "@floating-ui/dom";
-import { cardBySlug, DOMAIN_META } from "@/lib/site";
+import { cardBySlug, DOMAIN_META, statusLabel } from "@/lib/site";
 
 export default function ConceptHoverLayer() {
   const [slug, setSlug] = useState<string | null>(null);
@@ -34,10 +34,18 @@ export default function ConceptHoverLayer() {
       anchorRef.current = null;
     };
 
-    const closestLink = (target: EventTarget | null) =>
-      target instanceof Element
-        ? target.closest<HTMLElement>("[data-concept]")
-        : null;
+    const closestLink = (target: EventTarget | null) => {
+      if (!(target instanceof Element)) return null;
+      const link = target.closest<HTMLElement>("[data-concept]");
+      if (!link) return null;
+      // Article prose already supplies context; a floating card there fights the reading flow.
+      if (link.closest(".prose")) return null;
+      if (link instanceof HTMLAnchorElement) {
+        const url = new URL(link.href, window.location.href);
+        if (url.pathname === window.location.pathname && !url.hash) return null;
+      }
+      return link;
+    };
 
     const onPointerOver = (event: PointerEvent) => {
       if (event.pointerType === "touch") return;
@@ -133,15 +141,28 @@ export default function ConceptHoverLayer() {
               <i className="domain-dot" />
               {domain.name}
             </span>
-            <span className={card.status === "published" ? "status-tag status-tag--published" : "status-tag"}>
-              {card.status === "published" ? "Field note" : "Filed entry"}
+            <span
+              className={
+                card.status === "published"
+                  ? "status-tag status-tag--published"
+                  : card.status === "in-review"
+                    ? "status-tag status-tag--review"
+                    : "status-tag"
+              }
+            >
+              {statusLabel(card.status)}
             </span>
           </div>
           <div className="hover-card-title">{card.title}</div>
           <p className="hover-card-copy">{card.summary}</p>
           <div className="hover-card-foot">
             {card.layerName}
-            {card.status === "published" ? " · open to read" : " · open filed entry"}
+            {card.status === "published"
+              ? " · open to read"
+              : card.status === "in-review"
+                ? " · open the note"
+                : " · open filed entry"}
+            {card.sourceCount > 0 ? ` · ${card.sourceCount} sources` : ""}
           </div>
         </motion.div>
       ) : null}

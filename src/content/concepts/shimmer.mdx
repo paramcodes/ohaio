@@ -1,0 +1,174 @@
+---
+summary: "Shimmer is the moving highlight swept across a skeleton. It reports that a request is alive, nothing more — and how you draw it decides whether the browser composites or repaints."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "article"
+    title: "Best Practices For Animated Progress Indicators"
+    url: "https://www.smashingmagazine.com/2016/12/best-practices-for-animated-progress-indicators/"
+    publisher: "Smashing Magazine"
+    author: "Erin Malouhey"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Rendering performance"
+    url: "https://web.dev/articles/rendering-performance"
+    publisher: "web.dev"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Skeleton Screens 101"
+    url: "https://www.nngroup.com/articles/skeleton-screens/"
+    publisher: "Nielsen Norman Group"
+    author: "Kate Moran"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "prefers-reduced-motion: Sometimes less movement is more"
+    url: "https://web.dev/articles/prefers-reduced-motion"
+    publisher: "web.dev"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "will-change CSS property"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/will-change"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "Intersection Observer API"
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import ShimmerLab from "../../components/labs/ShimmerLab";
+
+## The short definition
+
+Shimmer is a soft band of light swept repeatedly across the grey blocks of a skeleton screen. It came from mobile interfaces, where a placeholder that pulsed or glowed read as *alive* and one that sat flat read as *stuck*.
+
+It is worth naming precisely what it communicates, because it communicates one thing and nothing else: **the request has not been abandoned**. It carries no estimate of remaining time, no quantity of work, no position in a process. In the taxonomy of loading indicators it is an *indeterminate* one, in the same family as the spinner, and it inherits every limitation of that family.
+
+The interesting engineering question is not whether to loop it. It is what the loop costs the browser to draw, and what happens when nobody is looking at it.
+
+## Two sweeps that look identical
+
+<ShimmerLab client:visible />
+
+Flip between *Move a band* and *Slide a gradient* in the lab. On a still screenshot they are the same picture. The difference is which step of the rendering pipeline each one asks for, every frame, forever.
+
+The pipeline runs style → layout → paint → composite. An animation that only changes `transform` or `opacity` on a layer the browser has already promoted skips the first three and stays in compositing, which the GPU handles without touching the main thread. An animation that changes `background-position` changes the pixels of the element, so it repaints that region each frame. On one card at 1.2 seconds a cycle on a desktop machine, that is invisible. On a mid-range phone, with six skeleton cards in the viewport and the CPU already busy parsing the response, it is not.
+
+The band costs one extra element and is the version to write down:
+
+```css
+.card {
+  position: relative;
+  overflow: clip;                 /* the band travels past the edge, the card does not grow */
+}
+
+.band {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -100%;
+  inline-size: 100%;
+  background: linear-gradient(to right, transparent, #ffffffb3, transparent);
+  animation: sweep 1.2s linear infinite;
+}
+
+@keyframes sweep {
+  from { transform: translateX(0); }
+  to   { transform: translateX(200%); }
+}
+```
+
+`inset-inline-start: -100%` plus `translateX(200%)` uses percentage translation relative to the band's own width, so the loop works at any card size without a magic pixel number. `linear` is correct here in a way it usually is not: this is ambient, constant motion, and any easing would make it visibly breathe rather than glide.
+
+The difference is measurable rather than a matter of opinion. Tracing a headless Chromium tab for three seconds per technique, counting `Paint` events on the main thread:
+
+| Technique | Property animated | `Paint` events in 3s | Main-thread paint time |
+| --- | --- | --- | --- |
+| Static blocks | none | 0 | 0ms |
+| Move a band | `transform` | 0 | 0ms |
+| Pulse | `opacity` | 0 | 0ms |
+| Slide a gradient | `background-position` | 362 | 445ms |
+
+The composited versions never ask the main thread for a pixel. The gradient repaints the card more than once per frame, every frame, until the data arrives — and the main thread is the same thread that has to parse the response, run the framework, and react to the user scrolling away from the placeholder.
+
+Reach for `will-change: transform` only if the band starts out on the wrong side of the paint step and measurements confirm it. A promoted layer costs compositor memory, and promoting every placeholder on a long list is worse than the repaint you were trying to avoid.
+
+## Pause it when nobody can see it
+
+A looping animation does not stop because it scrolled out of view. The browser keeps ticking it and keeps paying for the frames. On a feed with a dozen skeletons above and below the fold, most of the loops are running for an audience of zero.
+
+An `IntersectionObserver` on the placeholder, flipping `animation-play-state: paused`, is the whole fix:
+
+```css
+.card[data-offscreen="true"] .band { animation-play-state: paused; }
+```
+
+Scroll the lab panel and the readout changes from `running` to `paused` for exactly this reason. A main-thread trace will not show the saving — a composited loop costs the main thread nothing whether it runs or not — but the frames keep being produced, and on a device with a real GPU and a battery each one costs something. Pausing stops them at the source.
+
+One implementation note the lab encodes: write the loop with longhand `animation-*` properties and read the pause from an inherited custom property.
+
+```css
+.card { --play: running; }
+.card[data-offscreen="true"] { --play: paused; }
+
+.band {
+  animation-name: sweep;
+  animation-duration: var(--cycle);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-play-state: var(--play);
+}
+```
+
+An `animation-play-state: paused` rule written separately has to out-specify the shorthand that started the loop, and the shorthand resets play-state to `running` — so the pause silently does nothing on the exact selectors that need it most.
+
+## Under reduced motion, the loop has to go — and the information has to stay
+
+`prefers-reduced-motion: reduce` should turn the sweep into flat, static blocks. A band travelling across the screen is precisely the kind of looping, peripheral motion the setting exists to suppress.
+
+But that removal takes something away, so put it back somewhere else. The claim shimmer makes — *this is still working, not frozen* — has to survive without movement: a text line in a `role="status"` region, the `aria-busy` flag on the loading region, and a plan for what the user sees at ten seconds. The `@media` block handles the pixels; those three handle the meaning.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .band { animation: none; }
+}
+```
+
+## When the loop becomes the lie
+
+Shimmer is honest while the wait is short and the outcome is unknown. It stops being honest at two boundaries.
+
+The first is time. Past roughly ten seconds, an indeterminate indicator is telling the user "still working" at the moment they need "how long, and can I leave?". Switch to a determinate bar that reports real progress, or move the job to the background and let them navigate away.
+
+The second is the one that actually breaks products: the shimmer that never stops because the request never finishes. A loop with no ceiling cannot be wrong, so nothing forces you to handle the failure. Give every indeterminate state a timeout, and give that timeout something to say — what failed, what was kept, what the retry costs.
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Scrolling feels heavy while a list loads | Gradient sweep repainting many placeholders | Move a band with `transform`, or drop the sweep while scrolling |
+| A phone warms up on a loading screen | Infinite loop running off-screen | `IntersectionObserver` + `animation-play-state: paused` |
+| Reduced-motion users see a stuck page | Motion removed, meaning not replaced | Status text, `aria-busy`, a real end condition |
+| Users leave after 40 seconds of shimmer | Indeterminate loop with no ceiling | Determinate progress, or a timeout that reports failure |
+| Skeleton pulses then the layout jumps | Shimmer treated as a substitute for reserving space | Fix the geometry first; shimmer only decorates a correct placeholder |
+
+## The mental model
+
+Shimmer is a **heartbeat, not a gauge**. It says the process is alive. It cannot say how far along it is, so it is only ever appropriate where that second fact is unknown anyway — and only for as long as it stays unknown.
+
+Draw it with `transform`, pause it off-screen, remove it under reduced motion while keeping the message, and put a hard time limit on any loop that has no number behind it.
+
+- [Skeleton](/concepts/skeleton) — the placeholder shimmer runs over, and the geometry promise it cannot substitute for.
+- [Easing](/concepts/easing) — why `linear` is right for an ambient loop and wrong almost everywhere else.
+- [Core Web Vitals](/concepts/core-web-vitals) — the measurements that catch the repaint and layout costs this page is trying to avoid.

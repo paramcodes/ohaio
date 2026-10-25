@@ -2,7 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ProgressInline from "@/components/ProgressInline";
 import { paths } from "@/data/paths";
-import { DOMAIN_META, cardBySlug, difficultyLabel } from "@/lib/site";
+import { DOMAIN_META, cardBySlug, difficultyLabel, statusLabel } from "@/lib/site";
 
 export function getStaticPaths() {
   return paths.map((path) => ({
@@ -62,8 +62,16 @@ const description = path.summary;
             <div class="path-step-meta">
               <span>{step.card.layerName}</span>
               <span>{difficultyLabel(step.card.difficulty)}</span>
-              {step.card.status === "published" ? (
-                <span class="status-tag status-tag--published">Field note</span>
+              {step.card.status === "published" || step.card.status === "in-review" ? (
+                <span
+                  class={
+                    step.card.status === "published"
+                      ? "status-tag status-tag--published"
+                      : "status-tag status-tag--review"
+                  }
+                >
+                  {statusLabel(step.card.status)}
+                </span>
               ) : null}
             </div>
           </div>

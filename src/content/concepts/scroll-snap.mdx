@@ -1,0 +1,164 @@
+---
+summary: "Scroll snap turns free scrolling into a set of resting positions. The gesture stays native; the layout decides where it is allowed to stop."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "docs"
+    title: "scroll-snap-type"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type"
+    publisher: "MDN Web Docs"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "CSS Scroll Snap Module Level 1"
+    url: "https://drafts.csswg.org/css-scroll-snap-1/"
+    publisher: "CSS Working Group"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "CSS scroll snap"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll_snap"
+    publisher: "MDN Web Docs"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Well-controlled scrolling with CSS Scroll Snap"
+    url: "https://web.dev/articles/css-scroll-snap"
+    publisher: "web.dev"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "scroll-snap-stop"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-stop"
+    publisher: "MDN Web Docs"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import ScrollSnapLab from "../../components/labs/ScrollSnapLab";
+
+## The short definition
+
+Scroll snap is a CSS contract between a scroll container and its children. The container declares which axis may snap and how strictly. Each child declares where it prefers to come to rest.
+
+The browser keeps the native gesture: trackpad, touch, wheel, scrollbar, and keyboard all behave as they always do. What changes is the set of positions where a scroll can end. When the user stops near a snap point, the container settles onto it instead of resting in the gap between two cards.
+
+There is no animation to author and no scroll listener to write. Snap is layout, not a script.
+
+## Two elements, five properties
+
+| Element | Property | What it decides |
+| --- | --- | --- |
+| Container | `scroll-snap-type` | Axis (`x`, `y`, `inline`, `block`, `both`) and strictness (`mandatory`, `proximity`) |
+| Container | `scroll-padding` | The snapport: the inset region a child should align to |
+| Child | `scroll-snap-align` | Which edge or centre of the child meets the snapport |
+| Child | `scroll-snap-stop` | Whether a fast gesture may pass a snap point |
+| Child | `scroll-margin` | An outset around the child's snap area |
+
+`scroll-snap-align` accepts `start`, `center`, `end`, or `none`, for each axis. Most carousels use `center`; most full-page sections use `start`. The value is not about visual alignment in isolation. It describes which part of the child counts as the snap position.
+
+`scroll-padding` is the property people forget. It shrinks the snapport, which is what lets a card settle below a sticky header or beside a gutter. Without it, `start` means the literal edge of the scrollport, and the first card looks clipped even though the math is correct.
+
+## Feel the rules change
+
+<ScrollSnapLab client:visible />
+
+The lab keeps the strip and the cards fixed and changes only the contract. Try **mandatory** with **center**, then switch strictness to **off** and stop halfway between two plates. The offset readout is the distance from the nearest snap position: with snapping on, it should return to zero after the scroll ends.
+
+**Proximity** is the interesting middle. The browser snaps when you stop close enough and leaves you alone when you do not. That is a better fit for content the reader is browsing than for a paged sequence.
+
+## Mandatory is a promise about every stop
+
+`mandatory` says the container must not rest anywhere except a snap point. That is exactly right for a carousel of equal cards, a paged onboarding flow, or a full-screen section deck. Every possible stop is a valid place to stop.
+
+It is wrong when the content is taller than the scrollport. If a single snap area contains more text than fits, mandatory snapping can make the middle of that text unreachable: the browser keeps pulling the container back to the snap position. The same failure appears when items are widely spaced and the reader wants to stop on the prose between them. `proximity` exists for that case.
+
+The CSS is small:
+
+```css
+.rail {
+  overflow-x: auto;
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: 1rem;
+}
+
+.rail > .card {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+```
+
+Use logical properties for the axis. `inline` follows writing mode, so the same rule works for horizontal and vertical layouts without swapping `x` for `y`.
+
+## The ends of the track need room
+
+A snap position is only reachable if the container can scroll far enough to put the child there. With `scroll-snap-align: start`, the last card cannot reach the start line: the scroll range runs out while the card is still in the middle of the viewport, so the browser stops short and the nearest snap looks misaligned.
+
+Give the track breathing room. `center` alignment wants a spacer on both ends; `start` alignment wants one at the end.
+
+```css
+.track {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.track::after {
+  content: "";
+  flex: 0 0 calc(100% - var(--card));
+}
+```
+
+The empty region at the end is the cost of `start` alignment. `center` costs the same room at both ends and reads better for a small set of equal cards, which is why most galleries use it.
+
+## Snap stop: one plate or many
+
+By default, a fast flick can travel across several snap points before the container settles. `scroll-snap-stop: always` tells the browser it must stop at each snap position along the way. It is the difference between a gallery you can skim and a deck that advances one card per gesture.
+
+Use it when each stop is a decision, and use it sparingly. On a long list, forcing a stop at every item turns a quick flick into a chore. On a handful of cards, it keeps the user oriented.
+
+## What snap does not do
+
+- It does not add momentum. The platform's scroll physics still own that.
+- It does not animate the settle for you. Browsers may animate it; CSS snap defines the destination, not the choreography.
+- It does not fix focus order. Keyboard focus can still land on an off-screen card; call `scrollIntoView()` when focus moves if the browser does not reveal it.
+- It does not replace `scroll-behavior: smooth` or respect reduced motion by itself. Any smooth scrolling you trigger is yours to gate.
+- It does not help when the scroll container has no overflow. A snap type with nothing to scroll does nothing.
+- It does not nest well by accident. A horizontal rail inside a vertically snapping page is fine; two mandatory scrollers fighting over the same gesture is not.
+
+## Where it goes wrong
+
+| Symptom | Cause |
+| --- | --- |
+| Content between cards is unreachable | `mandatory` on a container whose items do not contain all the content |
+| Last card never reaches the start line | No trailing space in the track; the scroll range ends before the snap position does |
+| Cards hide under a sticky header | Missing `scroll-padding-block-start` on the container or page |
+| Fast swipes skip cards | Default `scroll-snap-stop: normal`; use `always` if each stop matters |
+| Snapping feels like it fights the wheel | Too strict a mode for long, mixed-height content |
+| First card is subtly off-centre | The scrollport, not the visible card, is the alignment reference; account for padding and borders |
+| Snap points move while scrolling | Content above the rail changes height or images load without reserved space |
+
+## Accessibility
+
+Snap should make a scrollable region easier to operate, not harder. Keep the region keyboard-scrollable: a focusable container with a visible focus ring, or focusable children that can be tabbed through. Do not hide the scrollbar in a way that removes the only sign the region scrolls.
+
+Do not use snap to replace reading order. A mandatory horizontal carousel can still be traversed by keyboard and screen reader, but all of its items must remain reachable and focusable. If a card is off-screen when it receives focus, scroll it into view.
+
+Reduced motion does not switch snap off, and it should not. Snapping is a positioning rule, not decorative motion. What reduced motion changes is the smooth scrolling you layer on top: when a button calls `scrollTo`, use `behavior: "auto"` or respect the preference in your motion library.
+
+## The mental model
+
+Scroll snap is **a grid of permissible rests**.
+
+- Choose the axis from the layout, not from the gesture.
+- Choose `mandatory` only when every stop is meaningful.
+- Choose `center` for cards, `start` for sections.
+- Add `scroll-padding` wherever a sticky header or gutter would otherwise cover the target.
+- Keep the native scroll and add one rule; do not reimplement the gesture.
+
+Snap decides *where* a scroll may end. [Scroll-linked animation](/concepts/scroll-linked-animation) decides what the page does *while* the scroll is happening. They compose well, but they solve different problems.

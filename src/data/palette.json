@@ -1,14 +1,14 @@
 [
   {
     "title": "Partial failure",
-    "summary": "Partial failure belongs to Production failure / overload in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Partial failure, filed under Production failure / overload. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/partial-failure",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Cache stampede",
-    "summary": "One expired key sends every request to the database at the same moment.",
+    "summary": "A hot cache key expires, every request misses at once, and the origin receives thousands of identical queries. The fix is coordination, not a bigger database.",
     "domain": "Backend",
     "url": "/concepts/cache-stampede",
     "status": "published"
@@ -18,11 +18,11 @@
     "summary": "Retries multiply load while a dependency is already failing.",
     "domain": "Backend",
     "url": "/concepts/retry-storm",
-    "status": "published"
+    "status": "in-review"
   },
   {
     "title": "Circuit breaker",
-    "summary": "Stop calling a failing dependency before it takes the whole system down.",
+    "summary": "A tripwire between your service and a failing dependency: fail locally for a while, probe once, then resume only when the dependency proves it has recovered.",
     "domain": "Backend",
     "url": "/concepts/circuit-breaker",
     "status": "published"
@@ -32,1847 +32,1805 @@
     "summary": "Isolate resources so one slow dependency cannot sink every request.",
     "domain": "Backend",
     "url": "/concepts/bulkhead-pattern",
-    "status": "published"
+    "status": "in-review"
   },
   {
     "title": "Backpressure",
     "summary": "Let a slow consumer tell a fast producer to slow down before the queue explodes.",
     "domain": "Backend",
     "url": "/concepts/backpressure",
-    "status": "published"
+    "status": "in-review"
   },
   {
     "title": "Tail latency",
-    "summary": "Tail latency belongs to Latency — where backend engineering gets serious in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Tail latency, filed under Latency. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/tail-latency",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Latency distribution",
-    "summary": "Latency distribution belongs to Latency — where backend engineering gets serious in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Latency distribution, filed under Latency. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/latency-distribution",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "TIME_WAIT",
-    "summary": "TIME_WAIT belongs to Networking / TCP / HTTP internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for TIME_WAIT, filed under Networking / TCP / HTTP internals. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/time-wait",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "CLOSE_WAIT",
-    "summary": "CLOSE_WAIT belongs to Networking / TCP / HTTP internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for CLOSE_WAIT, filed under Networking / TCP / HTTP internals. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/close-wait",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Connection pool exhaustion",
-    "summary": "Connection pool exhaustion belongs to Connection pools in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Connection pool exhaustion, filed under Connection pools. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/connection-pool-exhaustion",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Pool starvation",
-    "summary": "Pool starvation belongs to Connection pools in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Pool starvation, filed under Connection pools. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/pool-starvation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Write skew",
     "summary": "Every transaction is individually valid, yet together they violate a business rule.",
     "domain": "Backend",
     "url": "/concepts/write-skew",
-    "status": "published"
+    "status": "in-review"
   },
   {
     "title": "MVCC",
-    "summary": "MVCC belongs to Database concurrency in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for MVCC, filed under Database concurrency. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/mvcc",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Lost update",
     "summary": "Two transactions read the same value, both write, and one update silently disappears.",
     "domain": "Backend",
     "url": "/concepts/lost-update",
-    "status": "published"
+    "status": "in-review"
   },
   {
     "title": "WAL",
-    "summary": "WAL belongs to PostgreSQL internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for WAL, filed under PostgreSQL internals. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/wal",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "LSN",
-    "summary": "LSN belongs to PostgreSQL internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for LSN, filed under PostgreSQL internals. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/lsn",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "N+1 query problem",
-    "summary": "N+1 query problem belongs to Query-performance things people discover the hard way in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for N+1 query problem, filed under Query performance. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/n1-query-problem",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Write amplification",
-    "summary": "Write amplification belongs to Query-performance things people discover the hard way in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Write amplification, filed under Query performance. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/write-amplification",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Compaction",
-    "summary": "Compaction belongs to Storage engines / LSM / RocksDB in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Compaction, filed under Storage engines / LSM / RocksDB. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/compaction",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "LSM tree",
-    "summary": "LSM tree belongs to Storage engines / LSM / RocksDB in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for LSM tree, filed under Storage engines / LSM / RocksDB. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/lsm-tree",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Split brain",
-    "summary": "Split brain belongs to Distributed systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Split brain, filed under Distributed systems. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/split-brain",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Clock skew",
-    "summary": "Clock skew belongs to Distributed systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Clock skew, filed under Distributed systems. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/clock-skew",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Fencing tokens",
     "summary": "A distributed lock is not enough when a stale owner can still write.",
     "domain": "Backend",
     "url": "/concepts/fencing-tokens",
-    "status": "published"
+    "status": "in-review"
   },
   {
     "title": "Transactional outbox",
     "summary": "Commit the database write and the event to publish in one atomic step.",
     "domain": "Backend",
     "url": "/concepts/transactional-outbox",
-    "status": "published"
+    "status": "in-review"
   },
   {
     "title": "At-most-once delivery",
-    "summary": "At-most-once delivery belongs to Messaging / queues / Kafka in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for At-most-once delivery, filed under Messaging / queues / Kafka. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/at-most-once-delivery",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Idempotency",
     "summary": "Retrying a request without accidentally repeating its side effects.",
     "domain": "Backend",
     "url": "/concepts/idempotency",
-    "status": "published"
+    "status": "in-review"
   },
   {
     "title": "Idempotency key",
-    "summary": "Idempotency key belongs to API correctness in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Idempotency key, filed under API correctness. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/idempotency-key",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "Stale-while-revalidate",
-    "summary": "Stale-while-revalidate belongs to Caching — far deeper than “use Redis” in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "stale-while-revalidate",
+    "summary": "A scaffolded entry for stale-while-revalidate, filed under Caching beyond Redis. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/stale-while-revalidate",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Cache invalidation race",
-    "summary": "Cache invalidation race belongs to Caching — far deeper than “use Redis” in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Cache invalidation race, filed under Caching beyond Redis. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/cache-invalidation-race",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "False sharing",
-    "summary": "False sharing belongs to Concurrency in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for False sharing, filed under Concurrency. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/false-sharing",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Race condition",
-    "summary": "Race condition belongs to Concurrency in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Race condition, filed under Concurrency. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/race-condition",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Goroutine leak",
-    "summary": "Goroutine leak belongs to Runtime / garbage collection in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Goroutine leak, filed under Runtime / garbage collection. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/goroutine-leak",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Stop-the-world GC",
-    "summary": "Stop-the-world GC belongs to Runtime / garbage collection in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Stop-the-world GC, filed under Runtime / garbage collection. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/stop-the-world-gc",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "OOM killer",
-    "summary": "OOM killer belongs to Linux / OS internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for OOM killer, filed under Linux / OS internals. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/oom-killer",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "File descriptor exhaustion",
-    "summary": "File descriptor exhaustion belongs to Linux / OS internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for File descriptor exhaustion, filed under Linux / OS internals. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/file-descriptor-exhaustion",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "CrashLoopBackOff",
-    "summary": "CrashLoopBackOff belongs to Kubernetes / containers in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for CrashLoopBackOff, filed under Kubernetes / containers. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/crashloopbackoff",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "OOMKilled",
-    "summary": "OOMKilled belongs to Kubernetes / containers in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "OOMKilled (Kubernetes)",
+    "summary": "A scaffolded entry for OOMKilled (Kubernetes), filed under Kubernetes / containers. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/oomkilled",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Tail sampling",
-    "summary": "Tail sampling belongs to Observability in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Tail sampling, filed under Observability. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/tail-sampling",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "RED method",
-    "summary": "RED method belongs to Observability in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for RED method, filed under Observability. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/red-method",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Error budget",
-    "summary": "Error budget belongs to SRE / incident response jargon in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Error budget, filed under SRE and incident response. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/error-budget",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Rollback",
-    "summary": "Rollback belongs to SRE / incident response jargon in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Rollback, filed under SRE and incident response. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/rollback",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Trace-context propagation",
-    "summary": "Trace-context propagation belongs to Distributed observability — much deeper in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Trace-context propagation, filed under Distributed observability. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/trace-context-propagation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Cross-service correlation",
-    "summary": "Cross-service correlation belongs to Distributed observability — much deeper in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Cross-service correlation, filed under Distributed observability. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/cross-service-correlation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Canary deployment",
-    "summary": "Canary deployment belongs to Deployment / release engineering in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Canary deployment, filed under Deployment / release engineering. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/canary-deployment",
-    "status": "stub"
-  },
-  {
-    "title": "Canary release",
-    "summary": "Canary release belongs to Deployment / release engineering in backend. A catalogue entry for the vocabulary tutorials skip.",
-    "domain": "Backend",
-    "url": "/concepts/canary-release",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Expand-and-contract migration",
-    "summary": "Expand-and-contract migration belongs to Database migrations in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Expand-and-contract migration, filed under Database migrations. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/expand-and-contract-migration",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Online migration",
-    "summary": "Online migration belongs to Database migrations in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Online migration, filed under Database migrations. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/online-migration",
-    "status": "stub"
-  },
-  {
-    "title": "Saga",
-    "summary": "Saga belongs to Distributed transactions in backend. A catalogue entry for the vocabulary tutorials skip.",
-    "domain": "Backend",
-    "url": "/concepts/saga",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "2PC",
-    "summary": "2PC belongs to Distributed transactions in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for 2PC, filed under Distributed transactions. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/2pc",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Saga pattern",
     "summary": "Coordinate a multi-service transaction with compensations instead of one global lock.",
     "domain": "Backend",
     "url": "/concepts/saga-pattern",
+    "status": "in-review"
+  },
+  {
+    "title": "Server-side request forgery (SSRF)",
+    "summary": "Server-side request forgery makes your server fetch a destination the attacker chose. The danger comes from where the server sits, not from the URL looking unusual.",
+    "domain": "Backend",
+    "url": "/concepts/ssrf",
     "status": "published"
   },
   {
-    "title": "SSRF",
-    "summary": "SSRF belongs to Security things backend engineers eventually encounter in backend. A catalogue entry for the vocabulary tutorials skip.",
-    "domain": "Backend",
-    "url": "/concepts/ssrf",
-    "status": "stub"
-  },
-  {
     "title": "Hermetic build",
-    "summary": "Hermetic build belongs to Security things backend engineers eventually encounter in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Hermetic build, filed under Backend security. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/hermetic-build",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Property-based testing",
-    "summary": "Property-based testing belongs to Software testing beyond unit/integration tests in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Property-based testing, filed under Testing beyond unit tests. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/property-based-testing",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Fuzz testing",
-    "summary": "Fuzz testing belongs to Software testing beyond unit/integration tests in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Fuzz testing, filed under Testing beyond unit tests. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/fuzz-testing",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Heisenbug",
-    "summary": "Heisenbug belongs to Weird debugging phenomena in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Heisenbug, filed under Weird debugging phenomena. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/heisenbug",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Bohrbug",
-    "summary": "Bohrbug belongs to Weird debugging phenomena in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Bohrbug, filed under Weird debugging phenomena. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/bohrbug",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Event sourcing",
-    "summary": "Event sourcing belongs to Data correctness / event-driven systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Event sourcing, filed under Data correctness. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/event-sourcing",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Eventual consistency",
-    "summary": "Eventual consistency belongs to Data correctness / event-driven systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Eventual consistency, filed under Data correctness. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/eventual-consistency",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Strangler fig pattern",
-    "summary": "Strangler fig pattern belongs to Architecture concepts that become important at scale in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Strangler fig pattern, filed under Architecture at scale. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/strangler-fig-pattern",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Bounded context",
-    "summary": "Bounded context belongs to Architecture concepts that become important at scale in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Bounded context, filed under Architecture at scale. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/bounded-context",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Cache consistency gap",
-    "summary": "Cache consistency gap belongs to Cache / database / distributed-system intersection in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Cache consistency gap, filed under Cache / database / distributed-system intersection. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/cache-consistency-gap",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Stale replica + stale cache",
-    "summary": "Stale replica + stale cache belongs to Cache / database / distributed-system intersection in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Stale replica + stale cache, filed under Cache / database / distributed-system intersection. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/stale-replica-stale-cache",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Silent data corruption",
-    "summary": "Silent data corruption belongs to Storage / hardware performance in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Silent data corruption, filed under Storage hardware. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/silent-data-corruption",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "IOPS",
-    "summary": "IOPS belongs to Storage / hardware performance in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for IOPS, filed under Storage hardware. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/iops",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "PagedAttention",
-    "summary": "PagedAttention belongs to Modern AI-serving/backend infrastructure in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for PagedAttention, filed under Modern AI-serving infrastructure. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/pagedattention",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "Continuous batching",
-    "summary": "Continuous batching belongs to Modern AI-serving/backend infrastructure in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Continuous batching (inference)",
+    "summary": "A scaffolded entry for Continuous batching (inference), filed under Modern AI-serving infrastructure. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/continuous-batching",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Reproducible build",
-    "summary": "Reproducible build belongs to Build systems / CI/CD internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Reproducible build, filed under Build systems and CI/CD. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/reproducible-build",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Deterministic build",
-    "summary": "Deterministic build belongs to Build systems / CI/CD internals in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Deterministic build, filed under Build systems and CI/CD. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/deterministic-build",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Fan-out explosion",
-    "summary": "Fan-out explosion belongs to API gateway / microservice-specific problems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Fan-out explosion, filed under API gateway problems. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/fan-out-explosion",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "N+1 service calls",
-    "summary": "N+1 service calls belongs to API gateway / microservice-specific problems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for N+1 service calls, filed under API gateway problems. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/n1-service-calls",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Noisy neighbor",
-    "summary": "Noisy neighbor belongs to Multi-tenant systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Noisy neighbor, filed under Multi-tenant systems. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/noisy-neighbor",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Tenant isolation",
-    "summary": "Tenant isolation belongs to Multi-tenant systems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Tenant isolation, filed under Multi-tenant systems. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/tenant-isolation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Token bucket",
-    "summary": "Token bucket belongs to Rate limiting deeper than “100 requests/minute” in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Token bucket, filed under Rate limiting. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/token-bucket",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Fixed-window rate limit",
-    "summary": "Fixed-window rate limit belongs to Rate limiting deeper than “100 requests/minute” in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Fixed-window rate limit, filed under Rate limiting. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/fixed-window-rate-limit",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Clock drift",
-    "summary": "Clock drift belongs to Clock/time problems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Clock drift, filed under Clock/time problems. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/clock-drift",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Clock step",
-    "summary": "Clock step belongs to Clock/time problems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Clock step, filed under Clock/time problems. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/clock-step",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Consumer lag",
-    "summary": "Consumer lag belongs to Production data pipeline problems in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Consumer lag, filed under Production data pipeline problems. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/consumer-lag",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "strace",
-    "summary": "strace belongs to Debugging tools / techniques people eventually learn in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for strace, filed under Debugging tools. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/strace",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "ltrace",
-    "summary": "ltrace belongs to Debugging tools / techniques people eventually learn in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for ltrace, filed under Debugging tools. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/ltrace",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Gray failure",
-    "summary": "Gray failure belongs to Particularly nasty “production-only” phenomena in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Gray failure, filed under Production-only phenomena. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/gray-failure",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Fail-slow",
-    "summary": "Fail-slow belongs to Particularly nasty “production-only” phenomena in backend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Fail-slow, filed under Production-only phenomena. The sourced field note is queued.",
     "domain": "Backend",
     "url": "/concepts/fail-slow",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Query cache",
-    "summary": "Query cache belongs to Client/server-state caching in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Query cache, filed under Client/server state and caching. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/query-cache",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Optimistic update",
-    "summary": "Optimistic update belongs to Client/server-state caching in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Optimistic update, filed under Client/server state and caching. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/optimistic-update",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "RSC payload",
-    "summary": "RSC payload belongs to Next.js / modern routing internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for RSC payload, filed under Next.js and modern routing. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/rsc-payload",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Hydration",
-    "summary": "Hydration belongs to Next.js / modern routing internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "Hydration is the gap between a page that looks ready and a page that can respond. The browser receives HTML, then downloads and runs the JavaScript that makes it interactive.",
     "domain": "Frontend",
     "url": "/concepts/hydration",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Concurrent rendering",
-    "summary": "Concurrent rendering belongs to React rendering internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Concurrent rendering, filed under React rendering internals. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/concurrent-rendering",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "View Transition",
-    "summary": "View Transition belongs to React rendering internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A view transition snapshots the old UI, applies your DOM update, then animates between the two states. The browser does the continuity work; you supply the names.",
     "domain": "Frontend",
     "url": "/concepts/view-transition",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Automatic memoization",
-    "summary": "Automatic memoization belongs to React Compiler / memoization in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Automatic memoization, filed under React Compiler and memoization. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/automatic-memoization",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "React Compiler",
-    "summary": "React Compiler belongs to React Compiler / memoization in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for React Compiler, filed under React Compiler and memoization. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/react-compiler",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Layout thrashing",
-    "summary": "Layout thrashing belongs to Browser rendering pipeline in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Layout thrashing, filed under Browser rendering pipeline. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/layout-thrashing",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Style recalculation",
-    "summary": "Style recalculation belongs to Browser rendering pipeline in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Style recalculation, filed under Browser rendering pipeline. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/style-recalculation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Long task",
-    "summary": "Long task belongs to Main-thread performance in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Long task, filed under Main-thread performance. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/long-task",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Main-thread blocking",
-    "summary": "Main-thread blocking belongs to Main-thread performance in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Main-thread blocking, filed under Main-thread performance. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/main-thread-blocking",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Request waterfall",
-    "summary": "Request waterfall belongs to Network performance in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Request waterfall, filed under Network performance. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/request-waterfall",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "AbortController",
-    "summary": "AbortController belongs to Network performance in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for AbortController, filed under Network performance. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/abortcontroller",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Optimistic mutation",
-    "summary": "Optimistic mutation belongs to Data fetching architecture in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Optimistic mutation, filed under Data fetching architecture. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/optimistic-mutation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Fetch waterfall",
-    "summary": "Fetch waterfall belongs to Data fetching architecture in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Fetch waterfall, filed under Data fetching architecture. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/fetch-waterfall",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Store tearing",
-    "summary": "Store tearing belongs to State management — much deeper than Redux in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Store tearing, filed under State management. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/store-tearing",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Client state",
-    "summary": "Client state belongs to State management — much deeper than Redux in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Client state, filed under State management. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/client-state",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Detached DOM tree",
-    "summary": "Detached DOM tree belongs to Memory and browser runtime in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Detached DOM tree, filed under Memory and browser runtime. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/detached-dom-tree",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Memory leak",
-    "summary": "Memory leak belongs to Memory and browser runtime in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Memory leak, filed under Memory and browser runtime. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/memory-leak",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "IndexedDB",
-    "summary": "IndexedDB belongs to Web storage in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for IndexedDB, filed under Web storage. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/indexeddb",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "localStorage",
-    "summary": "localStorage belongs to Web storage in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for localStorage, filed under Web storage. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/localstorage",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Service Worker",
-    "summary": "Service Worker belongs to Service workers / offline-first in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Service Worker, filed under Service workers / offline-first. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/service-worker",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Service-worker lifecycle",
-    "summary": "Service-worker lifecycle belongs to Service workers / offline-first in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Service-worker lifecycle, filed under Service workers / offline-first. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/service-worker-lifecycle",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "bfcache",
-    "summary": "bfcache belongs to bfcache / navigation internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for bfcache, filed under bfcache / navigation internals. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/bfcache",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Page snapshot",
-    "summary": "Page snapshot belongs to bfcache / navigation internals in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Page snapshot, filed under bfcache / navigation internals. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/page-snapshot",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Island architecture",
-    "summary": "Island architecture belongs to Rendering architecture in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Island architecture, filed under Rendering architecture. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/island-architecture",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "CSR",
-    "summary": "CSR belongs to Rendering architecture in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Client-side rendering (CSR)",
+    "summary": "A scaffolded entry for Client-side rendering (CSR), filed under Rendering architecture. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/csr",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Tree shaking",
-    "summary": "Tree shaking belongs to Code delivery in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Tree shaking, filed under Code delivery. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/tree-shaking",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Code splitting",
-    "summary": "Code splitting belongs to Code delivery in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Code splitting, filed under Code delivery. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/code-splitting",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "srcset",
-    "summary": "srcset belongs to Images / media in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for srcset, filed under Images / media. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/srcset",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Image decoding",
-    "summary": "Image decoding belongs to Images / media in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Image decoding, filed under Images / media. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/image-decoding",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Cascade layers",
-    "summary": "Cascade layers belongs to CSS engineering in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Cascade layers, filed under CSS engineering. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/cascade-layers",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Specificity",
-    "summary": "Specificity belongs to CSS engineering in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Specificity, filed under CSS engineering. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/specificity",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Focus management",
-    "summary": "Focus management belongs to Accessibility as engineering constraints in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "Keyboard users navigate by moving focus. Good focus management puts it in the right place when a surface opens, contains it while that surface is modal, and returns it to the trigger when the surface closes.",
     "domain": "Frontend",
     "url": "/concepts/focus-management",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Focus trap",
-    "summary": "Focus trap belongs to Accessibility as engineering constraints in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Focus trap, filed under Accessibility constraints. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/focus-trap",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Virtual scrolling",
-    "summary": "Virtual scrolling belongs to Virtualization in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Virtual scrolling, filed under Virtualization. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/virtual-scrolling",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Windowing",
-    "summary": "Windowing belongs to Virtualization in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Windowing, filed under Virtualization. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/windowing",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Stale closure",
-    "summary": "Stale closure belongs to Race conditions in frontend state in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Stale closure, filed under Race conditions in frontend state. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/stale-closure",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Stale state",
-    "summary": "Stale state belongs to Race conditions in frontend state in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Stale state, filed under Race conditions in frontend state. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/stale-state",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Speculative UI",
-    "summary": "Speculative UI belongs to Optimistic UI in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Speculative UI, filed under Optimistic UI. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/speculative-ui",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Temporary state",
-    "summary": "Temporary state belongs to Optimistic UI in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Temporary state, filed under Optimistic UI. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/temporary-state",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "XSS",
-    "summary": "XSS belongs to Security in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Cross-site scripting (XSS)",
+    "summary": "A scaffolded entry for Cross-site scripting (XSS), filed under Security. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/xss",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "DOM XSS",
-    "summary": "DOM XSS belongs to Security in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "DOM-based XSS",
+    "summary": "A scaffolded entry for DOM-based XSS, filed under Security. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/dom-xss",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Core Web Vitals",
-    "summary": "Core Web Vitals belongs to Frontend observability in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Core Web Vitals, filed under Frontend observability. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/core-web-vitals",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Real User Monitoring (RUM)",
-    "summary": "Real User Monitoring (RUM) belongs to Frontend observability in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Real User Monitoring (RUM), filed under Frontend observability. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/real-user-monitoring-rum",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Hydration-only bug",
-    "summary": "Hydration-only bug belongs to Frontend debugging phenomena in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Hydration-only bug, filed under Frontend debugging phenomena. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/hydration-only-bug",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Flaky UI test",
-    "summary": "Flaky UI test belongs to Frontend debugging phenomena in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Flaky UI test, filed under Frontend debugging phenomena. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/flaky-ui-test",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Background tab throttling",
-    "summary": "Background tab throttling belongs to Browser throttling in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Background tab throttling, filed under Browser throttling. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/background-tab-throttling",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Timer throttling",
-    "summary": "Timer throttling belongs to Browser throttling in frontend. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Timer throttling, filed under Browser throttling. The sourced field note is queued.",
     "domain": "Frontend",
     "url": "/concepts/timer-throttling",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Easing",
-    "summary": "Easing belongs to Motion in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "Easing is the shape of change over time. The curve decides whether an interface feels immediate, mechanical, or alive.",
     "domain": "Interface",
     "url": "/concepts/easing",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Spring",
-    "summary": "Spring belongs to Motion in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A spring describes motion with forces instead of a clock: stiffness pulls, damping resists, mass adds inertia. The duration is an outcome, not an input.",
     "domain": "Interface",
     "url": "/concepts/spring",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Scroll snap",
-    "summary": "Scroll snap belongs to Scroll in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "Scroll snap turns free scrolling into a set of resting positions. The gesture stays native; the layout decides where it is allowed to stop.",
     "domain": "Interface",
     "url": "/concepts/scroll-snap",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Scroll-linked animation",
-    "summary": "Scroll-linked animation belongs to Scroll in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scroll-linked animation uses the scroll position as its clock. The motion is not timed; it is a direct readout of where the scroller is.",
     "domain": "Interface",
     "url": "/concepts/scroll-linked-animation",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Popover",
-    "summary": "Popover belongs to Components in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A popover is a small surface the platform owns: it lives in the top layer, closes on Escape or a click outside, and hands focus back — none of which you have to write.",
     "domain": "Interface",
     "url": "/concepts/popover",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Command palette",
-    "summary": "Command palette belongs to Components in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A command palette is a modal dialog wearing a search box. The filter is the easy part; the dialog semantics, the keyboard contract and the action registry are the product.",
     "domain": "Interface",
     "url": "/concepts/command-palette",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Hover",
-    "summary": "Hover belongs to Interaction in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "Hover is a continuously-evaluated state of a pointing device, not an event: it matches the element under the pointer and every ancestor above it, which is why the gate, the gap, the close delay and the hit test matter more than the transition.",
     "domain": "Interface",
     "url": "/concepts/hover",
-    "status": "stub"
+    "status": "published"
   },
   {
-    "title": "Focus",
-    "summary": "Focus belongs to Interaction in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Focus state",
+    "summary": "Focus is the single element that will receive the next keypress. The browser decides the order, the stops, the scroll and the ring — and all four are measurable, so guessing about them is optional.",
     "domain": "Interface",
     "url": "/concepts/focus",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Progressive disclosure",
-    "summary": "Progressive disclosure belongs to Feedback in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "Progressive disclosure reveals detail on demand. The real cost is not the extra click — 'hidden' has five meanings, and only some of them take the content out of the keyboard's way.",
     "domain": "Interface",
     "url": "/concepts/progressive-disclosure",
-    "status": "stub"
-  },
-  {
-    "title": "Hover feedback",
-    "summary": "Hover feedback belongs to Feedback in interface. A catalogue entry for the vocabulary tutorials skip.",
-    "domain": "Interface",
-    "url": "/concepts/hover-feedback",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Shared-element transition",
-    "summary": "Shared-element transition belongs to Navigation in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A shared element transition carries one object between two states so the eye follows it. The web can do this now, but in a list the naming strategy decides whether the element travels or the whole transition silently fails.",
     "domain": "Interface",
     "url": "/concepts/shared-element-transition",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Breadcrumbs",
-    "summary": "Breadcrumbs belongs to Navigation in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A breadcrumb trail is a picture of where the current page sits in the site's hierarchy — a second navigation, not a record of how you got here. Most of its failure modes are invisible until you inspect the accessibility tree.",
     "domain": "Interface",
     "url": "/concepts/breadcrumbs",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Container query",
-    "summary": "Container query belongs to Layout in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A container query lets a component restyle itself from the size of its own parent, not the browser window. It is the difference between a page that is responsive and a component that is responsive.",
     "domain": "Interface",
     "url": "/concepts/container-query",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Visual hierarchy",
-    "summary": "Visual hierarchy belongs to Layout in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "Visual hierarchy is the deliberate ordering of what a viewer notices first, second, third. It is built from a small set of measurable differences — contrast, scale, and spacing — not from taste alone.",
     "domain": "Interface",
     "url": "/concepts/visual-hierarchy",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Primary action",
-    "summary": "Primary action belongs to Visual hierarchy in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Primary action, filed under Visual hierarchy. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/primary-action",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Secondary action",
-    "summary": "Secondary action belongs to Visual hierarchy in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Secondary action, filed under Visual hierarchy. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/secondary-action",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Skeleton",
-    "summary": "Skeleton belongs to Loading in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A skeleton screen is a stand-in drawn in the shape of the real thing. Its job is not to look like content but to hold the space content will need.",
     "domain": "Interface",
     "url": "/concepts/skeleton",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Shimmer",
-    "summary": "Shimmer belongs to Loading in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "Shimmer is the moving highlight swept across a skeleton. It reports that a request is alive, nothing more — and how you draw it decides whether the browser composites or repaints.",
     "domain": "Interface",
     "url": "/concepts/shimmer",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Server Component",
-    "summary": "Server Component belongs to React UI in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Server Component, filed under React UI. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/server-component",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Client Component",
-    "summary": "Client Component belongs to React UI in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Client Component, filed under React UI. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/client-component",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Focus restoration",
-    "summary": "Focus restoration belongs to Accessibility in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Focus restoration, filed under Accessibility. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/focus-restoration",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Keyboard navigation",
-    "summary": "Keyboard navigation belongs to Accessibility in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Keyboard navigation, filed under Accessibility. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/keyboard-navigation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "shadcn/ui",
-    "summary": "shadcn/ui belongs to Ecosystem in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for shadcn/ui, filed under Ecosystem. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/shadcnui",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Radix",
-    "summary": "Radix belongs to Ecosystem in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Radix, filed under Ecosystem. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/radix",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Anchored popover",
-    "summary": "Anchored popover belongs to Prompting in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Anchored popover, filed under Patterns. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/anchored-popover",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Minimal editorial layout",
-    "summary": "Minimal editorial layout belongs to Prompting in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Minimal editorial layout, filed under Patterns. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/minimal-editorial-layout",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "State transitions",
-    "summary": "State transitions belongs to Principle in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for State transitions, filed under Principles. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/state-transitions",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Interaction feedback",
-    "summary": "Interaction feedback belongs to Principle in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Interaction feedback, filed under Principles. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/interaction-feedback",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Microinteraction",
-    "summary": "Microinteraction belongs to Learn first in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Microinteraction, filed under Learn first. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/microinteraction",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Whitespace",
-    "summary": "Whitespace belongs to Learn first in interface. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Whitespace, filed under Learn first. The sourced field note is queued.",
     "domain": "Interface",
     "url": "/concepts/whitespace",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Game world",
-    "summary": "Game world belongs to The foundational game-dev vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Game world, filed under Foundational vocabulary. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/game-world",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "World coordinates",
-    "summary": "World coordinates belongs to The foundational game-dev vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for World coordinates, filed under Foundational vocabulary. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/world-coordinates",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Scene graph",
-    "summary": "Scene graph belongs to Scene graph in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Scene graph, filed under Scene graph. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/scene-graph",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Scene",
-    "summary": "Scene belongs to Scene graph in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Scene, filed under Scene graph. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/scene",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Mesh",
-    "summary": "Mesh belongs to Mesh / geometry / material in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Mesh, filed under Mesh / geometry / material. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/mesh",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Geometry",
-    "summary": "Geometry belongs to Mesh / geometry / material in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Geometry, filed under Mesh / geometry / material. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/geometry",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "PBR",
-    "summary": "PBR belongs to PBR in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Physically based rendering (PBR)",
+    "summary": "A scaffolded entry for Physically based rendering (PBR), filed under PBR. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/pbr",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Metalness",
-    "summary": "Metalness belongs to PBR in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Metalness, filed under PBR. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/metalness",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Directional light",
-    "summary": "Directional light belongs to Lighting in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Directional light, filed under Lighting. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/directional-light",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Point light",
-    "summary": "Point light belongs to Lighting in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Point light, filed under Lighting. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/point-light",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Vertex shader",
-    "summary": "Vertex shader belongs to Shaders in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Vertex shader, filed under Shaders. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/vertex-shader",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Fragment shader",
-    "summary": "Fragment shader belongs to Shaders in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Fragment shader, filed under Shaders. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/fragment-shader",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Game loop",
-    "summary": "Game loop belongs to The game loop in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Game loop, filed under The game loop. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/game-loop",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Fixed timestep",
-    "summary": "Fixed timestep belongs to The game loop in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Fixed timestep, filed under The game loop. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/fixed-timestep",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Determinism",
-    "summary": "Determinism belongs to Determinism in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Determinism, filed under Determinism. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/determinism",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Deterministic simulation",
-    "summary": "Deterministic simulation belongs to Determinism in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Deterministic simulation, filed under Determinism. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/deterministic-simulation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Rigid body",
-    "summary": "Rigid body belongs to Physics in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Rigid body, filed under Physics. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/rigid-body",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Collider",
-    "summary": "Collider belongs to Physics in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Collider, filed under Physics. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/collider",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "AABB",
-    "summary": "AABB belongs to Collision detection in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for AABB, filed under Collision detection. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/aabb",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Broad phase",
-    "summary": "Broad phase belongs to Collision detection in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Broad phase, filed under Collision detection. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/broad-phase",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Skeletal animation",
-    "summary": "Skeletal animation belongs to Animation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Skeletal animation, filed under Animation. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/skeletal-animation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Animation clip",
-    "summary": "Animation clip belongs to Animation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Animation clip, filed under Animation. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/animation-clip",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Character controller",
-    "summary": "Character controller belongs to Character controller in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Character controller, filed under Character controller. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/character-controller",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Acceleration",
-    "summary": "Acceleration belongs to Character controller in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Acceleration, filed under Character controller. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/acceleration",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Camera smoothing",
-    "summary": "Camera smoothing belongs to Camera systems in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Camera smoothing, filed under Camera systems. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/camera-smoothing",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Perspective camera",
-    "summary": "Perspective camera belongs to Camera systems in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Perspective camera, filed under Camera systems. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/perspective-camera",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Gamepad",
-    "summary": "Gamepad belongs to Input in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Gamepad, filed under Input. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/gamepad",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Input mapping",
-    "summary": "Input mapping belongs to Input in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Input mapping, filed under Input. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/input-mapping",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Behavior tree",
-    "summary": "Behavior tree belongs to AI / NPC behavior in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Behavior tree, filed under AI / NPC behavior. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/behavior-tree",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "FSM",
-    "summary": "FSM belongs to AI / NPC behavior in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for FSM, filed under AI / NPC behavior. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/fsm",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "NavMesh",
-    "summary": "NavMesh belongs to Navigation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for NavMesh, filed under Navigation. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/navmesh",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "Navigation mesh",
-    "summary": "Navigation mesh belongs to Navigation in game dev. A catalogue entry for the vocabulary tutorials skip.",
-    "domain": "Game Dev",
-    "url": "/concepts/navigation-mesh",
-    "status": "stub"
-  },
-  {
-    "title": "Level",
-    "summary": "Level belongs to Level design vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Game level",
+    "summary": "A scaffolded entry for Game level, filed under Level design. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/level",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "Map",
-    "summary": "Map belongs to Level design vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Game map",
+    "summary": "A scaffolded entry for Game map, filed under Level design. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/map",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "World streaming",
-    "summary": "World streaming belongs to Open-world vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for World streaming, filed under Open world. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/world-streaming",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "LOD",
-    "summary": "LOD belongs to Open-world vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
-    "domain": "Game Dev",
-    "url": "/concepts/lod",
-    "status": "stub"
-  },
-  {
-    "title": "Level of Detail",
-    "summary": "Level of Detail belongs to LOD in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Level of detail (LOD)",
+    "summary": "A scaffolded entry for Level of detail (LOD), filed under Level of detail. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/level-of-detail",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "LOD bias",
-    "summary": "LOD bias belongs to LOD in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for LOD bias, filed under Level of detail. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/lod-bias",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Frustum culling",
-    "summary": "Frustum culling belongs to Culling in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Frustum culling, filed under Culling. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/frustum-culling",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Occlusion culling",
-    "summary": "Occlusion culling belongs to Culling in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Occlusion culling, filed under Culling. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/occlusion-culling",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "InstancedMesh",
-    "summary": "InstancedMesh belongs to Instancing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for InstancedMesh, filed under Instancing. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/instancedmesh",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Instancing",
-    "summary": "Instancing belongs to Instancing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Instancing, filed under Instancing. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/instancing",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "Batching",
-    "summary": "Batching belongs to Batching in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Batching (rendering)",
+    "summary": "A scaffolded entry for Batching (rendering), filed under Batching. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/batching",
-    "status": "stub"
-  },
-  {
-    "title": "Draw call",
-    "summary": "Draw call belongs to Batching in game dev. A catalogue entry for the vocabulary tutorials skip.",
-    "domain": "Game Dev",
-    "url": "/concepts/draw-call",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "State change",
-    "summary": "State change belongs to Draw calls in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for State change, filed under Draw calls. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/state-change",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Material switch",
-    "summary": "Material switch belongs to Draw calls in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Material switch, filed under Draw calls. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/material-switch",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Overdraw",
-    "summary": "Overdraw belongs to Overdraw in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Overdraw, filed under Overdraw. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/overdraw",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Fill rate",
-    "summary": "Fill rate belongs to Overdraw in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Fill rate, filed under Overdraw. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/fill-rate",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Bloom",
-    "summary": "Bloom belongs to Post-processing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Bloom, filed under Post-processing. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/bloom",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Depth of field",
-    "summary": "Depth of field belongs to Post-processing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Depth of field, filed under Post-processing. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/depth-of-field",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Particle system",
-    "summary": "Particle system belongs to Particles / VFX in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Particle system, filed under Particles / VFX. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/particle-system",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Particle emitter",
-    "summary": "Particle emitter belongs to Particles / VFX in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Particle emitter, filed under Particles / VFX. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/particle-emitter",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Spatial audio",
-    "summary": "Spatial audio belongs to Audio in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Spatial audio, filed under Audio. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/spatial-audio",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Sound effect",
-    "summary": "Sound effect belongs to Audio in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Sound effect, filed under Audio. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/sound-effect",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "glTF",
-    "summary": "glTF belongs to Asset pipeline in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for glTF, filed under Asset pipeline. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/gltf",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Texture atlas",
-    "summary": "Texture atlas belongs to Asset pipeline in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Texture atlas, filed under Asset pipeline. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/texture-atlas",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "UV packing",
-    "summary": "UV packing belongs to Texture atlasing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for UV packing, filed under Texture atlasing. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/uv-packing",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Atlas coordinates",
-    "summary": "Atlas coordinates belongs to Texture atlasing in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Atlas coordinates, filed under Texture atlasing. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/atlas-coordinates",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "WebGPU",
-    "summary": "WebGPU belongs to Web-specific game technology in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for WebGPU, filed under Web game technology. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/webgpu",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "OffscreenCanvas",
-    "summary": "OffscreenCanvas belongs to Web-specific game technology in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for OffscreenCanvas, filed under Web game technology. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/offscreencanvas",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "WASM",
-    "summary": "WASM belongs to WebAssembly in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "WebAssembly (Wasm)",
+    "summary": "A scaffolded entry for WebAssembly (Wasm), filed under WebAssembly. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/wasm",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Emscripten",
-    "summary": "Emscripten belongs to WebAssembly in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Emscripten, filed under WebAssembly. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/emscripten",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Web Worker",
-    "summary": "Web Worker belongs to Web Workers in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Web Worker, filed under Web Workers. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/web-worker",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "SharedArrayBuffer",
-    "summary": "SharedArrayBuffer belongs to Web Workers in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for SharedArrayBuffer, filed under Web Workers. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/sharedarraybuffer",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Entity",
-    "summary": "Entity belongs to ECS in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Entity, filed under ECS. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/entity",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "Component",
-    "summary": "Component belongs to ECS in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "ECS component",
+    "summary": "A scaffolded entry for ECS component, filed under ECS. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/component",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Client prediction",
-    "summary": "Client prediction belongs to Multiplayer networking in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Client prediction, filed under Multiplayer networking. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/client-prediction",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Interest management",
-    "summary": "Interest management belongs to Multiplayer networking in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Interest management, filed under Multiplayer networking. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/interest-management",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Server reconciliation",
-    "summary": "Server reconciliation belongs to Client prediction in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Server reconciliation, filed under Client prediction. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/server-reconciliation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Input sequence",
-    "summary": "Input sequence belongs to Client prediction in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Input sequence, filed under Client prediction. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/input-sequence",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Snapshot interpolation",
-    "summary": "Snapshot interpolation belongs to Interpolation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Snapshot interpolation, filed under Interpolation. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/snapshot-interpolation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Interpolation buffer",
-    "summary": "Interpolation buffer belongs to Interpolation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Interpolation buffer, filed under Interpolation. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/interpolation-buffer",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Resimulation",
-    "summary": "Resimulation belongs to Rollback netcode in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Resimulation, filed under Rollback netcode. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/resimulation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Input history",
-    "summary": "Input history belongs to Rollback netcode in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Input history, filed under Rollback netcode. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/input-history",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Area of interest",
-    "summary": "Area of interest belongs to Interest management in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Area of interest, filed under Interest management. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/area-of-interest",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Visibility set",
-    "summary": "Visibility set belongs to Interest management in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Visibility set, filed under Interest management. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/visibility-set",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Save state",
-    "summary": "Save state belongs to Saving / persistence in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Save state, filed under Saving / persistence. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/save-state",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Checkpoint",
-    "summary": "Checkpoint belongs to Saving / persistence in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Checkpoint, filed under Saving / persistence. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/checkpoint",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Procedural generation",
-    "summary": "Procedural generation belongs to Procedural generation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Procedural generation, filed under Procedural generation. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/procedural-generation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Noise",
-    "summary": "Noise belongs to Procedural generation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Noise, filed under Procedural generation. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/noise",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Level design",
-    "summary": "Level design belongs to World generation vs level design in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Level design, filed under World generation vs level design. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/level-design",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "POI",
-    "summary": "POI belongs to World generation vs level design in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Points of interest (POI)",
+    "summary": "A scaffolded entry for Points of interest (POI), filed under World generation vs level design. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/poi",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Game feel",
-    "summary": "Game feel belongs to Game feel vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Game feel, filed under Game feel. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/game-feel",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Anticipation",
-    "summary": "Anticipation belongs to Game feel vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Anticipation, filed under Game feel. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/anticipation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Squash and stretch",
-    "summary": "Squash and stretch belongs to Animation principles in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Squash and stretch, filed under Animation principles. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/squash-and-stretch",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Follow-through",
-    "summary": "Follow-through belongs to Animation principles in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Follow-through, filed under Animation principles. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/follow-through",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "HUD",
-    "summary": "HUD belongs to UI/HUD game vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for HUD, filed under UI and HUD. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/hud",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Health bar",
-    "summary": "Health bar belongs to UI/HUD game vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Health bar, filed under UI and HUD. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/health-bar",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Game state",
-    "summary": "Game state belongs to Game architecture vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Game state, filed under Game architecture. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/game-state",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Game mode",
-    "summary": "Game mode belongs to Game architecture vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Game mode, filed under Game architecture. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/game-mode",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Object pooling",
-    "summary": "Object pooling belongs to The “large game” performance vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Object pooling, filed under Large-game performance. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/object-pooling",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Draw calls",
-    "summary": "Draw calls belongs to The “large game” performance vocabulary in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A draw call tells the GPU to render one batch of geometry with a particular pipeline and material. The frame is often limited by how many of those commands the CPU can submit, not by how many triangles the GPU can shade.",
     "domain": "Game Dev",
     "url": "/concepts/draw-calls",
-    "status": "stub"
+    "status": "published"
   },
   {
     "title": "Shader warm-up",
-    "summary": "Shader warm-up belongs to Shader/pipeline compilation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Shader warm-up, filed under Shader/pipeline compilation. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/shader-warm-up",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Pipeline caching",
-    "summary": "Pipeline caching belongs to Shader/pipeline compilation in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Pipeline caching, filed under Shader/pipeline compilation. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/pipeline-caching",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Three.js",
-    "summary": "Three.js belongs to Engine comparison in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Three.js, filed under Engine comparison. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/threejs",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "React Three Fiber",
-    "summary": "React Three Fiber belongs to Engine comparison in game dev. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for React Three Fiber, filed under Engine comparison. The sourced field note is queued.",
     "domain": "Game Dev",
     "url": "/concepts/react-three-fiber",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Hack The Box",
-    "summary": "Hack The Box belongs to Offensive security in security. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Hack The Box, filed under Offensive security. The sourced field note is queued.",
     "domain": "Security",
     "url": "/concepts/hack-the-box",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "TryHackMe",
-    "summary": "TryHackMe belongs to Offensive security in security. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for TryHackMe, filed under Offensive security. The sourced field note is queued.",
     "domain": "Security",
     "url": "/concepts/tryhackme",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "SQL injection",
-    "summary": "SQL injection belongs to Web security in security. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for SQL injection, filed under Web security. The sourced field note is queued.",
     "domain": "Security",
     "url": "/concepts/sql-injection",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
-    "title": "CSRF",
-    "summary": "CSRF belongs to Web security in security. A catalogue entry for the vocabulary tutorials skip.",
+    "title": "Cross-site request forgery (CSRF)",
+    "summary": "A scaffolded entry for Cross-site request forgery (CSRF), filed under Web security. The sourced field note is queued.",
     "domain": "Security",
     "url": "/concepts/csrf",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "PCAP analysis",
-    "summary": "PCAP analysis belongs to Blue team in security. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for PCAP analysis, filed under Blue team. The sourced field note is queued.",
     "domain": "Security",
     "url": "/concepts/pcap-analysis",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Malware analysis",
-    "summary": "Malware analysis belongs to Blue team in security. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Malware analysis, filed under Blue team. The sourced field note is queued.",
     "domain": "Security",
     "url": "/concepts/malware-analysis",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Binary exploitation",
-    "summary": "Binary exploitation belongs to Binary and reverse engineering in security. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Binary exploitation, filed under Binary and reverse engineering. The sourced field note is queued.",
     "domain": "Security",
     "url": "/concepts/binary-exploitation",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "Reverse engineering",
-    "summary": "Reverse engineering belongs to Binary and reverse engineering in security. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for Reverse engineering, filed under Binary and reverse engineering. The sourced field note is queued.",
     "domain": "Security",
     "url": "/concepts/reverse-engineering",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "HackerOne",
-    "summary": "HackerOne belongs to Practice and career in security. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for HackerOne, filed under Practice and career. The sourced field note is queued.",
     "domain": "Security",
     "url": "/concepts/hackerone",
-    "status": "stub"
+    "status": "scaffold"
   },
   {
     "title": "PortSwigger Web Security Academy",
-    "summary": "PortSwigger Web Security Academy belongs to Practice and career in security. A catalogue entry for the vocabulary tutorials skip.",
+    "summary": "A scaffolded entry for PortSwigger Web Security Academy, filed under Practice and career. The sourced field note is queued.",
     "domain": "Security",
     "url": "/concepts/portswigger-web-security-academy",
-    "status": "stub"
+    "status": "scaffold"
   }
 ]

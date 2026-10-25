@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import {
   DOMAIN_META,
+  inReviewCards,
   publishedCards,
   searchConcepts,
   stats,
+  statusLabel,
   type ConceptCard,
 } from "@/lib/site";
 
@@ -27,7 +29,10 @@ export default function SearchPage() {
   }, [query, ready]);
 
   const results = useMemo(
-    () => (query.trim() ? searchConcepts(query, 60) : publishedCards),
+    () =>
+      query.trim()
+        ? searchConcepts(query, 60)
+        : [...publishedCards, ...inReviewCards],
     [query],
   );
 
@@ -58,7 +63,7 @@ export default function SearchPage() {
       <p className="search-summary" aria-live="polite">
         {showingSearch
           ? `${results.length} ${results.length === 1 ? "entry" : "entries"} for “${query.trim()}”`
-          : `${publishedCards.length} field notes, ready to read`}
+          : `${publishedCards.length} field ${publishedCards.length === 1 ? "note" : "notes"} and ${inReviewCards.length} in review`}
       </p>
 
       <div id="search-results" className="search-results">
@@ -91,9 +96,22 @@ function ResultRow({ card }: { card: ConceptCard }) {
           {domain.name}
         </span>
         <span>{card.layerName}</span>
-        <span className={card.status === "published" ? "status-tag status-tag--published" : "status-tag"}>
-          {card.status === "published" ? "Field note" : "Filed entry"}
+        <span
+          className={
+            card.status === "published"
+              ? "status-tag status-tag--published"
+              : card.status === "in-review"
+                ? "status-tag status-tag--review"
+                : "status-tag"
+          }
+        >
+          {statusLabel(card.status)}
         </span>
+        {card.sourceCount > 0 ? (
+          <span>
+            {card.sourceCount} {card.sourceCount === 1 ? "source" : "sources"}
+          </span>
+        ) : null}
       </span>
       <span className="search-result-copy">{card.summary}</span>
     </a>

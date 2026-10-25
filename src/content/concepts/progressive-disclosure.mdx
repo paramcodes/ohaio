@@ -1,0 +1,165 @@
+---
+summary: "Progressive disclosure reveals detail on demand. The real cost is not the extra click — 'hidden' has five meanings, and only some of them take the content out of the keyboard's way."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "docs"
+    title: "The details and summary elements"
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/details"
+    publisher: "MDN Web Docs"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "HTML Living Standard — 4.11.1 The details element"
+    url: "https://html.spec.whatwg.org/multipage/interactive-elements.html"
+    publisher: "WHATWG"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "Disclosure (Show/Hide) Pattern"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+    publisher: "W3C WAI-ARIA Authoring Practices"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "The inert global attribute"
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert"
+    publisher: "MDN Web Docs"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "visibility CSS property"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/visibility"
+    publisher: "MDN Web Docs"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Progressive Disclosure"
+    url: "https://www.nngroup.com/articles/progressive-disclosure/"
+    author: "Nielsen Norman Group"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import ProgressiveDisclosureLab from "../../components/labs/ProgressiveDisclosureLab";
+
+## The short definition
+
+Progressive disclosure is a decision about what to withhold. The common version — collapse advanced settings behind "More options" — is the visible half. The invisible half is that the moment you hide something, you have chosen *how* it stops existing, and the platform has five different answers to that question. They do not behave the same way.
+
+The technique itself is old and well-supported. Deferring advanced or rarely used features to a secondary surface measurably improves learnability, efficiency, and error rate, because the first screen asks for less. That part is settled. What breaks in practice is the mechanism underneath it: a disclosure that hides the right pixels while leaving the controls reachable is not a disclosure at all. It is an invisible trap that happens to be tabbable.
+
+## Hiding is not one property
+
+Every one of these removes content from view. Measured on this page's lab — a revealed panel holding one text input and one button, collapsed by each method in turn — they differ on two axes that matter: does it still take up space, and can a keyboard user still reach it.
+
+| Collapse method | Panel height | Control focusable | Perceivable | Where Tab from the trigger lands |
+| --- | --- | --- | --- | --- |
+| `display: none` | `0 px` | no | no | the control after the panel |
+| `visibility: hidden` | `137 px` | no | no | the control after the panel |
+| `opacity: 0` | `137 px` | **yes** | no | **inside the hidden panel** |
+| `hidden` attribute | `0 px` | no | no | the control after the panel |
+| `inert` attribute | `137 px` | no | yes | the control after the panel |
+
+Three facts fall out of that table, and none of them are obvious from the property names:
+
+- **`display: none` and `visibility: hidden` both remove content from the accessibility tree and from the tab order.** They differ only in layout: `display: none` collapses the box to zero height, `visibility: hidden` keeps the space reserved. MDN is explicit that `visibility: hidden` "remains invisible but still affects layout."
+- **`opacity: 0` does neither.** It is a paint operation. The element keeps its box, stays in the accessibility tree, and stays focusable. A keyboard user tabs straight into controls they cannot see.
+- **`inert` is the odd one out: it removes interactivity while keeping the content fully visible.** It is the only method in the table whose "Perceivable" column reads `yes`.
+
+## See it work
+
+<ProgressiveDisclosureLab client:visible />
+
+Collapse the panel with each method and watch the two metrics that decide the user's experience: **Control focusable** and **Tab landed on**. On `display: none`, `visibility: hidden`, `hidden`, and `inert`, focus skips the collapsed panel entirely. Switch to `opacity: 0` and press Tab again — focus walks into the invisible field. That single line is the whole reason this note exists.
+
+## The trap: a fade that stops at transparent
+
+The `opacity: 0` row is not a theoretical footgun. It is what happens when you animate a disclosure closed and forget the last step.
+
+A transition can only animate properties that have intermediate values. `display` has none — it flips. So the standard recipe for an animated collapse is to fade `opacity` (and often `height` or `transform`), because those interpolate smoothly. But a fade ends at `opacity: 0`, and `opacity: 0` still leaves the subtree focusable and hit-testable. You have animated the content out of *sight* without animating it out of *existence*.
+
+The fix is to make the invisible state also the inert state once the transition finishes:
+
+```css
+.panel {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 180ms ease,
+    visibility 180ms; /* not interpolated — it flips at the end */
+}
+
+.panel[data-open="false"] {
+  opacity: 0;
+  visibility: hidden; /* takes it out of the tab order when the fade lands */
+}
+```
+
+`visibility` is the trick: unlike `display`, it participates in a transition, but instead of interpolating it waits until the end of the duration to flip. So the panel fades out over 180 ms and only *then* leaves the accessibility tree and the tab order. On the way back, `visibility` flips to `visible` at the very start, so the fade is seen. The same effect is available with `transition-behavior: allow-discrete`, which lets `display: none` itself hold until the end of a transition — the modern way to animate an element in and out without a JS timer.
+
+## The browser already ships one
+
+Before reaching for a button and a hidden div, note that HTML has had a disclosure widget since 2012:
+
+<details class="pd-example">
+  <summary>What a closed <code>&lt;details&gt;</code> actually does</summary>
+  <div class="pd-example-body">
+    <p>The content after the <code>&lt;summary&gt;</code> is rendered inside a <code>::details-content</code> pseudo-element that the UA gives <code>content-visibility: hidden</code> while the element is closed. That is a third hiding mode, distinct from all five in the table: the DOM is fully present, but the content is not laid out, not painted, and not focusable.</p>
+    <p class="pd-example-probe">Focus this field while the box is closed, then open it and try again: <input class="pd-example-input" type="text" data-probe placeholder="a control inside the details" /></p>
+  </div>
+</details>
+
+Measured on this page: with the example closed, the whole `<details>` is `47 px` tall and its inner `<input>` is in the DOM (`querySelector` finds it) but refuses focus — `element.focus()` leaves `document.activeElement` unchanged. Open it and the box grows to `203 px` and the same field takes focus. The content was always there; only the open state lets you reach it. This is why `<details>` is the right default for accordions and FAQ rows — you get correct hiding semantics, keyboard support, and an accessible name for the toggle for free, with no script.
+
+The trade-offs are real, though. The toggle is a `<summary>`, not a `<button>`, so its styling and ARIA shape differ from the rest of your controls; the open/closed state is not React state unless you mirror it; and animating the open is awkward precisely because `content-visibility` is discrete (which `transition-behavior: allow-discrete` and the `::details-content` pseudo-element exist to fix).
+
+## The disclosure contract
+
+When you build the widget yourself, the WAI-ARIA Authoring Practices disclosure pattern is prescriptive about three attributes, and the lab's toggle obeys all of them:
+
+- The thing that shows and hides the content is a **`<button>`** (or `role="button"`), not a `<div>` or a link.
+- When the content is visible, that button carries **`aria-expanded="true"`**; when hidden, `aria-expanded="false"`.
+- The button names the region it controls with **`aria-controls`**, so a screen-reader user at the toggle can find out what it will reveal.
+
+`aria-expanded` describes the *button*; the *region* it reveals should be taken out of the tree by the hiding method, not by slapping `aria-hidden="true"` on it. `aria-hidden` is a lie if the content is still focusable — and a redundancy if you already used `display: none`. Reach for the hiding mechanism, not the ARIA, to remove content. This is the same mistake, wearing a different hat, as the `opacity: 0` trap: both hide the wrong layer.
+
+## When to withhold
+
+NN/g's framing is that progressive disclosure improves learnability, efficiency of use, and error rate by reducing the options on the primary screen — but it makes the hidden options harder to *discover*. That tension is the decision:
+
+- **Good to disclose:** rarely used or expert-only settings; anything that would overwhelm a first-time user; detail that only matters once a prior choice is made (conditional fields); long reference text.
+- **Bad to disclose:** anything the majority of users need on first visit; a step in a task they are mid-way through; an error message; a primary action. Hiding a required field behind "advanced" does not reduce its importance, only the chance it gets filled in.
+
+The failure mode of the *technique* is over-disclosure — burying the thing everyone needs. The failure mode of the *implementation* is a hidden-but-reachable trap. Both are worth checking for, and only the second one is measurable with `getBoundingClientRect` and a Tab key.
+
+## Failure modes
+
+| Symptom | Cause |
+| --- | --- |
+| Keyboard focus lands on invisible controls | Collapsed with `opacity: 0` (or `transform: scale(0)`) and nothing else |
+| The layout jumps when a panel opens | The panel was `display: none`, so its space appeared with it; reserve it with `visibility: hidden` or a grid row if the jump hurts |
+| Screen reader announces content you cannot see | `opacity: 0` / `height: 0; overflow: hidden` without `visibility: hidden` — still in the a11y tree |
+| `aria-hidden` content still focusable | `aria-hidden` hides from AT but not from the keyboard; the controls need `inert` or a real hide |
+| The disclosure cannot be reached by keyboard at all | Toggle built as a `<div>` or `<a href="#">` instead of a `<button>` |
+| Focus is lost when a panel closes | The focused element was inside the panel that just left the DOM/tree; move focus back to the toggle |
+| An animated open does nothing | `display` has no intermediate value; needs `transition-behavior: allow-discrete` or `@starting-style` |
+
+## Distinctions
+
+- **Progressive disclosure vs. chunking / steppers.** A stepper splits one task into ordered steps and shows progress; every step is mandatory. Progressive disclosure hides *optional* depth on a single screen. If the user must pass through it, it is a step, not a disclosure.
+- **Progressive disclosure vs. a tooltip or hovercard.** A tooltip shows the same information to everyone, non-interactively, on hover. A disclosure reveals *more* information that the user asked for and can usually act on.
+- **Progressive disclosure vs. pagination / lazy loading.** Those hide content because there is too much of it to move at once (a data-volume decision). Disclosure hides content because most of it is not relevant right now (an attention decision).
+
+## Check yourself
+
+1. You animate a settings panel closed with `opacity: 0` over 200 ms and it looks perfect. What is still true about its inputs during and after the fade, and what one property fixes it without a timer?
+2. A collapsed `<details>` element: is its inner `<input>` present in the DOM? Is it focusable? Which of those two answers surprises people, and why?
+3. Your toggle sets `aria-expanded="false"` and adds `aria-hidden="true"` to the panel, but a keyboard tester still tabs through it. What did `aria-hidden` fail to do, and what attribute or property would actually remove the panel from the tab order?

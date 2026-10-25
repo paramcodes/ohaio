@@ -5,6 +5,7 @@ import {
   DOMAIN_ORDER,
   searchConcepts,
   stats,
+  statusLabel,
   type ConceptCard,
 } from "@/lib/site";
 
@@ -23,6 +24,17 @@ export default function CommandPalette() {
       })).filter((group) => group.items.length > 0),
     [results],
   );
+
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("ohaio:scroll-lock", { detail: { locked: open } }),
+    );
+    return () => {
+      window.dispatchEvent(
+        new CustomEvent("ohaio:scroll-lock", { detail: { locked: false } }),
+      );
+    };
+  }, [open]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -85,7 +97,7 @@ export default function CommandPalette() {
         />
       </div>
 
-      <Command.List className="palette-list" aria-label="Concept results">
+      <Command.List className="palette-list" aria-label="Concept results" data-lenis-prevent>
         {results.length === 0 ? (
           <div className="palette-empty">
             <strong>No entry found</strong>
@@ -107,7 +119,7 @@ export default function CommandPalette() {
                 >
                   <span className="palette-item-title">{card.title}</span>
                   <span className="palette-item-meta">
-                    {card.status === "published" ? "Field note" : "Filed"} · {card.layerName}
+                    {statusLabel(card.status)} · {card.layerName}
                   </span>
                   <span className="palette-item-copy">{card.summary}</span>
                 </Command.Item>

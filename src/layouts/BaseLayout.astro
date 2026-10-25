@@ -29,7 +29,7 @@ const descriptionText = description;
     <meta name="description" content={descriptionText} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#f6f3ec" />
+    <meta name="theme-color" content="#f8f8f8" />
     <meta name="generator" content={Astro.generator} />
     {noindex && <meta name="robots" content="noindex" />}
 
@@ -54,6 +54,48 @@ const descriptionText = description;
     <ConceptHoverLayer client:idle />
 
     <script>
+      import Lenis from "lenis";
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      if (!reduceMotion.matches) {
+        const lenis = new Lenis({
+          duration: 1.05,
+          smoothWheel: true,
+          wheelMultiplier: 1,
+          touchMultiplier: 1.6,
+        });
+
+        const frame = (time: number) => {
+          lenis.raf(time);
+          requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+
+        window.addEventListener("ohaio:scroll-lock", (event) => {
+          const locked = (event as CustomEvent<{ locked: boolean }>).detail?.locked;
+          if (locked) lenis.stop();
+          else lenis.start();
+        });
+
+        document.addEventListener("click", (event) => {
+          if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+            return;
+          }
+          const anchor = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href*="#"]');
+          if (!anchor) return;
+          const url = new URL(anchor.href, window.location.href);
+          if (url.pathname !== window.location.pathname || !url.hash || url.hash === "#") return;
+          const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+          if (!target) return;
+          event.preventDefault();
+          lenis.scrollTo(target, { offset: -88, duration: 0.9 });
+          history.replaceState(null, "", url.hash);
+          target.setAttribute("tabindex", "-1");
+          target.focus({ preventScroll: true });
+        });
+      }
+
       const KEY = "ohaio:learned:v1";
 
       const readLearned = () => {

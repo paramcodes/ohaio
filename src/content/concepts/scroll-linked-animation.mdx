@@ -1,0 +1,164 @@
+---
+summary: "A scroll-linked animation uses the scroll position as its clock. The motion is not timed; it is a direct readout of where the scroller is."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "docs"
+    title: "animation-timeline"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline"
+    publisher: "MDN Web Docs"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "CSS Scroll-driven Animations Level 1"
+    url: "https://drafts.csswg.org/scroll-animations-1/"
+    publisher: "CSS Working Group"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "CSS scroll-driven animations"
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations"
+    publisher: "MDN Web Docs"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Scroll-driven animations"
+    url: "https://developer.chrome.com/docs/css-ui/scroll-driven-animations"
+    publisher: "Chrome for Developers"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "interactive"
+    title: "Scroll-driven animations style"
+    url: "https://scroll-driven-animations.style/"
+    publisher: "Bramus"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import ScrollTimelineLab from "../../components/labs/ScrollTimelineLab";
+
+## The short definition
+
+A scroll-linked animation does not run on a clock. It runs on a scroll position.
+
+Attach a scroll timeline to an ordinary CSS keyframe animation and the animation's progress becomes the scroller's progress: 0% at the top of the scroll range, 100% at the bottom, and every value between mapped exactly to where the scroll is. Scroll back up and the animation rewinds, because there is nothing to rewind — the frame is a function of position.
+
+This separates two things people usually conflate. A *time-based* animation answers "where should this be after 400ms?" A *scroll-linked* animation answers "where should this be at 40% of the scroll?" Only the second one can be scrubbed.
+
+## Two clocks, two functions
+
+| Timeline | CSS | Driven by | Typical use |
+| --- | --- | --- | --- |
+| Scroll progress | `scroll()` | A scroller's position through its range | Reading progress bars, sticky gauges, scrubbed reveals |
+| View progress | `view()` | An element's passage through the scrollport | Reveals tied to an element entering and leaving |
+
+`scroll()` takes a scroller (`root`, `self`, `nearest`) and an axis (`block`, `inline`, `x`, `y`). `view()` takes an axis and optional insets. Both are anonymous timelines: you name the relationship, not the element.
+
+If you need one scroller to drive an animation on an element that is not its descendant, give the scroller a named timeline with `scroll-timeline` and reference it. Named timelines are how you reach across the DOM.
+
+## Scrub it yourself
+
+<ScrollTimelineLab client:visible />
+
+The gauge is a scroll progress timeline: its rotation and the fill bar are both driven by the scroller's position. Switch to the JS fallback and the same numbers come out of `scrollTop / (scrollHeight - clientHeight)` — the fallback is a manual reimplementation of exactly what the timeline does natively.
+
+Scroll back up. The animation reverses because it never had a direction; it only ever had a position.
+
+## Writing it down
+
+The native form is a normal keyframe animation with a timeline attached:
+
+```css
+@keyframes turn {
+  from {
+    transform: rotate(-120deg);
+  }
+  to {
+    transform: rotate(120deg);
+  }
+}
+
+.gauge {
+  position: sticky;
+  inset-block-start: 1rem;
+  animation: turn linear both;
+  animation-timeline: scroll(nearest block);
+}
+```
+
+Three details matter:
+
+- **The shorthand resets the timeline.** `animation` sets `animation-timeline` back to `auto`, so the timeline declaration must come *after* the shorthand. This is the most common reason a scroll animation silently does nothing.
+- **There is no duration.** The scroll range is the clock. `animation-duration` is ignored on a scroll timeline; the examples above simply omit it.
+- **`linear` is correct here.** Elsewhere it is a weak default; in scrubbed motion it is the only honest choice, because any easing would make the visual lag the scrollbar you are watching.
+
+`animation-range` narrows the window inside the timeline — `entry 0% cover 50%`, `contain`, `cover 25% 75%` — which is how a reveal is anchored to the moment an element enters rather than to the whole scroll.
+
+## Native versus hand-rolled
+
+CSS scroll-driven animations run on the compositor where the browser can schedule them, and they are declarative: nothing re-renders, nothing listens. Support is now in Chrome, Edge, and recent Firefox releases; Safari's own scroll-linked effects exist but the standard timeline is not Baseline, so feature-detect:
+
+```css
+@supports not (animation-timeline: scroll()) {
+  .gauge {
+    /* JS fallback drives a custom property, or the effect is dropped */
+  }
+}
+```
+
+The JavaScript version is a scroll listener plus one `requestAnimationFrame` per frame:
+
+```js
+element.addEventListener(
+  "scroll",
+  () => {
+    requestAnimationFrame(() => {
+      const max = element.scrollHeight - element.clientHeight;
+      const progress = max > 0 ? element.scrollTop / max : 0;
+      needle.style.setProperty("--progress", progress);
+    });
+  },
+  { passive: true },
+);
+```
+
+The rules for the fallback are the ones for any scroll-adjacent code: `passive: true` so the listener never blocks the scroll, read layout (`scrollTop`, `scrollHeight`) at most once per frame, and write only to `transform`, `opacity`, or custom properties that style transform. Touching layout properties per frame — `top`, `height` — is how a scroll effect turns into jank. A React re-render per scroll event is the other way; the listener should live outside the component's update cycle.
+
+Reach for the fallback when the mapping is dynamic (progress computed from two scrollers, snapping targets, non-linear curves) or when you must support a browser without timelines. For a fixed scrub, native CSS is cheaper and smoother.
+
+## Where it goes wrong
+
+| Symptom | Cause |
+| --- | --- |
+| Animation never runs | `animation-timeline` declared before the `animation` shorthand, which reset it |
+| Motion lags the scrollbar | Easing or a duration applied to scrubbed motion; scroll is the clock, so `linear` is correct |
+| Animation stuck at 0% | Timeline attached to the wrong scroller: `nearest` picks the closest ancestor, not the one you meant |
+| Effect stops mid-page | `view()` timeline with default insets; the range ends when the element leaves, which may be sooner than you assumed |
+| Jank while scrolling | JS fallback reading layout or writing layout properties per frame |
+| Page scroll jumps to top | Re-rendering the whole list on scroll progress; keep progress in a CSS variable or a motion value |
+| Vestibular discomfort | Large parallax or rotation tied to scroll with no reduced-motion path |
+
+## Accessibility
+
+Scroll-linked motion is the class of animation most likely to bother people: it moves when the page moves, and it is continuous. `prefers-reduced-motion` should turn the *decorative* parts off — parallax layers, scrubbed rotations — while keeping the *instrumental* ones, like a reading progress bar, or replacing them with discrete values.
+
+Never make essential content depend on the animation. A reveal that is also a hide is the classic trap: if a scroll-linked opacity animation fails, falls back to nothing, or is disabled by a preference, the text must still be present and readable. Keyframe the decoration, not the information.
+
+And keep it in proportion. A section of a page scrubbing into view is orientation. A page where every element parallaxes at a different rate is a rideshare simulator.
+
+## The mental model
+
+A scroll-linked animation is **a function from position to state**.
+
+- If the user should be able to scrub it, rewind it, stop it mid-travel, link it to scroll.
+- If the motion should play out on its own once triggered, it is time-based; keep it a curve or a spring.
+- `scroll()` for the container's progress, `view()` for an element's passage.
+- Declare the timeline after the shorthand, keep `linear`, and never read layout per frame in the fallback.
+
+Scroll snap decides where a scroll may rest. Scroll-linked animation decides what the page shows while it travels. They are the two halves of making scroll feel authored rather than suffered. See [scroll snap](/concepts/scroll-snap) for the positioning half and [easing](/concepts/easing) for why scrubbed motion is the one place `linear` is right.

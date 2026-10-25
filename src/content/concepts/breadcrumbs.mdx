@@ -1,0 +1,121 @@
+---
+summary: "A breadcrumb trail is a picture of where the current page sits in the site's hierarchy — a second navigation, not a record of how you got here. Most of its failure modes are invisible until you inspect the accessibility tree."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "standard"
+    title: "Authoring Practices Guide — Breadcrumb Pattern"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/"
+    publisher: "W3C WAI"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Breadcrumbs (Usability Guideline)"
+    url: "https://www.nngroup.com/articles/breadcrumbs/"
+    author: "Sarah Gibbons"
+    publisher: "Nielsen Norman Group"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "HTML Living Standard — The nav element"
+    url: "https://html.spec.whatwg.org/multipage/sections.html"
+    publisher: "WHATWG"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "docs"
+    title: "HTML <nav>: The Navigation Section element"
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav"
+    publisher: "MDN Web Docs"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "Accessible Rich Internet Applications (WAI-ARIA) 1.2 — breadcrumb role"
+    url: "https://www.w3.org/TR/wai-aria-1.2/#breadcrumb"
+    publisher: "W3C"
+    role: "reference"
+    free: true
+    accessed: "2026-10-25"
+---
+import BreadcrumbsLab from "../../components/labs/BreadcrumbsLab";
+
+## The short definition
+
+A breadcrumb trail is a compact list showing the current page's position within the site's hierarchy: `Home / Products / Audio / Headphones`. Each step is an ancestor you could navigate to. It is a form of **page location indicator** and a kind of *secondary* navigation — it supplements the primary navigation, it never replaces it.
+
+The word "breadcrumb" is borrowed from the fairy tale, but the web's version does **not** retrace the crumbs you dropped on the way there. That single confusion — *where I am* versus *where I came from* — is the source of most of the pattern's misuse.
+
+## Three kinds, and only one is usually right
+
+Usability research splits breadcrumbs into three types, and the naming is a trap because they answer different questions:
+
+- **Location-based** — shows the site hierarchy the page sits in. This is the default meaning of "breadcrumb" and almost always what you want.
+- **Path-based** — shows the sequence of steps the *user took* to arrive (the literal Hansel-and-Gretel trail). This duplicates the browser Back button and changes depending on the route the user happened to come by, so the same page gets a different trail from different visitors. It is rarely worth it.
+- **Attribute-based** — shows category *properties* of the item rather than a hierarchy (`Running / Cushioning / Neutral` under a shoe). Common in e-commerce facets, and it is really a filter summary wearing a breadcrumb's clothes.
+
+The pattern's contract is about **location**. A location trail is stable: everyone reaching `/products/audio/headphones` sees the same four steps, because the steps come from the URL's structure, not from anyone's history.
+
+## The markup contract
+
+The accessible version is short and specific. Every clause below is a place where a plausible-looking trail is actually broken:
+
+```html
+<nav aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><a href="/products">Products</a></li>
+    <li><a href="/products/audio">Audio</a></li>
+    <li><span aria-current="page">Headphones</span></li>
+  </ol>
+</nav>
+```
+
+- **Wrap it in a `<nav>` and name it.** `<nav>` is a landmark; screen-reader users jump between landmarks. A page usually has several, and an unnamed breadcrumb landmark is announced as just "navigation" — indistinguishable from the main menu. `aria-label="Breadcrumb"` is what makes it findable.
+- **Use an ordered list.** The hierarchy is a sequence; `<ol>` conveys "step 3 of 4" to assistive tech. A run of bare `<a>` elements separated by slashes does not.
+- **Mark the current page with `aria-current="page"`.** This is the contract the [ARIA breadcrumb pattern](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/) specifies.
+- **Do not make the last step a link.** The user is already there. A link to the page you are on is a focus stop that does nothing, and readers announce "link" for a destination the person already occupies. Render it as plain text carrying `aria-current="page"`.
+- **Keep the separator out of the reading.** A `/` or `›` typed into the markup is part of the text, so a screen reader speaks it. A CSS `::before { content: "/" }` is generated content — visible, but absent from `textContent`, so it is never announced.
+
+## See it work
+
+<BreadcrumbsLab client:visible />
+
+Every failure in the contract is invisible in the pixels and obvious in the metrics. Switch the trail to **path (history)** and the caption flips to the reason it is wrong. Switch to **unlabelled** and watch the "Landmarks on page" counter — the breadcrumb nav is now one of several unnamed `navigation` regions a reader cannot tell apart. Switch the last step to **a link** and "Focusable steps" climbs by one, for a link that leads nowhere new. Switch to the **literal "/"** and "Separator spoken" turns to `yes`, because the slash is now in the list's text. Force **narrow** and "Trail lines" goes above 1 — a wrapped breadcrumb is the one presentation fault the usability guideline calls out by name.
+
+## When a breadcrumb earns its space
+
+The guideline is conditional, not universal:
+
+- **Use it when the site is genuinely deep** — three or more levels of hierarchy — so the trail communicates something the visible navigation does not.
+- **Skip it on flat sites.** If the hierarchy is one level deep, the trail is `Home / Page` — pure noise that spends a row to say nothing.
+- **Never treat it as the primary way to navigate.** It is a secondary aid for orientation and for jumping up one or two levels; the main navigation still has to carry the load.
+- **On small screens, prefer a single "back to parent" affordance over a full wrapping trail.** The trail's value is showing the *whole* path; a truncated or multi-line one loses that and costs vertical space.
+
+## Failure modes
+
+| Symptom | Cause |
+| --- | --- |
+| Screen reader says "navigation" with no context, repeatedly | The `<nav>` landmark has no accessible name (`aria-label`) |
+| Reader speaks "slash" between every item | Separator is literal text in the markup instead of CSS generated content |
+| A wasted tab stop on the last crumb | The current page is rendered as a link to itself |
+| Same page shows different trails to different users | Path/history breadcrumbs built from session, not from the URL hierarchy |
+| `Home / Page` trail on a shallow site | Breadcrumb used where the hierarchy is too flat to need one |
+| Trail wraps to two or more lines | Container too narrow for the full path — shorten, truncate the middle, or drop it on small screens |
+| "Step 3 of 4" never announced | Items are not in an `<ol>`/`<li>` list |
+
+## Distinctions
+
+- **Breadcrumb vs. primary navigation.** The breadcrumb is a location indicator and a shortcut *up* the hierarchy. It is not the site's main menu and must not be the only way to reach a section.
+- **Breadcrumb vs. Back button.** A location trail says where the page *is*; the Back button replays where the user *was*. Confusing the two produces path-based breadcrumbs that duplicate the browser.
+- **Breadcrumb vs. pagination.** Pagination moves through sibling pages of one list; a breadcrumb moves up and down parent/child levels. They solve opposite directions of the same orientation problem.
+
+## Check yourself
+
+1. A teammate builds a trail from the user's click history so it "shows how they got here." Which of the three breadcrumb kinds is this, and what two concrete problems does it create that a location trail avoids?
+2. Your trail looks correct but a screen-reader user hears "navigation, navigation, navigation" and "slash" between items. Name the two markup decisions responsible and the fix for each.
+3. On a site whose deepest hierarchy is two levels, a stakeholder wants breadcrumbs "for SEO." What does the usability guideline say about this case, and what would you render on a narrow viewport instead of a full trail?

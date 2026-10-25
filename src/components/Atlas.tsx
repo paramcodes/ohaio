@@ -5,6 +5,7 @@ import graphData from "@/data/graph.json";
 import {
   DOMAIN_META,
   DOMAIN_ORDER,
+  statusLabel,
   type ConceptStatus,
   type DomainId,
 } from "@/lib/site";
@@ -213,8 +214,8 @@ export default function Atlas() {
             autoRescaleContent: "positions",
             renderEdgeLabels: false,
             enableEdgeEvents: false,
-            labelDensity: 1.15,
-            labelGridCellSize: 120,
+            labelDensity: 1,
+            labelGridCellSize: 160,
             labelRenderedSizeThreshold: 0,
             stagePadding: window.matchMedia("(max-width: 720px)").matches ? 58 : 34,
             minCameraRatio: 0.1,
@@ -234,8 +235,8 @@ export default function Atlas() {
                   then: "visible",
                   else: "hidden",
                 },
-                labelColor: "#ded9cd",
-                labelFont: "JetBrains Mono Variable, monospace",
+                labelColor: "#c6cbd6",
+                labelFont: "DM Mono, monospace",
                 labelSize: 11,
                 cursor: "pointer",
               },
@@ -243,14 +244,14 @@ export default function Atlas() {
                 whenState: "isHovered",
                 then: {
                   labelSize: 13,
-                  labelColor: "#f7f3e9",
+                  labelColor: "#f4f6fa",
                   opacity: 1,
                   backdropVisibility: "visible",
-                  backdropColor: "#1a1b27",
-                  backdropBorderColor: "#43465f",
+                  backdropColor: "#191b21",
+                  backdropBorderColor: "#3c414d",
                   backdropBorderWidth: 1,
-                  backdropCornerRadius: 3,
-                  backdropPadding: 4,
+                  backdropCornerRadius: 4,
+                  backdropPadding: 5,
                   backdropShadowColor: "rgba(0, 0, 0, 0.6)",
                   backdropShadowBlur: 9,
                 },
@@ -260,7 +261,7 @@ export default function Atlas() {
                 then: {
                   labelVisibility: "visible",
                   labelSize: 15,
-                  labelColor: "#f4f0e6",
+                  labelColor: "#eef1f6",
                   opacity: 1,
                 },
               },
@@ -487,8 +488,16 @@ export default function Atlas() {
                   {isDomainId(preview.domain) ? DOMAIN_META[preview.domain].name : "Atlas"} ·{" "}
                   {NODE_TYPE_LABEL[preview.type]}
                 </span>
-                {preview.status === "published" ? (
-                  <span className="status-tag status-tag--published">Field note</span>
+                {preview.status === "published" || preview.status === "in-review" ? (
+                  <span
+                    className={
+                      preview.status === "published"
+                        ? "status-tag status-tag--published"
+                        : "status-tag status-tag--review"
+                    }
+                  >
+                    {statusLabel(preview.status)}
+                  </span>
                 ) : null}
               </div>
               <div className="atlas-preview-title">
@@ -509,7 +518,9 @@ export default function Atlas() {
               <div className="atlas-preview-foot">
                 <a href={preview.url}>
                   {preview.type === "concept"
-                    ? "Open entry →"
+                    ? preview.status === "published"
+                      ? "Read field note →"
+                      : "Open entry →"
                     : preview.type === "layer"
                       ? "Open layer →"
                       : "Open domain →"}

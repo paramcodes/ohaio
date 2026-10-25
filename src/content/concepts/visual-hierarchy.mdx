@@ -1,0 +1,112 @@
+---
+summary: "Visual hierarchy is the deliberate ordering of what a viewer notices first, second, third. It is built from a small set of measurable differences — contrast, scale, and spacing — not from taste alone."
+status: "published"
+format: "field-note"
+updated: "2026-10-25"
+reviewed: "2026-10-25"
+sources:
+  - kind: "article"
+    title: "Visual Hierarchy in UX: Definition"
+    url: "https://www.nngroup.com/articles/visual-hierarchy-ux-definition/"
+    publisher: "Nielsen Norman Group"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "WCAG 2.2 — Understanding SC 1.4.3 Contrast (Minimum)"
+    url: "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+    publisher: "W3C WAI"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "spec"
+    title: "Web Content Accessibility Guidelines (WCAG) 2.2 — Contrast (Minimum)"
+    url: "https://www.w3.org/TR/WCAG22/#contrast-minimum"
+    publisher: "W3C"
+    role: "primary"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "5 Principles of Visual Design in UX"
+    url: "https://www.nngroup.com/articles/principles-visual-design/"
+    publisher: "Nielsen Norman Group"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+  - kind: "article"
+    title: "Gestalt Principles of Grouping: Proximity"
+    url: "https://www.nngroup.com/articles/gestalt-proximity/"
+    publisher: "Nielsen Norman Group"
+    role: "supporting"
+    free: true
+    accessed: "2026-10-25"
+---
+import VisualHierarchyLab from "../../components/labs/VisualHierarchyLab";
+
+## The short definition
+
+Visual hierarchy is the arrangement and styling of elements so that importance is obvious at a glance: the viewer's eye goes to the headline, then the key action, then the supporting text, in the order the designer intended. When hierarchy is weak, everything competes and the reader has to *work* to find the entry point.
+
+The useful reframe is this: hierarchy is not a feeling you add to a layout. It is the sum of a few **differences** between elements — how much more contrast, how much bigger, how much more isolated one thing is than its neighbours. Differences are numbers, and numbers can be measured.
+
+## The three levers that actually move the eye
+
+Research on visual design keeps returning to the same small set of tools. Three carry almost all of the weight, and each maps to a measurement:
+
+1. **Contrast** — the difference in luminance (and colour) between an element and its background. This is the loudest lever and the only one with a hard accessibility floor.
+2. **Scale** — relative size. Bigger reads as more important, so the ratio between a heading and its body text is a direct measure of how much it is shouting.
+3. **Spacing / proximity** — a Gestalt grouping cue. Elements close together are perceived as belonging; a larger gap separates one group from the next. Whitespace creates hierarchy without drawing a single line.
+
+Colour *hue*, alignment, and position matter too, but contrast, scale, and proximity are the three you can compute from the rendered page and reason about objectively.
+
+## Contrast is the lever with a floor under it
+
+Contrast is not a matter of taste. The [WCAG Contrast (Minimum) success criterion](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) defines a ratio from relative luminance and sets pass thresholds:
+
+- **Normal text:** at least **4.5:1** (AA).
+- **Large text:** at least **3:1** (AA), where *large* means at least 18pt (~24px), or at least 14pt (~18.66px) **bold**.
+- The stricter AAA level raises these to 7:1 and 4.5:1 respectively.
+
+The ratio comes from a specific formula — `(L_lighter + 0.05) / (L_darker + 0.05)` where each `L` is the sRGB relative luminance — so it is fully deterministic from the two colours. The larger the ratio, the more distinguishable the foreground.
+
+This produces the trap the lab demonstrates: because the *large-text* threshold is looser, the **same colour** can pass as a heading and fail as body copy. Slide the text and background lightness together until the ratio lands near 3:1. The 32px heading clears its `3:1` bar; the 16px body does not clear its `4.5:1` bar. "Make the title dramatic" is therefore never free — a low-contrast look that reads as elegant at display sizes quietly becomes unreadable at reading sizes.
+
+## See it work
+
+<VisualHierarchyLab client:visible />
+
+Every metric in the lab is computed from the real rendered pixels, not asserted:
+
+- **Text : bg contrast** is the WCAG ratio, recalculated live as you drag the two lightness sliders.
+- **Body (normal) WCAG** and **Heading (large) WCAG** apply the correct threshold to each, so you can watch them disagree in the 3:1–4.5:1 band — that gap is the whole accessibility lesson.
+- **Heading : body scale** is the size ratio; it only creates hierarchy above `1.00×`.
+- **Group : item gap** is the proximity ratio: the measured pixel gap *between* groups divided by the gap *within* a group. Once it climbs past roughly `2×`, the eye reads two separate blocks with no rule or border doing the work.
+
+## Scale and proximity: quieter, still measurable
+
+Scale is relative. A 32px heading next to 16px body text is a `2.0×` jump; next to 28px body text it is `1.14×` and barely registers. A type *scale* is just a consistent ratio between steps, and the number of steps you allow decides how many distinct levels of importance the page can express. If everything sits between `1.0×` and `1.2×`, there is no hierarchy to read.
+
+Proximity is the lever people forget because it costs nothing visually. The [Gestalt principle of proximity](https://www.nngroup.com/articles/gestalt-proximity/) says items near each other are seen as related. Put a small gap between a heading and its paragraph and a much larger gap before the next section, and you have created grouping and reading order out of whitespace alone. The lab's group-to-item ratio makes that difference explicit: at `1.0×` (all gaps equal) the page is one undifferentiated block; at `3×` the sections separate cleanly.
+
+## Failure modes
+
+| Symptom | Cause |
+| --- | --- |
+| "Nothing stands out" / flat page | Scale ratios all near 1.0× and similar contrast — no element differs enough to lead |
+| Elegant but unreadable body text | Low contrast tuned to look good at large sizes; fails the 4.5:1 normal-text floor |
+| Heading passes contrast but paragraph fails | Same colour, different size — large-text 3:1 vs normal-text 4.5:1 |
+| Users scan the wrong order | Hierarchy built only on colour while size/position imply a different order |
+| A wall of unrelated text | Inter-group gap no larger than intra-group gap (proximity ratio ≈ 1×) |
+| Everything bold, nothing bold | Emphasis applied to every element removes the contrast it depends on |
+
+## Distinctions
+
+- **Visual hierarchy vs. information architecture.** Hierarchy is the *presentation* order — what the eye hits first. IA is the *structural* model of what belongs together. You can have sound IA and a flat hierarchy that hides it.
+- **Hierarchy vs. accessibility contrast.** Contrast is one hierarchy lever that doubles as an accessibility requirement. Reaching for a "subtle" low-contrast look can satisfy the aesthetic and violate WCAG at the same time; the floor is not negotiable.
+- **Proximity vs. alignment.** Alignment lines elements up on a shared edge; proximity groups them by distance. Both are Gestalt grouping cues and they reinforce each other, but a gap and a grid line communicate relatedness differently.
+
+## Check yourself
+
+1. Your heading is a mid-grey that measures about **3.4:1** on white, so at 32px it clears the large-text bar. You reuse that exact grey for 16px body copy. Does it still pass, and which WCAG number decides the answer?
+2. A page "feels flat" even though the headline is large. Name two levers other than size you would check, and the rough measured value each would need to create a real difference.
+3. Two sections are separated by the same whitespace as the lines within each section. Which principle is being violated, and what single measurement would you change to fix the grouping?
