@@ -2,9 +2,10 @@
 
 **A morning field guide for working engineers.**
 
-262 plain-language field notes on the concepts production actually teaches you the
-hard way — backend, frontend, interface, game dev, security — each with a place on
-the map and, where the idea is motion or layout, a lab you can break.
+A taxonomy of **262 concepts** across backend, frontend, interface, game dev, and
+security. **22 are written up** as plain-language field notes — each with a place on
+the map and, where the idea is motion or layout, a lab you can break. The rest are
+scaffolded and queued.
 
 ![The ohaio home page](screenshots/home.png)
 
